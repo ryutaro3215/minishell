@@ -3,7 +3,7 @@
 
 int	main()
 {
-	char	*line = "ls | wc -l | ls | pwd -a -b -d | abcdefghijk hello world";
+	char	*line = "| wc -l | ls | pwd -a -b -d | abcdefghijk hello world";
 	t_token	*token_list;
 
 	token_list = tokenize(line);
@@ -19,10 +19,7 @@ int	main()
 	t_command	*command_list;
 	command_list = parse(token_list);
 	if (!command_list)
-	{
-		printf("parse return NULL\n");
 		return 0;
-	}
 	free_token_list(token_list);
 	free_command_list(command_list);
 	return 0;

@@ -84,6 +84,8 @@ t_token	*create_word_list(t_token *token_list)
 			return NULL;
 		current_token = current_token->next;
 	}
+	if (!word_list) // must be word befor pipe.
+		printf("syntax error: %s\n", token_list->name);
 	return word_list;
 }
 
@@ -136,6 +138,11 @@ t_token	*get_second_token_list(t_token *token_list)
 	if (!token_list)
 		return NULL;
 	current_token = token_list->next; // next to operation(head of second_token_list).
+	if (current_token->attribute != WORD) // must be word after pipe.
+	{
+		printf("syntax error: %s\n", current_token->name);
+		return NULL;
+	}
 	while (current_token)
 	{
 		second_token_list = copy_token(second_token_list, current_token);
@@ -156,7 +163,6 @@ t_command	*add_connection(t_token *token_list)
 	second_token_list = get_second_token_list(token_list);
 	if (!first_token_list || !second_token_list) // parse error
 	{
-		printf("syntax error: %s\n", token_list->name);
 		free_token_list(first_token_list);
 		free_token_list(second_token_list);
 		return NULL;
