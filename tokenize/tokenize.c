@@ -9,14 +9,14 @@ bool	is_blank(char c)
 
 bool	is_word_component(char c)
 {
-	if (!isalnum(c) && c != '_' && c != '-')
+	if (!isalnum(c) && c != '_' && c != '-' && c != '.')
 		return false;
 	return true;
 }
 
 bool	is_word_beggining_component(char c)
 {
-	if (!isalpha(c) && c != '_' && c != '-')
+	if (!isalpha(c) && c != '_' && c != '-' && c != '.')
 		return false;
 	return true;
 }
@@ -31,6 +31,19 @@ bool	is_word(char *line)
 bool	is_operator(char *line)
 {
 	if (line[0] == '|')
+		return true;
+	return false;
+}
+
+bool	is_redirect(char *line)
+{
+	if (strncmp(line, "<<", 2) == 0)
+		return true;
+	else if (strncmp(line, ">>", 2) == 0)
+		return true;
+	else if (strncmp(line, ">", 1) == 0)
+		return true;
+	else if (strncmp(line, "<", 1) == 0)
 		return true;
 	return false;
 }
@@ -64,6 +77,27 @@ char	*get_operator(char *line)
 	return token;
 }
 
+char	*get_redirect(char *line)
+{
+	char	*token;
+	(void)	line;
+
+	if ((strncmp(line, "<<", 2) == 0) || (strncmp(line, ">>", 2) == 0))
+	{
+		token = malloc(sizeof(char) * 3);
+		token[0] = line[0];
+		token[1] = line[1];
+		token[2] = '\0';
+	}
+	else //  '<' or '>'
+	{
+		token = malloc(sizeof(char) * 2);
+		token[0] = line[0];
+		token[1] = '\0';
+	}
+	return token;
+}
+
 t_token	*add_token(t_token *token_list, char **line, int token_kind)
 {
 	t_token	*new_token;
@@ -75,6 +109,8 @@ t_token	*add_token(t_token *token_list, char **line, int token_kind)
 		new_token->name = get_word(*line);
 	else if (token_kind == OPERATOR)
 		new_token->name = get_operator(*line);
+	else if (token_kind == REDIRECT)
+		new_token->name = get_redirect(*line);
 	*line += strlen(new_token->name); // increment line address.
 	new_token->next = NULL;
 	if (!token_list)
@@ -104,6 +140,8 @@ t_token	*tokenize(char *line)
 			token_list = add_token(token_list, &line, OPERATOR);
 		else if (is_word(line))
 			token_list = add_token(token_list, &line, WORD);
+		else if (is_redirect(line))
+			token_list = add_token(token_list, &line, REDIRECT);
 		else
 		{
 			if (token_list)

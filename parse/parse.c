@@ -88,12 +88,17 @@ t_redirect	*copy_redirect(t_redirect *redirect_list, t_token *current_token)
 	t_redirect	*new_redirect;
 	t_redirect	*tmp;
 
-	new_redirect = malloc(sizeof(t_redirect));
-	if (!new_redirect)
+	if (redirect_list->filename) // redirect_list has been created.
 	{
-		free_redirect_list(redirect_list);
-		return NULL;
+		new_redirect = malloc(sizeof(t_redirect));
+		if (!new_redirect)
+		{
+			free_redirect_list(redirect_list);
+			return NULL;
+		}
 	}
+	else // first redirect_list, but alread initialized previous function.
+		new_redirect = redirect_list;
 	new_redirect->attribute = get_redirect_attribute(current_token->name);
 	new_redirect->filename = strdup(current_token->next->name);
 	if (!new_redirect->filename)
@@ -103,7 +108,7 @@ t_redirect	*copy_redirect(t_redirect *redirect_list, t_token *current_token)
 		return NULL;
 	}
 	new_redirect->next = NULL;
-	if (!redirect_list)
+	if (redirect_list == new_redirect)
 		return new_redirect;
 	else
 	{
@@ -118,7 +123,9 @@ t_redirect	*copy_redirect(t_redirect *redirect_list, t_token *current_token)
 t_redirect	*create_redirect_list(t_token *token_list)
 {
 	t_token	*current_token = token_list;
-	t_redirect	*redirect_list = NULL;
+	t_redirect	*redirect_list = malloc(sizeof(t_redirect));
+	redirect_list->filename = NULL;
+	redirect_list->next = NULL;
 
 	while (current_token && current_token->attribute != OPERATOR)
 	{
@@ -131,6 +138,11 @@ t_redirect	*create_redirect_list(t_token *token_list)
 				return NULL;
 			}
 			redirect_list = copy_redirect(redirect_list, current_token);
+			if (!redirect_list)
+			{
+				printf("malloc error: %s\n", current_token->name);
+				return NULL;
+			}
 			current_token = current_token->next->next;
 		}
 		else
@@ -148,11 +160,14 @@ t_token	*create_word_list(t_token *token_list)
 	{
 		if (current_token->attribute == REDIRECT)
 			current_token = current_token->next->next;
-		// create null terminated word list.
-		word_list = copy_token(word_list, current_token);
-		if (!word_list)
-			return NULL;
-		current_token = current_token->next;
+		else
+		{
+			// create null terminated word list.
+			word_list = copy_token(word_list, current_token);
+			if (!word_list)
+				return NULL;
+			current_token = current_token->next;
+		}
 	}
 	if (!word_list) // must be word befor pipe.
 		printf("syntax error: %s\n", token_list->name);
@@ -174,7 +189,27 @@ t_command	*add_simple_command(t_token *token_list)
 	}
 	new_command->attribute = cm_simple;
 	new_command->value.simple->redirect_list = create_redirect_list(token_list);
-	// **return NULL when redirect doesn't exit, malloc error occur, and syntax error.
+	// if redirect doesn't exist (but not error), redirect_list->filename == NULL
+	if (!new_command->value.simple->redirect_list) // malloc or syntax error
+	{
+		free(new_command);
+		free(new_command->value.simple);
+		return NULL;
+	}
+#ifdef DEBUG
+	t_redirect	*r_tmp = new_command->value.simple->redirect_list;
+	printf("redirect_list: ");
+	while (r_tmp)
+	{
+		if (r_tmp->filename)
+		{
+			printf("%s(%s) -> ", r_tmp->filename, 
+			r_tmp->attribute==0 ? "<" : r_tmp->attribute==1 ? ">" : r_tmp->attribute==2 ? "<<" : ">>");
+		}
+		r_tmp = r_tmp->next;
+	}
+	printf("(null)\n");
+#endif
 	new_command->value.simple->word_list = create_word_list(token_list);
 	if (!new_command->value.simple->word_list)
 	{
@@ -208,7 +243,20 @@ int	get_connector(t_token *token_list)
 
 t_token	*get_first_token_list(t_token *token_list)
 {
-	return (create_word_list(token_list));
+	t_token	*current_token = token_list;
+	t_token	*word_list = NULL;
+
+	while (current_token && current_token->attribute != OPERATOR)
+	{
+		// create null terminated word list.
+		word_list = copy_token(word_list, current_token);
+		if (!word_list)
+			return NULL;
+		current_token = current_token->next;
+	}
+	if (!word_list) // must be word befor pipe.
+		printf("syntax error: %s\n", token_list->name);
+	return word_list;
 }
 
 t_token	*get_second_token_list(t_token *token_list)

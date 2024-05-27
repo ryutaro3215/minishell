@@ -1,5 +1,5 @@
-#include "tokenize/tokenize.h"
-#include "parse/parse.h"
+#include "../tokenize/tokenize.h"
+#include "../parse/parse.h"
 
 void	free_token_list(t_token *token_list)
 {
@@ -30,6 +30,7 @@ void	free_redirect_list(t_redirect *redirect_list)
 void	free_simple(t_command *command)
 {
 	free_token_list(command->value.simple->word_list);
+	free_redirect_list(command->value.simple->redirect_list);
 	free(command->value.simple);
 	free(command);
 }

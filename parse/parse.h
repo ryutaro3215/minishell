@@ -11,10 +11,10 @@ enum command_attribute
 
 enum redirect_attribute
 {
-	r_input,
-	r_output,
-	r_heredoc,
-	r_append_output
+	r_input, // 0
+	r_output, // 1
+	r_heredoc, // 2
+	r_append_output // 3
 };
 
 enum connector
