@@ -10,7 +10,8 @@
 enum
 {
 	WORD,
-	OPERATOR
+	OPERATOR,
+	REDIRECT
 };
 
 typedef struct s_token

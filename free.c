@@ -14,6 +14,19 @@ void	free_token_list(t_token *token_list)
 	}
 }
 
+void	free_redirect_list(t_redirect *redirect_list)
+{
+	t_redirect	*tmp;
+
+	while (redirect_list)
+	{
+		tmp = redirect_list->next;
+		free(redirect_list->filename);
+		free(redirect_list);
+		redirect_list = tmp;
+	}
+}
+
 void	free_simple(t_command *command)
 {
 	free_token_list(command->value.simple->word_list);

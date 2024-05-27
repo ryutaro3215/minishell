@@ -3,7 +3,7 @@
 
 int	main()
 {
-	char	*line = "| wc -l | ls | pwd -a -b -d | abcdefghijk hello world";
+	char	*line = "ls | wc -l | ls";
 	t_token	*token_list;
 
 	token_list = tokenize(line);
