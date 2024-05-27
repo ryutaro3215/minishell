@@ -6,7 +6,7 @@
 /*   By: rmatsuba <rmatsuba@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:06:10 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/05/27 21:34:23 by rmatsuba         ###   ########.fr       */
+/*   Updated: 2024/05/27 21:53:55 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,10 @@ t_token	*init_token(char *input)
 			printf("Error\n");
 	}
 	token->next = (t_token *)malloc(sizeof(t_token));
+	token = token->next;
 	token->word = NULL;
-	token->next = NULL;
 	token->type = 0;
+	token->next = NULL;
 	return (tmp.next);
 }
 
@@ -106,7 +107,7 @@ int	main(void)
 	{
 		input = readline("$>");
 		token = init_token(input);
-		while (token->word != NULL)
+		while (token->next != NULL)
 		{
 			printf("%s ", token->word);
 			printf("%d\n", token->type);
