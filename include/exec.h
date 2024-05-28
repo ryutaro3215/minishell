@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <fcntl.h>
 
 #define EXECUTION_FAILURE 1
 
@@ -29,5 +30,9 @@ char	*ft_strjoin(char *s1, char *s2);
 char	*create_path(char *path_vars, size_t path_var_len, char *line);
 char	*get_path(char *line);
 char	**get_argv(t_token *token_list);
+
+// redirect.c
+void	do_r_input(char *filename);
+void	do_redirect(t_redirect *redirect_list);
 
 #endif

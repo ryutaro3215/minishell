@@ -7,6 +7,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+
 // tokenize.c
 enum token_attribute
 {
@@ -32,6 +33,7 @@ bool	is_redirect(char *line);
 char	*get_word(char *line);
 char	*get_operator(char *line);
 char	*get_redirect(char *line);
+
 
 // parse.h
 t_token	*add_token(t_token *token_list, char **line, int token_kind);

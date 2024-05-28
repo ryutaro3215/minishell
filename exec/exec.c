@@ -7,7 +7,6 @@ int	execute_builtin(t_simple *simple, func *builtin)
 }
 */
 
-
 int	execute_disk_command(char *path, char **argv)
 {
 	execve(path, argv, NULL);
@@ -28,8 +27,8 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out) //, func *b
 	{
 		if (pipe_in != NO_PIPE)
 		{
-			dup2(pipe_in, 0);
-			close(pipe_in);
+			dup2(pipe_in, 0); // need error check
+			close(pipe_in); // need error check
 		}
 		if (pipe_out != NO_PIPE)
 		{
@@ -38,6 +37,7 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out) //, func *b
 		}
 		path = get_path(simple->word_list->name);
 		argv = get_argv(simple->word_list);
+		do_redirect(simple->redirect_list);
 //		if (builtin)
 //			exit(execute_builtin());
 		exit(execute_disk_command(path, argv));
@@ -53,20 +53,9 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out) //, func *b
 int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out)
 {
 //	func	*builtin = find_shell_builtin(simple); // return function pointer
-//	if (builtin && !simple->subshell)
+//	if (builtin && (pipe_in == NO_PIPE && pipe_out == NO_PIPE))
 //		return (execute_builtin(simple, builtin));
-	return (execute_in_subshell(simple, pipe_in, pipe_out)); //, builtin)); and separate in this function (one for builtin, another for disk command)
-/* or
-	if (builtin)
-	{
-		if (builtin && subshell)
-			execute_subshell_builtin(builtin); // pass pipe_in and pipe_out
-		else // builtin && !subshell
-			execute_builtin(builtin); // don't pass pipe_in and pipe_out
-	}
-	else // not builtin
-		execute_disk_command(); // pass pipe_in and pipe_out
-*/
+	return (execute_in_subshell(simple, pipe_in, pipe_out)); //, builtin));
 }
 
 int	execute_pipeline(t_command *command, int pipe_in, int pipe_out)
