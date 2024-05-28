@@ -1,5 +1,4 @@
-#include "../tokenize/tokenize.h"
-#include "../parse/parse.h"
+#include "../include/free.h"
 
 void	free_token_list(t_token *token_list)
 {
@@ -46,4 +45,17 @@ void	free_command_list(t_command *command_list)
 		free(command_list->value.connection);
 		free(command_list);
 	}
+}
+
+void	free_argv(char **argv)
+{
+	int	i;
+
+	i = 0;
+	while (argv[i])
+	{
+		free(argv[i]);
+		i++;
+	}
+	free(argv);
 }

@@ -1,4 +1,4 @@
-#include "tokenize.h"
+#include "../include/parse.h"
 
 bool	is_blank(char c)
 {

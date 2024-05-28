@@ -1,4 +1,4 @@
-#include "parse.h"
+#include "../include/parse.h"
 
 int	detect_cm_attribute(t_token *token_list)
 {
@@ -236,7 +236,7 @@ int	get_connector(t_token *token_list)
 	//if (!token_list) already checked in get_second_token_list()
 	//	return NULL; 
 	if (strcmp(token_list->name, "|") == 0)
-		return pipe;
+		return pipeline;
 	printf("Invalid connector added\n");
 	return -1;
 }
@@ -316,7 +316,7 @@ t_command	*add_connection(t_token *token_list)
 	}
 	new_command->value.connection->connector = get_connector(token_list);
 #ifdef DEBUG
-	printf("connector: %s\n\n", new_command->value.connection->connector==0 ? "pipe":"unknown");
+	printf("connector: %s\n\n", new_command->value.connection->connector==0 ? "pipeline":"unknown");
 	printf("first command\n");
 #endif
 	new_command->value.connection->first = add_command(first_token_list);

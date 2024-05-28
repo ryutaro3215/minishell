@@ -1,9 +1,8 @@
-#include "tokenize/tokenize.h"
-#include "parse/parse.h"
+#include "include/parse.h"
 
 int	main()
 {
-	char	*line = "ls < a.c -l | wc > b.c | pwd < c.c > d.c << e.c >> f.c < g.c";
+	char	*line = "ls";
 	t_token	*token_list;
 
 	token_list = tokenize(line);
