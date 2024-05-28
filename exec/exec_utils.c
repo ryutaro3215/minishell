@@ -91,3 +91,10 @@ char	**get_argv(t_token *token_list)
 	return argv;
 }
 
+void	*find_shell_builtin(char *command)
+{
+	if (strcmp(command, "echo") == 0)
+		return (&builtin_echo);
+	else
+		return NULL;
+}

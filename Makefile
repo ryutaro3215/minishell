@@ -1,5 +1,5 @@
 NAME = a.out
-SRCS = tokenize.c parse.c exec.c exec_utils.c redirect.c free.c minishell.c #test_parser.c
+SRCS = tokenize.c parse.c exec.c exec_utils.c redirect.c builtin.c free.c minishell.c #test_parser.c
 OBJS = $(SRCS:.c=.o)
 CC = cc
 CFLAGS = -Wall -Wextra -Werror

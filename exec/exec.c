@@ -1,11 +1,9 @@
 #include "../include/exec.h"
 
-/*
-int	execute_builtin(t_simple *simple, func *builtin)
+int	execute_builtin(t_token *word_list, int (*builtin)(t_token *))
 {
-	
+	return (builtin(word_list));
 }
-*/
 
 int	execute_disk_command(char *path, char **argv)
 {
@@ -14,7 +12,7 @@ int	execute_disk_command(char *path, char **argv)
 	return (EXECUTION_FAILURE);
 }
 
-int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out) //, func *builtin)
+int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*builtin)(t_token *))
 {
 	pid_t	pid;
 	char	*path;
@@ -37,9 +35,10 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out) //, func *b
 		}
 		path = get_path(simple->word_list->name);
 		argv = get_argv(simple->word_list);
-		do_redirect(simple->redirect_list);
-//		if (builtin)
-//			exit(execute_builtin());
+		if (do_redirect(simple->redirect_list) == EXECUTION_FAILURE)
+			exit(EXECUTION_FAILURE);
+		if (builtin)
+			exit(execute_builtin(simple->word_list, builtin));
 		exit(execute_disk_command(path, argv));
 	}
 	if (pipe_in != NO_PIPE)
@@ -47,15 +46,15 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out) //, func *b
 	if (pipe_out != NO_PIPE)
 		close(pipe_out);
 	return (wait(NULL));
-//	}
 }
 
 int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out)
 {
-//	func	*builtin = find_shell_builtin(simple); // return function pointer
-//	if (builtin && (pipe_in == NO_PIPE && pipe_out == NO_PIPE))
-//		return (execute_builtin(simple, builtin));
-	return (execute_in_subshell(simple, pipe_in, pipe_out)); //, builtin));
+	int (*builtin)(t_token *) = find_shell_builtin(simple->word_list->name);
+
+	if (builtin && (pipe_in == NO_PIPE && pipe_out == NO_PIPE))
+		return (execute_builtin(simple->word_list, builtin));
+	return (execute_in_subshell(simple, pipe_in, pipe_out, builtin));
 }
 
 int	execute_pipeline(t_command *command, int pipe_in, int pipe_out)
