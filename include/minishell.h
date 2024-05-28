@@ -1,7 +1,6 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#include "tokenize.h"
 #include "parse.h"
 #include "exec.h"
 #include "free.h"

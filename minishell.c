@@ -34,7 +34,7 @@ int	reader_loop(void)
 			if (command_list)
 			{
 				last_command_exit_status = execute_command(command_list);
-//				printf("exit_status: %d\n", last_command_exit_status);
+				printf("exit_status: %d\n", last_command_exit_status);
 				free_command_list(command_list);
 			}
 //			else // parse error
@@ -54,6 +54,7 @@ int	main()
 
 	return (last_command_exit_status);
 }
+
 /*
 __attribute__((destructor))
 static void	destructor()

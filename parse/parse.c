@@ -2,7 +2,7 @@
 
 int	detect_cm_attribute(t_token *token_list)
 {
-	while (token_list->next)
+	while (token_list)
 	{
 		if (token_list->attribute == OPERATOR)
 		{
@@ -133,7 +133,7 @@ t_redirect	*create_redirect_list(t_token *token_list)
 		{
 			if (!current_token->next || current_token->next->attribute != WORD)
 			{
-				printf("syntax error: %s\n", current_token->name);
+				printf("minishell: parse error near '%s'\n", current_token->name);
 				free_redirect_list(redirect_list);
 				return NULL;
 			}
@@ -169,8 +169,6 @@ t_token	*create_word_list(t_token *token_list)
 			current_token = current_token->next;
 		}
 	}
-	if (!word_list) // must be word befor pipe.
-		printf("syntax error: %s\n", token_list->name);
 	return word_list;
 }
 
@@ -192,8 +190,8 @@ t_command	*add_simple_command(t_token *token_list)
 	// if redirect doesn't exist (but not error), redirect_list->filename == NULL
 	if (!new_command->value.simple->redirect_list) // malloc or syntax error
 	{
-		free(new_command);
 		free(new_command->value.simple);
+		free(new_command);
 		return NULL;
 	}
 #ifdef DEBUG
@@ -211,10 +209,11 @@ t_command	*add_simple_command(t_token *token_list)
 	printf("(null)\n");
 #endif
 	new_command->value.simple->word_list = create_word_list(token_list);
+	// it skip redirect.
 	if (!new_command->value.simple->word_list)
 	{
-		free(new_command);
 		free(new_command->value.simple);
+		free(new_command);
 		return NULL;
 	}
 #ifdef DEBUG
@@ -254,8 +253,6 @@ t_token	*get_first_token_list(t_token *token_list)
 			return NULL;
 		current_token = current_token->next;
 	}
-	if (!word_list) // must be word befor pipe.
-		printf("syntax error: %s\n", token_list->name);
 	return word_list;
 }
 
@@ -266,14 +263,12 @@ t_token	*get_second_token_list(t_token *token_list)
 
 	while (token_list && token_list->attribute != OPERATOR)
 		token_list = token_list->next;
-	if (!token_list)
+	if (!token_list || !token_list->next)
 		return NULL;
-	current_token = token_list->next; // next to operation(head of second_token_list).
-	if (current_token->attribute != WORD && current_token->attribute != REDIRECT) // must be word after pipe.
-	{
-		printf("syntax error: %s\n", current_token->name);
+	current_token = token_list->next;
+	// next to operation(head of second_token_list).
+	if (current_token->attribute != WORD && current_token->attribute != REDIRECT)
 		return NULL;
-	}
 	while (current_token)
 	{
 		second_token_list = copy_token(second_token_list, current_token);
@@ -294,6 +289,7 @@ t_command	*add_connection(t_token *token_list)
 	second_token_list = get_second_token_list(token_list);
 	if (!first_token_list || !second_token_list) // parse error
 	{
+		printf("minishell: parse error near '|'\n");
 		free_token_list(first_token_list);
 		free_token_list(second_token_list);
 		return NULL;
@@ -320,12 +316,25 @@ t_command	*add_connection(t_token *token_list)
 	printf("first command\n");
 #endif
 	new_command->value.connection->first = add_command(first_token_list);
+	free_token_list(first_token_list);
+	if (!new_command->value.connection->first)
+	{
+		free(new_command->value.connection);
+		free(new_command);
+		return NULL;
+	}
 #ifdef DEBUG
 	printf("|\nv\nsecond command\n");
 #endif
 	new_command->value.connection->second = add_command(second_token_list);
-	free_token_list(first_token_list);
 	free_token_list(second_token_list);
+	if (!new_command->value.connection->second)
+	{
+		free_command_list(new_command->value.connection->first);
+		free(new_command->value.connection);
+		free(new_command);
+		return NULL;
+	}
 	return new_command;
 }
 

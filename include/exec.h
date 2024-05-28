@@ -1,7 +1,6 @@
 #ifndef EXEC_H
 #define EXEC_H
 
-#include "tokenize.h"
 #include "parse.h"
 #include "free.h"
 
@@ -10,11 +9,15 @@
 #include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <sys/wait.h>
 
 #define EXECUTION_SUCCESS 0
 #define EXECUTION_FAILURE 1
+#define COMMAND_NOT_FOUND 127
 
 #define NO_PIPE -1
+
+extern char	**environ;
 
 // exec.c
 int	execute_builtin(t_token *word_list, int (*builtin)(t_token *));
@@ -41,5 +44,6 @@ int	do_redirect(t_redirect *redirect_list);
 
 // builtin.c
 int	builtin_echo(t_token *word_list);
+int	builtin_env(t_token *word_list);
 
 #endif

@@ -7,9 +7,9 @@ int	execute_builtin(t_token *word_list, int (*builtin)(t_token *))
 
 int	execute_disk_command(char *path, char **argv)
 {
-	execve(path, argv, NULL);
-	printf("internal error: execution\n");
-	return (EXECUTION_FAILURE);
+	execve(path, argv, environ);
+	printf("minishell: command not found: %s\n", argv[0]);
+	return (COMMAND_NOT_FOUND);
 }
 
 int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*builtin)(t_token *))
@@ -17,6 +17,7 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*built
 	pid_t	pid;
 	char	*path;
 	char	**argv;
+	int		status;
 
 	pid = fork();
 	if (pid < 0)
@@ -34,6 +35,7 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*built
 			close(pipe_out);
 		}
 		path = get_path(simple->word_list->name);
+		// should handle "if NULL" ? (but error message)
 		argv = get_argv(simple->word_list);
 		if (do_redirect(simple->redirect_list) == EXECUTION_FAILURE)
 			exit(EXECUTION_FAILURE);
@@ -45,7 +47,8 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*built
 		close(pipe_in);
 	if (pipe_out != NO_PIPE)
 		close(pipe_out);
-	return (wait(NULL));
+	wait(&status);
+	return (WEXITSTATUS(status)); // forbidden function ?
 }
 
 int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out)
