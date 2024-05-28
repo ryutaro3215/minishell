@@ -29,6 +29,7 @@ int	reader_loop(void)
 		{
 			add_history(line);
 			command_list = eval_command(line);
+			free(line);
 			// expand(last_command_exit_status);
 			if (command_list)
 			{
@@ -51,4 +52,10 @@ int	main()
 	int	last_command_exit_status = reader_loop();
 
 	return (last_command_exit_status);
+}
+
+__attribute__((destructor))
+static void	destructor()
+{
+	system("leaks -q a.out");
 }

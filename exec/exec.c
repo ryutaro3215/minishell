@@ -17,8 +17,10 @@ int	execute_disk_command(char *path, char **argv)
 
 int	execute_in_subshell(t_simple *simple) //, func *builtin)
 {
-//	static int	fdin;
-//	static int	fdout;
+//	static int	next_fdin;
+//	static int	next_fdout;
+//	int			fdin;
+//	int			fdout;
 //	int			fildes[2];
 	pid_t	pid;
 	char	*path;
@@ -29,8 +31,6 @@ int	execute_in_subshell(t_simple *simple) //, func *builtin)
 		return (EXECUTION_FAILURE);
 //	if (pipe(fildes) < 0)
 //		return (EXECUTION_FAILURE);
-	path = get_path(simple->word_list->name);
-	argv = get_argv(simple->word_list);
 //	if (builtin)
 //	{
 		// execute builtin in child process.
@@ -38,11 +38,13 @@ int	execute_in_subshell(t_simple *simple) //, func *builtin)
 //	else
 //	{
 		// execute disk command in child process.
-		if (pid == 0)
-			exit(execute_disk_command(path, argv));
-		free(path);
-		free_argv(argv);
-		return (wait(NULL));
+	if (pid == 0)
+	{
+		path = get_path(simple->word_list->name);
+		argv = get_argv(simple->word_list);
+		exit(execute_disk_command(path, argv));
+	}
+	return (wait(NULL));
 //	}
 }
 
