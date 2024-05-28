@@ -2,7 +2,7 @@ NAME = a.out
 SRCS = tokenize.c parse.c exec.c exec_utils.c free.c minishell.c #test_parser.c
 OBJS = $(SRCS:.c=.o)
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+#CFLAGS = -Wall -Wextra -Werror
 RLFLAGS = -lreadline
 ifeq ($(MAKECMDGOALS), debug)
 CFLAGS += -D DEBUG

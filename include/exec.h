@@ -12,13 +12,16 @@
 
 #define EXECUTION_FAILURE 1
 
+#define NO_PIPE -1
+
 // exec.c
 //int	execute_builtin(t_simple *simple, func *builtin);
 int	execute_disk_command(char *path, char **argv);
-int	execute_in_subshell(t_simple *simple); //, func *builtin)
-int	execute_simple_command(t_simple *simple);
-int	execute_pipeline(t_command *command);
-int	execute_connection(t_command *command);
+int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out); //, func *builtin)
+int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out);
+int	execute_pipeline(t_command *command, int pipe_in, int pipe_out);
+int	execute_connection(t_command *command, int pipe_in, int pipe_out);
+int	execute_command_internal(t_command *command, int pipe_in, int pipe_out);
 int	execute_command(t_command *command);
 
 // exec_utils.c
