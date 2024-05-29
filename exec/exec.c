@@ -17,7 +17,6 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*built
 	pid_t	pid;
 	char	*path;
 	char	**argv;
-	int		status;
 
 	pid = fork();
 	if (pid < 0)
@@ -47,8 +46,8 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*built
 		close(pipe_in);
 	if (pipe_out != NO_PIPE)
 		close(pipe_out);
-	wait(&status);
-	return (WEXITSTATUS(status)); // forbidden function ?
+//	wait(&status);
+	return (pid); // forbidden function ?
 }
 
 int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out)
@@ -92,6 +91,14 @@ int	execute_command_internal(t_command *command, int pipe_in, int pipe_out)
 
 int	execute_command(t_command *command)
 {
-	return (execute_command_internal(command, NO_PIPE, NO_PIPE));
-}
+	pid_t	last_made_pid;
+	int		status;
 
+	last_made_pid = execute_command_internal(command, NO_PIPE, NO_PIPE);
+	if (last_made_pid == EXECUTION_FAILURE)
+		return (EXECUTION_FAILURE);
+	waitpid(last_made_pid, &status, 0); // need error check.
+	while (wait(NULL) != -1)
+		continue;
+	return (WEXITSTATUS(status));
+}

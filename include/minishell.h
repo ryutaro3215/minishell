@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
+#include "signal.h"
 #include "parse.h"
 #include "exec.h"
 #include "free.h"

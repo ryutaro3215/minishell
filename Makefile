@@ -1,5 +1,5 @@
 NAME = a.out
-SRCS = tokenize.c parse.c exec.c exec_utils.c redirect.c builtin.c free.c minishell.c #test_parser.c
+SRCS = signal.c tokenize.c parse.c exec.c exec_utils.c redirect.c builtin.c free.c minishell.c #test_parser.c
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 OBJS_DIR = object
 CC = cc
@@ -9,7 +9,7 @@ ifeq ($(MAKECMDGOALS), debug)
 CFLAGS += -D DEBUG
 endif
 
-vpath % tokenize parse exec free include object
+vpath % signal tokenize parse exec free include object
 
 $(OBJS_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
