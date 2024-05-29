@@ -9,6 +9,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+volatile sig_atomic_t	interrupt_state = 0; // non-zero after SIGINT
+
 t_command	*eval_command(char *line);
 int			reader_loop(void);
 

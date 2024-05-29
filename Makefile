@@ -3,8 +3,8 @@ SRCS = signal.c tokenize.c parse.c exec.c exec_utils.c redirect.c builtin.c free
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 OBJS_DIR = object
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
-RLFLAGS = -lreadline
+CFLAGS = -Wall -Wextra -Werror -I $(shell brew --prefix readline)/include
+RLFLAGS = -lreadline -L $(shell brew --prefix readline)/lib
 ifeq ($(MAKECMDGOALS), debug)
 CFLAGS += -D DEBUG
 endif

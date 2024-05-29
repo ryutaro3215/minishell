@@ -2,7 +2,7 @@
 
 int	main()
 {
-	char	*line = "ls";
+	char	*line = "< f.c ls > a.c > b.c | wc << d.c > e.c";
 	t_token	*token_list;
 
 	token_list = tokenize(line);

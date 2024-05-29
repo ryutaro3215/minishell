@@ -17,20 +17,23 @@ int	reader_loop(void)
 {
 	char		*line;
 	t_command	*command_list = NULL;
-//	int			EOF_reached = 0;
+	int			EOF_reached = 0;
 	int			last_command_exit_status = 0;
 
-	while (1) // EOF_reached == 0)
+	while (EOF_reached == 0)
 	{
 		line = readline("minishell $ ");
 		if (!line)
-			break;
+		{
+			EOF_reached = EOF;
+			continue;
+		}
 		if (*line)
 		{
 			add_history(line);
 			command_list = eval_command(line);
 			free(line);
-			// expand(last_command_exit_status);
+			// expand(command_list);
 			if (command_list)
 			{
 				last_command_exit_status = execute_command(command_list);
@@ -42,23 +45,22 @@ int	reader_loop(void)
 		}
 	}
 	// when Ctrl + C is pushed, the exit status is ...
+	printf("exit\n");
 	return (last_command_exit_status);
 }
 
 int	main()
 {
 // configuration and initialization for shell script(uninteractive), oneshot command and interactive.
-	signal_init();// ?
+	signal_init();
 
 	int	last_command_exit_status = reader_loop();
 
 	return (last_command_exit_status);
 }
 
-/*
 __attribute__((destructor))
 static void	destructor()
 {
 	system("leaks -q a.out");
 }
-*/
