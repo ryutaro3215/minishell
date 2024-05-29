@@ -19,14 +19,16 @@ int	builtin_echo(t_token *word_list)
 int	builtin_env(t_token *word_list)
 {
 	extern char	**environ;
+	char	**tmp;
 	(void)word_list;
 
-	if (environ)
+	tmp = environ;
+	if (tmp)
 	{
-		while (*environ)
+		while (*tmp)
 		{
-			printf("%s\n", *environ);
-			environ++;
+			printf("%s\n", *tmp);
+			tmp++;
 		}
 	}
 	return EXECUTION_SUCCESS;
