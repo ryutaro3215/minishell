@@ -6,116 +6,128 @@
 /*   By: rmatsuba <rmatsuba@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:06:10 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/05/27 21:53:55 by rmatsuba         ###   ########.fr       */
+/*   Updated: 2024/06/03 01:11:50 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "token.h"
 
-bool	is_blank(char c)
+bool	check_space(char c)
 {
-	if (c == '\t' || c == ' ' || c == '\n')
-		return (true);
-	return (false);
-}
-
-bool	jump_space(char **addr, char *input)
-{
-	if (is_blank(*input))
-	{
-		while (*input == '\t' || *input == ' ')
-			input++;
-		*addr = input;
-		return (true);
-	}
-	return (false);
-}
-
-bool	is_word(char c)
-{
-	if (c == '\0')
-		return (false);
-	return (true);
-}
-
-bool	is_ope(char	c)
-{
-	if (strchr("|<>", c) && c != '\0')
-		return (true);
-	return (false);
-}
-
-t_token	*gen_token(char **addr, char *input)
-{
-	t_token	*token;
-	size_t	len;
-	char	*tmp;
-
-	tmp = input;
-	len = 0;
-	while (!is_blank(*input) && *input != '\0')
-	{
-		len++;
-		input++;
-	}
-	token = (t_token *)malloc(sizeof(t_token));
-	if (token == NULL)
-		return (NULL);
-	token->word = strndup(tmp, len);
-	if (is_ope(*tmp))
-		token->type = 2;
+	if ((c == ' ' || c == '\t')
+		&& (c != '\n' || c != '\0'))
+			return (true);
 	else
-		token->type = 1;
+		return (false);
+}
+
+bool	check_ope(char c)
+{
+	if (c == '|' || c == '<'
+		|| c == '>' || c == '&')
+		return (true);
+	else
+		return (false);
+}
+
+void	skip_space(char **str)
+{
+	while (check_space(**str) && check_ope(**str) == 0)
+		(*str)++;
+}
+
+t_token *new_word_token(char **str)
+{
+	t_token *token;
+	int		word_len;
+
+	word_len = 0;
+	while ((*str)[word_len] && !check_space((*str)[word_len])
+		&& !check_ope((*str)[word_len]))
+		word_len++;
+	token = (t_token *)malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->word = (char *)malloc(sizeof(char) * (word_len + 1));
+	if (!token->word)
+	{
+		free(token);
+		return (NULL);
+	}
+	token->word = strndup(*str, word_len);
+	token->type = WORD;
 	token->next = NULL;
-	*addr = input;
+	*str += word_len;
 	return (token);
 }
 
-t_token	*init_token(char *input)
+t_token *new_ope_token(char **str)
 {
-	t_token	*token;
-	t_token	tmp;
+	t_token *token;
+	int		ope_len;
 
-	tmp.next = NULL;
-	token = &tmp;
-	while (*input)
+	ope_len = 0;
+	token = (t_token *)malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	if (**str == '|')
 	{
-		if (jump_space(&input, input))
-			continue ;
-		else if (is_ope(*input) || is_word(*input))
-		{
-			token->next = gen_token(&input, input);
-			token = token->next;
-		}
-		else
-			printf("Error\n");
+		token->type = CON_OPE;
+		ope_len = 1;
 	}
-	token->next = (t_token *)malloc(sizeof(t_token));
-	token = token->next;
-	token->word = NULL;
-	token->type = 0;
+	else
+	{
+		while((*str)[ope_len] && check_ope((*str)[ope_len]))
+			ope_len++;
+		token->type = RED_OPE;
+	}
+	token->word = (char *)malloc(sizeof(char) * (ope_len + 1));
+	if (!token->word)
+	{
+		free(token);
+		return (NULL);
+	}
+	token->word = strndup(*str, ope_len);
 	token->next = NULL;
-	return (tmp.next);
+	*str += ope_len;
+	return (token);
 }
 
-int	main(void)
+t_token *init_token(char *str)
 {
-	char	*input;
-	t_token	*token;
+	t_token *token;
+	t_token head;
 
-	while(true)
+	head.next = NULL;
+	token = &head;
+	while (*str)
 	{
-		input = readline("$>");
-		token = init_token(input);
-		while (token->next != NULL)
+		skip_space(&str);
+		if (check_ope(*str))
+			token->next = new_ope_token(&str);
+		else
+			token->next = new_word_token(&str);
+		token = token->next;
+	}
+	return (head.next);
+}
+
+int main(void)
+{
+	t_token *token;
+	char *str;
+
+	while (true)
+	{
+		str = readline("minishell$ ");
+		if (!str)
+			break ;
+		token = init_token(str);
+		while (token != NULL)
 		{
-			printf("%s ", token->word);
-			printf("%d\n", token->type);
+			printf("token: %s\n", token->word);
 			token = token->next;
 		}
-		add_history(input);
-		free(input);
 	}
-	printf("succes include headr");
-	return (0);
 }
+
