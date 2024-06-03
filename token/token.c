@@ -6,7 +6,7 @@
 /*   By: rmatsuba <rmatsuba@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:06:10 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/03 13:13:16 by rmatsuba         ###   ########.fr       */
+/*   Updated: 2024/06/03 14:00:05 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ int	get_word_len(char *str)
 		while (str[len] && !check_space(str[len]) && !check_conope(str[len])
 				&& !check_redope(str[len]))
 			len++;
+		if (str[len - 1] == '\"' || str[len - 1] == '\'')
+			len = 0;
 	}
 	return (len);
 }
