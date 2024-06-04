@@ -1,18 +1,5 @@
 #include "../include/exec.h"
 
-static size_t	count_list_elements(t_token *word_list)
-{
-	size_t	count;
-
-	count = 0;
-	while (word_list)
-	{
-		count++;
-		word_list = word_list->next;
-	}
-	return count;
-}
-
 int	builtin_echo(t_token *word_list)
 {
 	t_token	*current_word;
@@ -37,7 +24,14 @@ int	builtin_pwd(t_token *word_list)
 	printf("%s\n", getcwd(buf, PATH_MAX));
 	return EXECUTION_SUCCESS;
 }
+/*
+int	builtin_export(t_token *word_list)
+{
+	extern char	**environ;
 
+	(void)word_list;
+}
+*/
 int	builtin_env(t_token *word_list)
 {
 	extern char	**environ;

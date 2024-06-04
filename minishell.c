@@ -2,6 +2,14 @@
 
 extern sig_atomic_t	g_interrupt_state;
 
+void	shell_initialize(void)
+{
+	extern char	**environ;
+
+	signal(SIGQUIT, SIG_IGN);
+	environ = initialize_environ();
+}
+
 t_command	*eval_command(char *line)
 {
 	t_token	*token_list;
@@ -9,9 +17,11 @@ t_command	*eval_command(char *line)
 
 	token_list = tokenize(line);
 	command_list = parse(token_list);
+	if (!command_list)
+		return NULL;
+	if (need_here_document(token_list))
+		gather_here_document(command_list);
 	free_token_list(token_list);
-//	if (need_here_documents) // ?
-//		gather_here_documents();
 	return command_list;
 }
 
@@ -52,23 +62,16 @@ int	reader_loop(void)
 		free(line);
 	}
 	// when Ctrl + C is pushed, the exit status is ...
+	free_argv(environ);
 	printf("exit\n");
 	return (last_command_exit_status);
 }
 
 int	main()
 {
-// configuration and initialization for shell script(uninteractive), oneshot command and interactive.
-	signal(SIGQUIT, SIG_IGN);
-	int	last_command_exit_status = reader_loop();
+	int	last_command_exit_status;
 
+	shell_initialize();
+	last_command_exit_status = reader_loop();
 	return (last_command_exit_status);
 }
-
-/*
-__attribute__((destructor))
-static void	destructor()
-{
-	system("leaks -q a.out");
-}
-*/

@@ -1,6 +1,6 @@
 #include "../include/exec.h"
 
-char	*ft_strjoin(char *s1, char *s2)
+static char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*s3;
 	int		i;

@@ -6,6 +6,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <readline/readline.h>
 
 
 // tokenize.c
@@ -47,10 +48,10 @@ enum command_attribute
 
 enum redirect_attribute
 {
-	r_input, // 0
-	r_output, // 1
-	r_heredoc, // 2
-	r_append_output // 3
+	r_input, // 0  <
+	r_output, // 1  >
+	r_heredoc, // 2  << 
+	r_append_output // 3  >>
 };
 
 enum connector
@@ -61,7 +62,7 @@ enum connector
 
 typedef struct s_redirect
 {
-	int					attribute; // referenct "enum redirect_attribute"
+	int					attribute; // reference "enum redirect_attribute"
 	char				*filename;
 	struct s_redirect	*next;
 }	t_redirect;
@@ -82,7 +83,7 @@ typedef struct s_connection
 typedef struct s_command
 {
 	int	attribute; // reference "enum command_attribute"
-	int	test;
+	int	test; // unused ?
 	union
 	{
 		struct s_simple		*simple;
@@ -90,6 +91,7 @@ typedef struct s_command
 	}	value;
 }	t_command;
 
+#include "exec.h"
 #include "free.h"
 
 // create new struct
@@ -114,6 +116,12 @@ t_token			*get_second_token_list(t_token *token_list);
 
 // parse
 t_command		*parse(t_token *token_list);
+
+// here document
+bool	need_here_document(t_token *token_list);
+char	*here_document_loop(char *delimiter);
+void	replace_with_document(t_redirect *current_redirect, char *document);
+void	gather_here_document(t_command *command_list);
 
 
 #endif

@@ -31,7 +31,7 @@ int	execute_command_internal(t_command *command, int pipe_in, int pipe_out);
 int	execute_command(t_command *command);
 
 // exec_utils.c
-char	*ft_strjoin(char *s1, char *s2);
+//static char	*ft_strjoin(char *s1, char *s2);
 char	*create_path(char *path_vars, size_t path_var_len, char *line);
 char	*get_path(char *line);
 char	**get_argv(t_token *token_list);

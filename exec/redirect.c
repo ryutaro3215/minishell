@@ -45,6 +45,18 @@ int	do_r_append_output(char *filename)
 	return (EXECUTION_SUCCESS);
 }
 
+int	do_r_here_document(char *filename)
+{
+	int	fildes[2];
+
+	pipe(fildes); // need error check
+	write(fildes[1], filename, strlen(filename));
+	dup2(fildes[0], 0);
+	close(fildes[0]);
+	close(fildes[1]);
+	return (EXECUTION_SUCCESS);
+}
+
 int	do_redirect(t_redirect *redirect_list)
 {
 	t_redirect	*current_redirect;
@@ -61,6 +73,8 @@ int	do_redirect(t_redirect *redirect_list)
 			result = do_r_output(current_redirect->filename);
 		else if (current_redirect->attribute == r_append_output)
 			result = do_r_append_output(current_redirect->filename);
+		else // (current_redirect->attribute == r_heredoc)
+			result = do_r_here_document(current_redirect->filename);
 		if (result == EXECUTION_FAILURE)
 			return EXECUTION_FAILURE;
 		current_redirect = current_redirect->next;
