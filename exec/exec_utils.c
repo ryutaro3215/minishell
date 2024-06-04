@@ -95,8 +95,12 @@ void	*find_shell_builtin(char *command)
 {
 	if (strcmp(command, "echo") == 0)
 		return (&builtin_echo);
+	else if (strcmp(command, "pwd") == 0)
+		return (&builtin_pwd);
 	else if (strcmp(command, "env") == 0)
 		return (&builtin_env);
+	else if (strcmp(command, "exit") == 0)
+		return (&builtin_exit);
 	else
 		return NULL;
 }

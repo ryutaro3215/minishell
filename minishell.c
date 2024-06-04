@@ -1,5 +1,7 @@
 #include "include/minishell.h"
 
+extern sig_atomic_t	g_interrupt_state;
+
 t_command	*eval_command(char *line)
 {
 	t_token	*token_list;
@@ -22,17 +24,20 @@ int	reader_loop(void)
 
 	while (EOF_reached == 0)
 	{
+		signal(SIGINT, sigint_handler_for_readline);
 		line = readline("minishell $ ");
 		if (!line)
 		{
 			EOF_reached = EOF;
 			continue;
 		}
+		signal(SIGINT, sigint_handler_for_exec);
+		last_command_exit_status = sigint_is_traped(last_command_exit_status);
+		printf("last_command_exit_status: %d\n", last_command_exit_status);
 		if (*line)
 		{
 			add_history(line);
 			command_list = eval_command(line);
-			free(line);
 			// expand(command_list);
 			if (command_list)
 			{
@@ -41,8 +46,10 @@ int	reader_loop(void)
 			}
 			else // parse error
 				last_command_exit_status = EXECUTION_FAILURE;
-			printf("exit_status: %d\n", last_command_exit_status);
 		}
+		else
+			last_command_exit_status = EXECUTION_SUCCESS;
+		free(line);
 	}
 	// when Ctrl + C is pushed, the exit status is ...
 	printf("exit\n");
@@ -52,15 +59,16 @@ int	reader_loop(void)
 int	main()
 {
 // configuration and initialization for shell script(uninteractive), oneshot command and interactive.
-	signal_init();
-
+	signal(SIGQUIT, SIG_IGN);
 	int	last_command_exit_status = reader_loop();
 
 	return (last_command_exit_status);
 }
 
+/*
 __attribute__((destructor))
 static void	destructor()
 {
 	system("leaks -q a.out");
 }
+*/

@@ -46,8 +46,8 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*built
 		close(pipe_in);
 	if (pipe_out != NO_PIPE)
 		close(pipe_out);
-//	wait(&status);
-	return (pid); // forbidden function ?
+	// isatty() ?? reset redirect ??
+	return (pid);
 }
 
 int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out)
@@ -95,10 +95,13 @@ int	execute_command(t_command *command)
 	int		status;
 
 	last_made_pid = execute_command_internal(command, NO_PIPE, NO_PIPE);
-	if (last_made_pid == EXECUTION_FAILURE)
-		return (EXECUTION_FAILURE);
+	if (last_made_pid == EXECUTION_FAILURE || last_made_pid == EXECUTION_SUCCESS)
+		return (last_made_pid);
 	waitpid(last_made_pid, &status, 0); // need error check.
 	while (wait(NULL) != -1)
 		continue;
-	return (WEXITSTATUS(status));
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status)); // forbidden function ??
+	else // (WIFSIGNALED(status))
+		return (128 + WTERMSIG(status)); // forbidden function ??
 }
