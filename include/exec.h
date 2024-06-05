@@ -1,6 +1,7 @@
 #ifndef EXEC_H
 #define EXEC_H
 
+#include "env.h"
 #include "parse.h"
 #include "free.h"
 

@@ -2,15 +2,6 @@
 
 extern sig_atomic_t	g_interrupt_state;
 
-void	shell_initialize(void)
-{
-	extern char	**environ;
-
-	signal(SIGQUIT, SIG_IGN);
-	environ = initialize_environ();
-	// SHLVL++; (environ)
-}
-
 t_command	*eval_command(char *line)
 {
 	t_token	*token_list;
@@ -28,6 +19,8 @@ t_command	*eval_command(char *line)
 
 int	reader_loop(void)
 {
+	extern char	**environ;
+	char		**tmp;
 	char		*line;
 	t_command	*command_list = NULL;
 	int			EOF_reached = 0;
@@ -36,7 +29,9 @@ int	reader_loop(void)
 	while (EOF_reached == 0)
 	{
 		signal(SIGINT, sigint_handler_for_readline);
+		tmp = environ;
 		line = readline("minishell $ ");
+		environ = tmp;
 		if (!line)
 		{
 			EOF_reached = EOF;
@@ -63,7 +58,7 @@ int	reader_loop(void)
 		free(line);
 	}
 	// when Ctrl + C is pushed, the exit status is ...
-	free_argv(environ);
+	free_argv(tmp);
 	printf("exit\n");
 	return (last_command_exit_status);
 }

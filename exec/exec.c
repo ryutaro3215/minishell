@@ -1,12 +1,52 @@
 #include "../include/exec.h"
 
+static char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*s3;
+	int		i;
+	int		j;
+
+	if (!s1 || !s2)
+		return (NULL);
+	s3 = malloc((strlen(s1) + strlen(s2) + 1) * sizeof(char));
+	if (s3 == NULL)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[j])
+		s3[i++] = s1[j++];
+	j = 0;
+	while (s2[j])
+		s3[i++] = s2[j++];
+	s3[i] = '\0';
+	return (s3);
+}
+
 int	execute_builtin(t_token *word_list, int (*builtin)(t_token *))
 {
+	char	*underscore;
+	char	*environ_var;
+
+	underscore = strdup("_=");
+	environ_var = ft_strjoin(underscore, word_list->name);
+	replace_environ_var(environ_var);
+	free(underscore);
+	free(environ_var);
 	return (builtin(word_list));
 }
 
 int	execute_disk_command(char *path, char **argv)
 {
+	extern char	**environ;
+	char		*underscore;
+	char		*environ_var;
+
+	underscore = strdup("_=");
+	environ_var = ft_strjoin(underscore, path);
+	replace_environ_var(environ_var);
+	free(underscore);
+	free(environ_var);
+	builtin_env(NULL);
 	execve(path, argv, environ);
 	printf("minishell: command not found: %s\n", argv[0]);
 	return (COMMAND_NOT_FOUND);

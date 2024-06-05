@@ -1,5 +1,5 @@
 NAME = minishell
-SRCS = signal.c env.c tokenize.c parse.c here_document.c exec.c exec_utils.c redirect.c builtin.c free.c minishell.c #test_parser.c  
+SRCS = init.c signal.c env.c tokenize.c parse.c here_document.c exec.c exec_utils.c redirect.c builtin.c free.c minishell.c #test_parser.c  
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 OBJS_DIR = object
 CC = cc
@@ -9,7 +9,7 @@ ifeq ($(MAKECMDGOALS), debug)
 CFLAGS += -D DEBUG
 endif
 
-vpath % signal env tokenize parse exec free include object
+vpath % init signal env tokenize parse exec free include object
 
 $(OBJS_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
+#include "init.h"
 #include "signal.h"
 #include "env.h"
 #include "parse.h"

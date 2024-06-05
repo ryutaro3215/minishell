@@ -157,6 +157,8 @@ char	**initialize_environ(void)
 	while (environ[i])
 	{
 		my_environ[i] = strdup(environ[i]);
+		//printf("current environ: %p\n", my_environ[i]);
+		//printf("%s\n", my_environ[i]);
 		i++;
 	}
 	my_environ[i] = NULL;
