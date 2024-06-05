@@ -17,6 +17,16 @@ int	builtin_echo(t_token *word_list)
 	return EXECUTION_SUCCESS;
 }
 
+int	builtin_cd(t_token *word_list)
+{
+	if (!word_list->next)
+		return EXECUTION_SUCCESS;
+	init_shell_oldpwd(1); // update
+	chdir(word_list->next->name);
+	init_shell_pwd(1); // update
+	return EXECUTION_SUCCESS;
+}
+
 int	builtin_pwd(t_token *word_list)
 {
 	char	buf[PATH_MAX];

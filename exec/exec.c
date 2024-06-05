@@ -27,11 +27,13 @@ int	execute_builtin(t_token *word_list, int (*builtin)(t_token *))
 	char	*underscore;
 	char	*environ_var;
 
+	// update underscore environ.
 	underscore = strdup("_=");
 	environ_var = ft_strjoin(underscore, word_list->name);
 	replace_environ_var(environ_var);
 	free(underscore);
 	free(environ_var);
+
 	return (builtin(word_list));
 }
 
@@ -41,12 +43,13 @@ int	execute_disk_command(char *path, char **argv)
 	char		*underscore;
 	char		*environ_var;
 
+	// update underscore environ.
 	underscore = strdup("_=");
 	environ_var = ft_strjoin(underscore, path);
 	replace_environ_var(environ_var);
 	free(underscore);
 	free(environ_var);
-	builtin_env(NULL);
+
 	execve(path, argv, environ);
 	printf("minishell: command not found: %s\n", argv[0]);
 	return (COMMAND_NOT_FOUND);

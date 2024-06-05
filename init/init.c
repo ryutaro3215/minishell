@@ -157,15 +157,58 @@ void	init_shell_underscore()
 	char	buf[PATH_MAX + 1];
 	char	underscore[PATH_MAX + 3];
 
-	strlcat(getcwd(buf, PATH_MAX), "/./minishell", PATH_MAX + 1);
-	underscore[0] = '_';
-	underscore[1] = '=';
-	underscore[2] = '\0';
-	strlcat(underscore, buf, PATH_MAX + 3); // "_=\0" is three character.
 	if (!environ_already_exist("_", UNSET))
+	{
+		strlcat(getcwd(buf, PATH_MAX), "/./minishell", PATH_MAX + 1);
+		underscore[0] = '_';
+		underscore[1] = '=';
+		underscore[2] = '\0';
+		strlcat(underscore, buf, PATH_MAX + 3); // "_=\0" is three character.
 		add_environ_var(underscore);
-	else
-		replace_environ_var(underscore);
+	}
+}
+
+void	init_shell_pwd(int update_flag)
+{
+	char	buf[PATH_MAX + 1];
+	char	pwd[PATH_MAX + 5];
+
+	if (!environ_already_exist("PWD", UNSET) || update_flag)
+	{
+		pwd[0] = 'P';
+		pwd[1] = 'W';
+		pwd[2] = 'D';
+		pwd[3] = '=';
+		pwd[4] = '\0';
+		strlcat(pwd, getcwd(buf, PATH_MAX), PATH_MAX + 5);
+		if (update_flag)
+			replace_environ_var(pwd);
+		else
+			add_environ_var(pwd);
+	}
+}
+
+void	init_shell_oldpwd(int update_flag)
+{
+	char	buf[PATH_MAX + 1];
+	char	oldpwd[PATH_MAX + 8];
+
+	if (!environ_already_exist("OLDPWD", UNSET) || update_flag)
+	{
+		oldpwd[0] = 'O';
+		oldpwd[1] = 'L';
+		oldpwd[2] = 'D';
+		oldpwd[3] = 'P';
+		oldpwd[4] = 'W';
+		oldpwd[5] = 'D';
+		oldpwd[6] = '=';
+		oldpwd[7] = '\0';
+		strlcat(oldpwd, getcwd(buf, PATH_MAX), PATH_MAX + 8);
+		if (update_flag)
+			replace_environ_var(oldpwd);
+		else
+			add_environ_var(oldpwd);
+	}
 }
 
 void	shell_initialize(void)
@@ -176,5 +219,6 @@ void	shell_initialize(void)
 	environ = initialize_environ();
 	init_shell_level();
 	init_shell_underscore();
+	init_shell_pwd(0); // not update flag
+	init_shell_oldpwd(0); // not update flag
 }
-

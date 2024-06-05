@@ -1,6 +1,7 @@
 #ifndef EXEC_H
 #define EXEC_H
 
+#include "init.h"
 #include "env.h"
 #include "parse.h"
 #include "free.h"
@@ -46,6 +47,7 @@ int	do_redirect(t_redirect *redirect_list);
 
 // builtin.c
 int	builtin_echo(t_token *word_list);
+int	builtin_cd(t_token *word_list);
 int	builtin_pwd(t_token *word_list);
 int	builtin_export(t_token *word_list);
 int	builtin_unset(t_token *word_list);
