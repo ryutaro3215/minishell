@@ -4,8 +4,15 @@
 int	builtin_echo(t_token *word_list)
 {
 	t_token	*current_word;
+	int		n_option_flag;
 
 	current_word = word_list->next;
+	n_option_flag = 0;
+	if (strcmp(current_word->name, "-n") == 0)
+	{
+		n_option_flag = 1;
+		current_word = current_word->next;
+	}
 	while (current_word)
 	{
 		printf("%s", current_word->name);
@@ -13,7 +20,8 @@ int	builtin_echo(t_token *word_list)
 		if (current_word)
 			printf(" ");
 	}
-	printf("\n");
+	if (!n_option_flag)
+		printf("\n");
 	return EXECUTION_SUCCESS;
 }
 
