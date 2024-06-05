@@ -8,6 +8,7 @@ void	shell_initialize(void)
 
 	signal(SIGQUIT, SIG_IGN);
 	environ = initialize_environ();
+	// SHLVL++; (environ)
 }
 
 t_command	*eval_command(char *line)

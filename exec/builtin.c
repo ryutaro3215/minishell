@@ -1,39 +1,5 @@
 #include "../include/exec.h"
-
-size_t	count_environ_var()
-{
-	extern char	**environ;
-	char		**tmp;
-	size_t		i;
-
-	tmp = environ;
-	i = 0;
-	while (tmp[i])
-		i++;
-	return i;
-}
-
-void	add_environ_var(char *new_environ_var)
-{
-	char		**new_environ;
-	char		**old_environ;
-	extern char	**environ;
-	size_t		i;
-
-	new_environ = malloc(sizeof(char *) * (count_environ_var() + 2));
-	// new_environ_var + nullptr = 2
-	old_environ = environ;
-	i = 0;
-	while (old_environ[i])
-	{
-		new_environ[i] = strdup(old_environ[i]);
-		i++;
-	}
-	new_environ[i++] = strdup(new_environ_var);
-	new_environ[i] = NULL;
-	free_argv(environ);
-	environ = new_environ;
-}
+#include "../include/env.h"
 
 int	builtin_echo(t_token *word_list)
 {
@@ -62,12 +28,36 @@ int	builtin_pwd(t_token *word_list)
 
 int	builtin_export(t_token *word_list)
 {
-	t_token		*current_token;
+	t_token	*current_token;
 
 	current_token = word_list->next;
+	if (!current_token)
+		builtin_env(NULL);
 	while (current_token)
 	{
-		add_environ_var(current_token->name);
+		if (strchr(current_token->name, '=')) // when "export =" ... ?
+		{
+			if (environ_already_exist(current_token->name, EXPORT))
+				replace_environ_var(current_token->name);
+			else
+				add_environ_var(current_token->name);
+		}
+		current_token = current_token->next;
+	}
+	return EXECUTION_SUCCESS;
+}
+
+int	builtin_unset(t_token *word_list)
+{
+	t_token	*current_token;
+
+	current_token = word_list->next;
+	if (!current_token)
+		return EXECUTION_SUCCESS;
+	while (current_token)
+	{
+		if (environ_already_exist(current_token->name, UNSET))
+			unset_environ_var(current_token->name);
 		current_token = current_token->next;
 	}
 	return EXECUTION_SUCCESS;
