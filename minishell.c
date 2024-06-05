@@ -53,8 +53,8 @@ int	reader_loop(void)
 			else // parse error
 				last_command_exit_status = EXECUTION_FAILURE;
 		}
-		else
-			last_command_exit_status = EXECUTION_SUCCESS;
+//		else
+//			last_command_exit_status = EXECUTION_SUCCESS;
 		free(line);
 	}
 	// when Ctrl + C is pushed, the exit status is ...
