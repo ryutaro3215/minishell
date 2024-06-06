@@ -5,10 +5,12 @@
 #include <signal.h>
 
 #include "env.h"
+#include "free.h"
+#include "libft.h"
 
 void	init_shell_pwd(int update_flag);
 void	init_shell_oldpwd(int update_flag);
-int		get_shell_level();
+int		get_shell_level(void);
 void	init_shell_level(void);
 void	shell_initialize(void);
 

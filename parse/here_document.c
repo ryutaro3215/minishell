@@ -1,28 +1,5 @@
 #include "../include/parse.h"
 
-static char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*s3;
-	int		i;
-	int		j;
-
-	if (!s1)
-		return (strdup(s2));
-	s3 = malloc((strlen(s1) + strlen(s2) + 1) * sizeof(char));
-	if (s3 == NULL)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1[j])
-		s3[i++] = s1[j++];
-	j = 0;
-	while (s2[j])
-		s3[i++] = s2[j++];
-	s3[i] = '\0';
-	free(s1);
-	return (s3);
-}
-
 bool	need_here_document(t_token *token_list)
 {
 	while (token_list)
@@ -34,7 +11,7 @@ bool	need_here_document(t_token *token_list)
 	return false;
 }
 
-char	*here_document_loop(char *delimiter)
+static char	*here_document_loop(char *delimiter)
 {
 	int		EOF_reached;
 	char	*line;
@@ -57,13 +34,12 @@ char	*here_document_loop(char *delimiter)
 			continue;
 		}
 		document = ft_strjoin(document, line);
-		document = ft_strjoin(document, "\n");
-		free(line);
+		document = strjoin_but_freed_only_first_arg(document, "\n");
 	}
 	return document;
 }
 
-void	replace_with_document(t_redirect *current_redirect, char *document)
+static void	replace_with_document(t_redirect *current_redirect, char *document)
 {
 	free(current_redirect->filename);
 	current_redirect->filename = document;
@@ -95,4 +71,3 @@ void	gather_here_document(t_command *command_list)
 		gather_here_document(command_list->value.connection->second);
 	}
 }
-

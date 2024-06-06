@@ -1,35 +1,12 @@
 #include "../include/exec.h"
 
-static char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*s3;
-	int		i;
-	int		j;
-
-	if (!s1 || !s2)
-		return (NULL);
-	s3 = malloc((strlen(s1) + strlen(s2) + 1) * sizeof(char));
-	if (s3 == NULL)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1[j])
-		s3[i++] = s1[j++];
-	j = 0;
-	while (s2[j])
-		s3[i++] = s2[j++];
-	s3[i] = '\0';
-	free(s1);
-	return (s3);
-}
-
 char	*create_path(char *path_vars, size_t path_var_len, char *line)
 {
 	char	*path_var;
 
 	path_var = strndup(path_vars, path_var_len);
-	path_var = ft_strjoin(path_var, "/\0");
-	path_var = ft_strjoin(path_var, line);
+	path_var = strjoin_but_freed_only_first_arg(path_var, "/\0");
+	path_var = strjoin_but_freed_only_first_arg(path_var, line);
 	return path_var;
 }
 
@@ -44,7 +21,7 @@ char	*get_path(char *line)
 	{
 		if (access(line, X_OK) >= 0)
 			return (strdup(line));
-		return NULL;
+		return line;
 	}
 	path_vars = getenv("PATH");
 	while (1)
@@ -64,7 +41,7 @@ char	*get_path(char *line)
 			break;
 		path_vars += path_var_len;
 	}
-	return NULL;
+	return line;
 }
 
 char	**get_argv(t_token *token_list)
@@ -91,22 +68,3 @@ char	**get_argv(t_token *token_list)
 	return argv;
 }
 
-void	*find_shell_builtin(char *command)
-{
-	if (strcmp(command, "echo") == 0)
-		return (&builtin_echo);
-	else if (strcmp(command, "cd") == 0)
-		return (&builtin_cd);
-	else if (strcmp(command, "pwd") == 0)
-		return (&builtin_pwd);
-	else if (strcmp(command, "export") == 0)
-		return (&builtin_export);
-	else if (strcmp(command, "unset") == 0)
-		return (&builtin_unset);
-	else if (strcmp(command, "env") == 0)
-		return (&builtin_env);
-	else if (strcmp(command, "exit") == 0)
-		return (&builtin_exit);
-	else
-		return NULL;
-}

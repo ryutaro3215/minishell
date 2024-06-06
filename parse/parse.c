@@ -1,177 +1,5 @@
 #include "../include/parse.h"
 
-int	detect_cm_attribute(t_token *token_list)
-{
-	while (token_list)
-	{
-		if (token_list->attribute == OPERATOR)
-		{
-			if (strcmp(token_list->name, "|") == 0)
-				return cm_connection;
-			// you can add other operations('||' '&&' '&').
-		}
-		token_list = token_list->next;
-	}
-	return (cm_simple);
-}
-
-t_command	*create_new_command()
-{
-	t_command	*new_command;
-
-	new_command = malloc(sizeof(t_command));
-	return new_command;
-}
-
-t_simple	*create_new_simple()
-{
-	t_simple	*simple;
-
-	simple = malloc(sizeof(t_simple));
-	return simple;
-}
-
-t_connection	*create_new_connection()
-{
-	t_connection	*connection;
-
-	connection = malloc(sizeof(t_connection));
-	return connection;
-}
-
-t_token	*copy_token(t_token *word_list, t_token *current_token)
-{
-	t_token	*new_word;
-	t_token	*tmp;
-
-	new_word = malloc(sizeof(t_token));
-	if (!new_word)
-	{
-		free_token_list(word_list);
-		return NULL;
-	}
-	new_word->attribute = current_token->attribute;
-	new_word->name = strdup(current_token->name);
-	if (!new_word->name)
-	{
-		free(new_word);
-		free_token_list(word_list);
-		return NULL;
-	}
-	new_word->next = NULL;
-	if (!word_list)
-		return new_word;
-	else
-	{
-		tmp = word_list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new_word;
-		return word_list;
-	}
-}
-
-int	get_redirect_attribute(char *redirect_name)
-{
-	if (strcmp(redirect_name, "<") == 0)
-		return r_input;
-	else if (strcmp(redirect_name, ">") == 0)
-		return r_output;
-	else if (strcmp(redirect_name, "<<") == 0)
-		return r_heredoc;
-	else // (strcmp(redirect_name, ">>") == 0)
-		return r_append_output;
-}
-
-t_redirect	*copy_redirect(t_redirect *redirect_list, t_token *current_token)
-{
-	t_redirect	*new_redirect;
-	t_redirect	*tmp;
-
-	if (redirect_list->filename) // redirect_list has been created.
-	{
-		new_redirect = malloc(sizeof(t_redirect));
-		if (!new_redirect)
-		{
-			free_redirect_list(redirect_list);
-			return NULL;
-		}
-	}
-	else // first redirect_list, but alread initialized previous function.
-		new_redirect = redirect_list;
-	new_redirect->attribute = get_redirect_attribute(current_token->name);
-	new_redirect->filename = strdup(current_token->next->name);
-	if (!new_redirect->filename)
-	{
-		free(new_redirect);
-		free_redirect_list(redirect_list);
-		return NULL;
-	}
-	new_redirect->next = NULL;
-	if (redirect_list == new_redirect)
-		return new_redirect;
-	else
-	{
-		tmp = redirect_list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new_redirect;
-		return redirect_list;
-	}
-}
-
-t_redirect	*create_redirect_list(t_token *token_list)
-{
-	t_token	*current_token = token_list;
-	t_redirect	*redirect_list = malloc(sizeof(t_redirect));
-	redirect_list->filename = NULL;
-	redirect_list->next = NULL;
-
-	while (current_token && current_token->attribute != OPERATOR)
-	{
-		if (current_token->attribute == REDIRECT)
-		{
-			if (!current_token->next || current_token->next->attribute != WORD)
-			{
-				printf("minishell: parse error near '%s'\n", current_token->name);
-				free_redirect_list(redirect_list);
-				return NULL;
-			}
-			redirect_list = copy_redirect(redirect_list, current_token);
-			if (!redirect_list)
-			{
-				printf("malloc error: %s\n", current_token->name);
-				return NULL;
-			}
-			current_token = current_token->next->next;
-		}
-		else
-			current_token = current_token->next;
-	}
-	return redirect_list;
-}
-
-t_token	*create_word_list(t_token *token_list)
-{
-	t_token	*current_token = token_list;
-	t_token	*word_list = NULL;
-
-	while (current_token && current_token->attribute != OPERATOR)
-	{
-		if (current_token->attribute == REDIRECT)
-			current_token = current_token->next->next;
-		else
-		{
-			// create null terminated word list.
-			word_list = copy_token(word_list, current_token);
-			if (!word_list)
-				return NULL;
-			current_token = current_token->next;
-		}
-	}
-	return word_list;
-}
-
 t_command	*add_simple_command(t_token *token_list)
 {
 	t_command	*new_command;
@@ -210,8 +38,9 @@ t_command	*add_simple_command(t_token *token_list)
 #endif
 	new_command->value.simple->word_list = create_word_list(token_list);
 	// it skip redirect.
-	if (!new_command->value.simple->word_list)
+	if (!new_command->value.simple->word_list && errno == ENOMEM)
 	{
+		free_redirect_list(new_command->value.simple->redirect_list);
 		free(new_command->value.simple);
 		free(new_command);
 		return NULL;
@@ -226,57 +55,6 @@ t_command	*add_simple_command(t_token *token_list)
 	printf("(null)\n\n");
 #endif
 	return new_command;
-}
-
-int	get_connector(t_token *token_list)
-{
-	while (token_list && token_list->attribute != OPERATOR)
-		token_list = token_list->next;
-	//if (!token_list) already checked in get_second_token_list()
-	//	return NULL; 
-	if (strcmp(token_list->name, "|") == 0)
-		return pipeline;
-	printf("Invalid connector added\n");
-	return -1;
-}
-
-t_token	*get_first_token_list(t_token *token_list)
-{
-	t_token	*current_token = token_list;
-	t_token	*word_list = NULL;
-
-	while (current_token && current_token->attribute != OPERATOR)
-	{
-		// create null terminated word list.
-		word_list = copy_token(word_list, current_token);
-		if (!word_list)
-			return NULL;
-		current_token = current_token->next;
-	}
-	return word_list;
-}
-
-t_token	*get_second_token_list(t_token *token_list)
-{
-	t_token	*current_token;
-	t_token	*second_token_list = NULL;
-
-	while (token_list && token_list->attribute != OPERATOR)
-		token_list = token_list->next;
-	if (!token_list || !token_list->next)
-		return NULL;
-	current_token = token_list->next;
-	// next to operation(head of second_token_list).
-	if (current_token->attribute != WORD && current_token->attribute != REDIRECT)
-		return NULL;
-	while (current_token)
-	{
-		second_token_list = copy_token(second_token_list, current_token);
-		if (!second_token_list)
-			return NULL;
-		current_token = current_token->next;
-	}
-	return second_token_list;
 }
 
 t_command	*add_connection(t_token *token_list)
@@ -342,7 +120,7 @@ t_command	*add_command(t_token *token_list)
 {
 	int	cm_attribute;
 
-	cm_attribute = detect_cm_attribute(token_list);
+	cm_attribute = get_cm_attribute(token_list);
 	if (cm_attribute == cm_simple)
 	{
 #ifdef DEBUG
@@ -371,5 +149,7 @@ t_command	*parse(t_token *token_list)
 	if (!token_list)
 		return NULL;
 	command_list = add_command(token_list);
+	if (!command_list)
+		free_token_list(token_list);
 	return command_list;
 }

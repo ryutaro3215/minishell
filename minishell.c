@@ -39,25 +39,20 @@ int	reader_loop(void)
 		}
 		signal(SIGINT, sigint_handler_for_exec);
 		last_command_exit_status = sigint_is_traped(last_command_exit_status);
-		printf("last_command_exit_status: %d\n", last_command_exit_status);
 		if (*line)
 		{
 			add_history(line);
 			command_list = eval_command(line);
-			// expand(command_list);
 			if (command_list)
 			{
-				last_command_exit_status = execute_command(command_list);
+				last_command_exit_status = execute_command(command_list, last_command_exit_status);
 				free_command_list(command_list);
 			}
 			else // parse error
 				last_command_exit_status = EXECUTION_FAILURE;
 		}
-//		else
-//			last_command_exit_status = EXECUTION_SUCCESS;
 		free(line);
 	}
-	// when Ctrl + C is pushed, the exit status is ...
 	free_argv(tmp);
 	printf("exit\n");
 	return (last_command_exit_status);

@@ -1,106 +1,6 @@
 #include "../include/init.h"
-#include "../include/free.h"
 
-static char	*ft_strjoin(char *s1, char *s2)
-{
-	char	*s3;
-	int		i;
-	int		j;
-
-	if (!s1 || !s2)
-		return (NULL);
-	s3 = malloc((strlen(s1) + strlen(s2) + 1) * sizeof(char));
-	if (s3 == NULL)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (s1[j])
-		s3[i++] = s1[j++];
-	j = 0;
-	while (s2[j])
-		s3[i++] = s2[j++];
-	s3[i] = '\0';
-	return (s3);
-}
-
-static int	num_of_digit(long n)
-{
-	int	count;
-
-	count = 0;
-	while (n >= 10)
-	{
-		n = n / 10;
-		count++;
-	}
-	return (count + 1);
-}
-
-static char	*when_minus(int *n_digit, int *c, long *__n)
-{
-	int		i;
-	char	*str;
-
-	*__n *= -1;
-	*n_digit = num_of_digit(*__n);
-	i = *n_digit;
-	str = (char *)malloc((*n_digit + 1) * sizeof(char) + 1);
-	if (str == NULL)
-		return (NULL);
-	while (1 <= i)
-	{
-		*c = *__n % 10;
-		str[i] = *c + '0';
-		*__n = *__n / 10;
-		i--;
-	}
-	str[i] = '-';
-	str[*n_digit + 1] = '\0';
-	return (str);
-}
-
-static char	*when_plus(int *n_digit, int *c, long *__n)
-{
-	int		i;
-	char	*str;
-
-	*n_digit = num_of_digit(*__n);
-	i = *n_digit - 1;
-	str = (char *)malloc((*n_digit * sizeof(char) + 1));
-	if (str == NULL)
-		return (NULL);
-	while (0 <= i)
-	{
-		*c = *__n % 10;
-		str[i] = *c + '0';
-		*__n = *__n / 10;
-		i--;
-	}
-	str[*n_digit] = '\0';
-	return (str);
-}
-
-static char	*ft_itoa(int n)
-{
-	int		n_digit;
-	int		c;
-	char	*str;
-	long	__n;
-
-	__n = n;
-	if (__n < 0)
-	{
-		str = when_minus(&n_digit, &c, &__n);
-		return (str);
-	}
-	else
-	{
-		str = when_plus(&n_digit, &c, &__n);
-		return (str);
-	}
-}
-
-int	get_shell_level()
+int	get_shell_level(void)
 {
 	extern char	**environ;
 	char		**tmp;
@@ -145,14 +45,14 @@ void	init_shell_level(void)
 			new_shell_level = ft_itoa(++current_shell_level);
 			shlvl_var = ft_strjoin(shlvl_name, new_shell_level);
 			replace_environ_var(shlvl_var);
-			free(shlvl_name);
-			free(new_shell_level);
+			//free(shlvl_name);
+			//free(new_shell_level);
 			free(shlvl_var);
 		}
 	}
 }
 
-void	init_shell_underscore()
+void	init_shell_underscore(void)
 {
 	char	buf[PATH_MAX + 1];
 	char	underscore[PATH_MAX + 3];
@@ -219,6 +119,6 @@ void	shell_initialize(void)
 	environ = initialize_environ();
 	init_shell_level();
 	init_shell_underscore();
-	init_shell_pwd(0); // not update flag
-	init_shell_oldpwd(0); // not update flag
+	init_shell_pwd(NO_UPDATE); // not update flag
+	init_shell_oldpwd(NO_UPDATE); // not update flag
 }

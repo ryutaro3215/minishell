@@ -1,5 +1,4 @@
 #include "../include/env.h"
-#include "../include/free.h"
 
 size_t	count_environ_var(void)
 {
@@ -12,6 +11,16 @@ size_t	count_environ_var(void)
 	while (tmp[i])
 		i++;
 	return i;
+}
+
+char	*get_environ_value(char *environ_var)
+{
+	char	*environ_value;
+
+	environ_value = strchr(environ_var, '=') + 1;
+	if (*environ_value == '\0')
+		return NULL;
+	return (strdup(environ_value));
 }
 
 char	*get_environ_name(char *environ_var)
@@ -134,7 +143,7 @@ void	add_environ_var(char *new_environ_var)
 	environ = new_environ;
 }
 
-size_t	count_strs(char **strs)
+static size_t	count_strs(char **strs)
 {
 	size_t	i;
 

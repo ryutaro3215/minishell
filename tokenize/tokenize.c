@@ -9,14 +9,14 @@ bool	is_blank(char c)
 
 bool	is_word_component(char c)
 {
-	if (!isalnum(c) && c != '_' && c != '-' && c != '.' && c != '/' && c != '=' && c != '~')
+	if (!isalnum(c) && c != '_' && c != '-' && c != '.' && c != '/' && c != '=' && c != '~' && c != '$' && c != '\'' && c != '\"' && c != '?')
 		return false;
 	return true;
 }
 
 bool	is_word_beggining_component(char c)
 {
-	if (!isalnum(c) && c != '_' && c != '-' && c != '.' && c != '/' && c!= '=' && c != '~')
+	if (!isalnum(c) && c != '_' && c != '-' && c != '.' && c != '/' && c!= '=' && c != '~' && c != '$' && c != '\'' && c != '\"' && c != '?')
 		return false;
 	return true;
 }

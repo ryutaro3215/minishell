@@ -1,12 +1,37 @@
 #include "../include/exec.h"
 #include "../include/env.h"
 
+void	*find_shell_builtin(char *command)
+{
+	if (strcmp(command, "echo") == 0)
+		return (&builtin_echo);
+	else if (strcmp(command, "cd") == 0)
+		return (&builtin_cd);
+	else if (strcmp(command, "pwd") == 0)
+		return (&builtin_pwd);
+	else if (strcmp(command, "export") == 0)
+		return (&builtin_export);
+	else if (strcmp(command, "unset") == 0)
+		return (&builtin_unset);
+	else if (strcmp(command, "env") == 0)
+		return (&builtin_env);
+	else if (strcmp(command, "exit") == 0)
+		return (&builtin_exit);
+	else
+		return NULL;
+}
+
 int	builtin_echo(t_token *word_list)
 {
 	t_token	*current_word;
 	int		n_option_flag;
 
 	current_word = word_list->next;
+	if (!current_word)
+	{
+		printf("\n");
+		return EXECUTION_SUCCESS;
+	}
 	n_option_flag = 0;
 	if (strcmp(current_word->name, "-n") == 0)
 	{
@@ -29,9 +54,9 @@ int	builtin_cd(t_token *word_list)
 {
 	if (!word_list->next)
 		return EXECUTION_SUCCESS;
-	init_shell_oldpwd(1); // update
+	init_shell_oldpwd(UPDATE); // update
 	chdir(word_list->next->name);
-	init_shell_pwd(1); // update
+	init_shell_pwd(UPDATE); // update
 	return EXECUTION_SUCCESS;
 }
 
