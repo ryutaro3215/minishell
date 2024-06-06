@@ -6,7 +6,7 @@
 /*   By: rmatsuba <rmatsuba@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:06:10 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/03 14:00:05 by rmatsuba         ###   ########.fr       */
+/*   Updated: 2024/06/07 00:14:05 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,19 @@ int	skip_next_quote(char *str)
 	{
 		while (str[i] && check_quote(str[i]) != 2)
 			i++;
+		if (str[i] && check_quote(str[i]) == 2 && check_quote(str[i + 1]) == 2)
+			i += skip_next_quote(str + i + 1) + 1;
 	}
 	else
 	{
 		while (str[i] && check_quote(str[i]) != 1)
 			i++;
+		if (str[i] && check_quote(str[i]) == 1 && check_quote(str[i + 1]) == 1)
+			i += skip_next_quote(str + i + 1) + 1;
 	}
 	if (str[i] == '\0')
 		return (0);
-	return (i + 1);
+	return (i);
 }
 
 int	get_word_len(char *str)
@@ -82,7 +86,7 @@ int	get_word_len(char *str)
 
 	len = 0;
 	if(check_quote(str[len]) != 0)
-		len = skip_next_quote(str);
+		len = skip_next_quote(str) + 1;
 	else
 	{
 		while (str[len] && !check_space(str[len]) && !check_conope(str[len])
@@ -105,7 +109,6 @@ t_token *new_word_token(char **str)
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	printf("word_len: %d\n", word_len);
 	token->word = (char *)malloc(sizeof(char) * (word_len + 1));
 	if (!token->word)
 	{
@@ -113,7 +116,7 @@ t_token *new_word_token(char **str)
 		return (NULL);
 	}
 	token->word = strndup(*str, word_len);
-	token->type = WORD;
+	token->attr = WORD;
 	token->next = NULL;
 	*str += word_len;
 	return (token);
@@ -126,7 +129,7 @@ int	get_ope_len(t_token *token, char *str)
 	ope_len = 0;
 	if (*str == '|')
 	{
-		token->type = CON_OPE;
+		token->attr = CON_OPE;
 		ope_len = 1;
 	}
 	else
@@ -136,7 +139,7 @@ int	get_ope_len(t_token *token, char *str)
 			ope_len++;
 			str++;
 		}
-		token->type = RED_OPE;
+		token->attr = RED_OPE;
 	}
 	return (ope_len);
 }
@@ -198,7 +201,7 @@ int main(void)
 		while (token != NULL)
 		{
 			printf("token: %s\n", token->word);
-			printf("type: %d\n", token->type);
+			printf("type: %d\n", token->attr);
 			token = token->next;
 		}
 		add_history(str);

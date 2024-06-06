@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token.h                                            :+:      :+:    :+:   */
+/*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rmatsuba <rmatsuba@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:59:23 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/06 13:35:44 by rmatsuba         ###   ########.fr       */
+/*   Updated: 2024/06/06 13:20:52 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,33 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-typedef struct s_token t_token;
-
-enum token_attr
+enum	commond_attr
 {
-	WORD = 1,
-	CON_OPE,
-	RED_OPE
-};
+	SIMPLE_COMMOND,
+	CONNECTOR,
+}
 
-typedef struct s_token
+typedef struct	s_simple
 {
-	char			*word;
-	int				attr;
-	struct s_token	*next;
-}	t_token;
+	t_token	*word;
+}				t_simple;
 
+typedef struct	s_connector
+{
+	int		connector_attr;
+	t_commond	*left;
+	t_commond	*right;
+}				t_connector;
+
+typedef struct	s_commond
+{
+	int		com_attr;
+	union
+	{
+		t_simple	*simple_commond;
+		t_connector	*connector;
+	} commond;
+}				t_commond;
 
 
 #endif
