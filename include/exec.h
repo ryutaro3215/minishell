@@ -63,6 +63,7 @@ int		builtin_exit(t_token *word_list);
 t_token	*delete_current_word(t_simple *simple, t_token *current_word);
 char	*get_env_value(char *env_name);
 char	*get_env_name(char *word);
+char	*get_last_double_quote(char *word);
 char	*get_last_single_quote(char *word);
 void	expand_words(t_simple *simple, int last_command_exit_status);
 char	*append_char(char *word, char c);

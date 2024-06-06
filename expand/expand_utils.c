@@ -56,12 +56,18 @@ char	*get_env_name(char *word)
 	char	*env_name = NULL;
 
 	word++; // skip dollar.
-	while (*word && *word != '\'' && *word != '\"' && *word != '$')
+	while (*word && *word != '\'' && *word != '\"' && *word != '$' && *word != ' ' && *word != '\t')
 	{
 		env_name = append_char(env_name, *word);
 		word++;
 	}
 	return env_name;
+}
+
+char	*get_last_double_quote(char *word)
+{
+	word++; // skip first double quote.
+	return (strchr(word, '\"'));
 }
 
 char	*get_last_single_quote(char *word)
