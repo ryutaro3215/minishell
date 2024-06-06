@@ -1,5 +1,52 @@
 #include "../include/exec.h"
 
+int	execute_exit_builtin(t_simple *simple, int last_command_exit_status)
+{
+	char	*underscore;
+	char	*environ_var;
+
+	// update underscore environ.
+	underscore = strdup("_=");
+	environ_var = strjoin_but_freed_only_first_arg(underscore, simple->word_list->name);
+	replace_environ_var(environ_var);
+	free(environ_var);
+
+	if (do_redirect(simple->redirect_list) == EXECUTION_FAILURE)
+		return (EXECUTION_FAILURE);
+	builtin_exit(last_command_exit_status);
+	return (EXECUTION_SUCCESS);
+}
+
+int	execute_exit_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int last_command_exit_status)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+		return (EXECUTION_FAILURE);
+	if (pid == 0)
+	{
+		if (pipe_in != NO_PIPE)
+		{
+			dup2(pipe_in, 0); // need error check
+			close(pipe_in); // need error check
+		}
+		if (pipe_out != NO_PIPE)
+		{
+			dup2(pipe_out, 1);
+			close(pipe_out);
+		}
+		if (do_redirect(simple->redirect_list) == EXECUTION_FAILURE)
+			exit(EXECUTION_FAILURE);
+		builtin_exit(last_command_exit_status);
+	}
+	if (pipe_in != NO_PIPE)
+		close(pipe_in);
+	if (pipe_out != NO_PIPE)
+		close(pipe_out);
+	return (pid);
+}
+
 int	execute_builtin(t_simple *simple, int (*builtin)(t_token *))
 {
 	char	*underscore;
@@ -79,7 +126,7 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*built
 	return (pid);
 }
 
-int	execute_null_command()
+int	execute_null_command(t_redirect *redirect_list, int pipe_in, int pipe_out)
 {
 	pid_t	pid;
 
@@ -87,7 +134,25 @@ int	execute_null_command()
 	if (pid < 0)
 		return EXECUTION_FAILURE;
 	if (pid == 0)
+	{
+		if (pipe_in != NO_PIPE)
+		{
+			dup2(pipe_in, 0); // need error check
+			close(pipe_in); // need error check
+		}
+		if (pipe_out != NO_PIPE)
+		{
+			dup2(pipe_out, 1);
+			close(pipe_out);
+		}
+		if (do_redirect(redirect_list) == EXECUTION_FAILURE)
+			exit(EXECUTION_FAILURE);
 		exit(EXECUTION_SUCCESS);
+	}
+	if (pipe_in != NO_PIPE)
+		close(pipe_in);
+	if (pipe_out != NO_PIPE)
+		close(pipe_out);
 	return (pid);
 }
 
@@ -98,10 +163,16 @@ int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out, int last
 	expand_words(simple, last_command_exit_status);
 	// if word_list is null, or $foo command does not exist.
 	if (!simple->word_list)
-			return (execute_null_command());
+		return (execute_null_command(simple->redirect_list, pipe_in, pipe_out));
 	builtin = find_shell_builtin(simple->word_list->name);
 	if (builtin && (pipe_in == NO_PIPE && pipe_out == NO_PIPE))
+	{
+		if (strcmp(simple->word_list->name, "exit") == 0)
+			return (execute_exit_builtin(simple, last_command_exit_status));
 		return (execute_builtin(simple, builtin));
+	}
+	if (strcmp(simple->word_list->name, "exit") == 0)
+		return (execute_exit_in_subshell(simple, pipe_in, pipe_out, last_command_exit_status));
 	return (execute_in_subshell(simple, pipe_in, pipe_out, builtin));
 }
 
@@ -111,7 +182,7 @@ int	execute_pipeline(t_command *command, int pipe_in, int pipe_out, int last_com
 
 	if (pipe(fildes) < 0)
 	{
-		printf("internal error: pipe\n");
+		printf("minishell: pipe error\n");
 		return (EXECUTION_FAILURE);
 	}
 	execute_command_internal(command->value.connection->first, pipe_in, fildes[1], last_command_exit_status);

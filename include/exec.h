@@ -57,7 +57,7 @@ int		builtin_pwd(t_token *word_list);
 int		builtin_export(t_token *word_list);
 int		builtin_unset(t_token *word_list);
 int		builtin_env(t_token *word_list);
-int		builtin_exit(t_token *word_list);
+int		builtin_exit(int last_command_exit_status);
 
 // expand.c
 t_token	*delete_current_word(t_simple *simple, t_token *current_word);

@@ -7,7 +7,7 @@ int	do_r_input(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		printf("internal error: open\n");
+		printf("minishell: %s: No such file or directory\n", filename);
 		return (EXECUTION_FAILURE);
 	}
 	dup2(fd, 0); // need error check
@@ -22,7 +22,7 @@ int	do_r_output(char *filename)
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd < 0)
 	{
-		printf("internal error: open\n");
+		printf("minishell: %s: No such file or directory\n", filename);
 		return (EXECUTION_FAILURE);
 	}
 	dup2(fd, 1); // need error check
@@ -37,7 +37,7 @@ int	do_r_append_output(char *filename)
 	fd = open(filename, O_RDWR | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd < 0)
 	{
-		printf("internal error: open\n");
+		printf("minishell: %s: No such file or directory\n", filename);
 		return (EXECUTION_FAILURE);
 	}
 	dup2(fd, 1);

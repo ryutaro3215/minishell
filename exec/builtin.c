@@ -16,7 +16,7 @@ void	*find_shell_builtin(char *command)
 	else if (strcmp(command, "env") == 0)
 		return (&builtin_env);
 	else if (strcmp(command, "exit") == 0)
-		return (&builtin_exit);
+		return (&builtin_env);
 	else
 		return NULL;
 }
@@ -124,9 +124,8 @@ int	builtin_env(t_token *word_list)
 	return EXECUTION_SUCCESS;
 }
 
-int	builtin_exit(t_token *word_list)
+int	builtin_exit(int last_command_exit_status)
 {
-	(void)word_list;
 	printf("exit\n");
-	exit(EXECUTION_SUCCESS);
+	exit(last_command_exit_status);
 }
