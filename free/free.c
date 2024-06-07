@@ -47,15 +47,15 @@ void	free_command_list(t_command *command_list)
 	}
 }
 
-void	free_argv(char **argv)
+void	free_2d_array(char **array)
 {
 	int	i;
 
 	i = 0;
-	while (argv[i])
+	while (array[i])
 	{
-		free(argv[i]);
+		free(array[i]);
 		i++;
 	}
-	free(argv);
+	free(array);
 }

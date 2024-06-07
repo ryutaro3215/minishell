@@ -113,6 +113,11 @@ int				get_connector(t_token *token_list);
 t_token			*get_first_token_list(t_token *token_list);
 t_token			*get_second_token_list(t_token *token_list);
 
+// parse_utils.c
+t_command	*add_simple_type_command(void);
+t_command	*add_connection_elem(t_command *new_command, t_token *first_token_list, t_token *second_token_list);
+t_command	*add_connection_type_command(t_token *first_token_list, t_token *second_token_list);
+
 // parse.c
 t_command		*parse(t_token *token_list);
 t_command		*add_simple_command(t_token *token_list);
@@ -123,5 +128,7 @@ t_command		*add_command(t_token *token_list);
 bool	need_here_document(t_token *token_list);
 void	gather_here_document(t_command *command_list);
 
+// parse_cmd.c
+t_command		*parse_command(char *line);
 
 #endif

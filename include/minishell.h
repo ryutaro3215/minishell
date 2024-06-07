@@ -4,6 +4,7 @@
 #include "init.h"
 #include "signal.h"
 #include "env.h"
+#include "eval.h"
 #include "parse.h"
 #include "exec.h"
 #include "free.h"
@@ -11,7 +12,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
-t_command	*eval_command(char *line);
-int			reader_loop(void);
+int			reader_loop(int *EOF_reached, int last_command_exit_status);
 
 #endif

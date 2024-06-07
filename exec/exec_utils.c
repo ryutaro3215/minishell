@@ -1,5 +1,27 @@
 #include "../include/exec.h"
 
+int	do_pipe(int pipe_in, int pipe_out)
+{
+	int	fd;
+
+	fd = 0;
+	if (pipe_in != NO_PIPE)
+	{
+		fd = dup2(pipe_in, 0); // need error check
+		if (fd < 0)
+			return fd;
+		close(pipe_in); // need error check
+	}
+	if (pipe_out != NO_PIPE)
+	{
+		fd = dup2(pipe_out, 1);
+		if (fd < 0)
+			return fd;
+		close(pipe_out);
+	}
+	return fd;
+}
+
 char	*create_path(char *path_vars, size_t path_var_len, char *line)
 {
 	char	*path_var;

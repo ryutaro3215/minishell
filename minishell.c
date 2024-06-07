@@ -1,68 +1,39 @@
 #include "include/minishell.h"
 
-extern sig_atomic_t	g_interrupt_state;
-
-t_command	*eval_command(char *line)
-{
-	t_token	*token_list;
-	t_command	*command_list;
-
-	token_list = tokenize(line);
-	command_list = parse(token_list);
-	if (!command_list)
-		return NULL;
-	if (need_here_document(token_list))
-		gather_here_document(command_list);
-	free_token_list(token_list);
-	return command_list;
-}
-
-int	reader_loop(void)
+int	reader_loop(int *EOF_reached, int last_command_exit_status)
 {
 	extern char	**environ;
 	char		**tmp;
 	char		*line;
-	t_command	*command_list = NULL;
-	int			EOF_reached = 0;
-	int			last_command_exit_status = 0;
 
-	while (EOF_reached == 0)
+	signal(SIGINT, sigint_handler_for_readline);
+	tmp = environ;
+	line = readline("minishell $ ");
+	environ = tmp;
+	if (!line)
 	{
-		signal(SIGINT, sigint_handler_for_readline);
-		tmp = environ;
-		line = readline("minishell $ ");
-		environ = tmp;
-		if (!line)
-		{
-			EOF_reached = EOF;
-			continue;
-		}
-		signal(SIGINT, sigint_handler_for_exec);
-		last_command_exit_status = sigint_is_traped(last_command_exit_status);
-		if (*line)
-		{
-			add_history(line);
-			command_list = eval_command(line);
-			if (command_list)
-			{
-				last_command_exit_status = execute_command(command_list, last_command_exit_status);
-				free_command_list(command_list);
-			}
-			else // parse error
-				last_command_exit_status = EXECUTION_FAILURE;
-		}
-		free(line);
+		*EOF_reached = EOF;
+		free_2d_array(tmp);
+		return last_command_exit_status;
 	}
-	free_argv(tmp);
-	printf("exit\n");
+	signal(SIGINT, sigint_handler_for_exec);
+	last_command_exit_status = sigint_is_traped(last_command_exit_status);
+	if (*line)
+		last_command_exit_status = eval(line, last_command_exit_status);
+	free(line);
 	return (last_command_exit_status);
 }
 
-int	main()
+int	main(void)
 {
+	int			EOF_reached;
 	int	last_command_exit_status;
 
+	EOF_reached = 0;
+	last_command_exit_status = 0;
 	shell_initialize();
-	last_command_exit_status = reader_loop();
+	while (EOF_reached == 0)
+		last_command_exit_status = reader_loop(&EOF_reached, last_command_exit_status);
+	printf("exit\n");
 	return (last_command_exit_status);
 }

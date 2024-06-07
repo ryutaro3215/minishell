@@ -26,11 +26,13 @@ t_connection	*create_new_connection(void)
 
 t_redirect	*create_redirect_list(t_token *token_list)
 {
-	t_token	*current_token = token_list;
-	t_redirect	*redirect_list = malloc(sizeof(t_redirect));
+	t_token	*current_token;
+	t_redirect	*redirect_list;
+
+	current_token = token_list;
+	redirect_list = malloc(sizeof(t_redirect));
 	redirect_list->filename = NULL;
 	redirect_list->next = NULL;
-
 	while (current_token && current_token->attribute != OPERATOR)
 	{
 		if (current_token->attribute == REDIRECT)
@@ -42,16 +44,12 @@ t_redirect	*create_redirect_list(t_token *token_list)
 				return NULL;
 			}
 			redirect_list = copy_redirect(redirect_list, current_token);
+			if (!redirect_list && errno == ENOMEM)
+				printf("minishell: malloc error: %s\n", current_token->name);
 			if (!redirect_list)
-			{
-				if (errno == ENOMEM)
-					printf("malloc error: %s\n", current_token->name);
 				return NULL;
-			}
-			current_token = current_token->next->next;
 		}
-		else
-			current_token = current_token->next;
+		current_token = current_token->next;
 	}
 	return redirect_list;
 }
@@ -59,8 +57,10 @@ t_redirect	*create_redirect_list(t_token *token_list)
 t_token	*create_word_list(t_token *token_list)
 {
 	t_token	*current_token = token_list;
-	t_token	*word_list = NULL;
+	t_token	*word_list;
 
+	current_token = token_list;
+	word_list = NULL;
 	while (current_token && current_token->attribute != OPERATOR)
 	{
 		if (current_token->attribute == REDIRECT)

@@ -2,9 +2,11 @@
 #define EXEC_H
 
 #include "init.h"
-#include "env.h"
+#include "environ.h"
 #include "parse.h"
 #include "free.h"
+#include "builtin.h"
+#include "expand.h"
 #include "libft.h"
 
 #include <stdio.h>
@@ -30,16 +32,28 @@
 extern char	**environ;
 
 // exec.c
+int	execute_command_internal(t_command *command, int pipe_in, int pipe_out, int last_command_exit_status);
+int	execute_command(t_command *command, int last_command_exit_status);
+
+// exec_simple.c
 int	execute_builtin(t_simple *simple, int (*builtin)(t_token *));
 int	execute_disk_command(char *path, char **argv);
 int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*builtin)(t_token *));
 int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out, int last_command_exit_status);
+
+// exec_connection.c
 int	execute_pipeline(t_command *command, int pipe_in, int pipe_out, int last_command_exit_status);
 int	execute_connection(t_command *command, int pipe_in, int pipe_out, int last_command_exit_status);
-int	execute_command_internal(t_command *command, int pipe_in, int pipe_out, int last_command_exit_status);
-int	execute_command(t_command *command, int last_command_exit_status);
+
+// exec_exit.c
+int	execute_exit_builtin(t_simple *simple, int last_command_exit_status);
+int	execute_exit_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int last_command_exit_status);
+
+// exec_null.c
+int	execute_null_command(t_redirect *redirect_list, int pipe_in, int pipe_out);
 
 // exec_utils.c
+int		do_pipe(int pipe_in, int pipe_out);
 char	*create_path(char *path_vars, size_t path_var_len, char *line);
 char	*get_path(char *line);
 char	**get_argv(t_token *token_list);
@@ -49,27 +63,5 @@ int	do_r_input(char *filename);
 int	do_r_output(char *filename);
 int	do_r_append_output(char *filename);
 int	do_redirect(t_redirect *redirect_list);
-
-// builtin.c
-void	*find_shell_builtin(char *command);
-int		builtin_echo(t_token *word_list);
-int		builtin_cd(t_token *word_list);
-int		builtin_pwd(t_token *word_list);
-int		builtin_export(t_token *word_list);
-int		builtin_unset(t_token *word_list);
-int		builtin_env(t_token *word_list);
-int		builtin_exit(int last_command_exit_status);
-
-// expand.c
-bool	pattern_match(char *given_word, char *filename);
-void	add_new_word(t_token *current_word, char *filename);
-t_token	*delete_current_word(t_simple *simple, t_token *current_word);
-char	*get_env_value(char *env_name);
-char	*get_env_name(char *word);
-char	*get_last_double_quote(char *word);
-char	*get_last_single_quote(char *word);
-void	expand_words(t_simple *simple, int last_command_exit_status);
-char	*append_char(char *word, char c);
-
 
 #endif

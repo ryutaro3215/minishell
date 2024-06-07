@@ -1,0 +1,55 @@
+#include "../include/expand.h"
+
+static void	retrieve_next_word(t_token *current_word, char *given_word, t_token *next_word)
+{
+	if (!current_word->name)
+		current_word->name = given_word;
+	else
+	{
+		while (current_word->next)
+			current_word = current_word->next;
+		current_word->next = next_word;
+		free(given_word);
+	}
+}
+
+static char	*store_given_word_to_add_new_words(t_token *current_word)
+{
+	char	*given_word;
+
+	given_word = strdup(current_word->name);
+	free(current_word->name);
+	current_word->name = NULL;
+	return (given_word);
+}
+
+void	expand_wildcard(t_token *current_word)
+{
+	char			*given_word;
+	DIR				*dirp;
+	struct dirent	*dp;
+	t_token			*next_word;
+
+	if (!strchr(current_word->name, '*'))
+		return ;
+	dirp = opendir(".");
+	if (!dirp)
+	{
+		printf("minishell: open failed\n");
+		return ;
+	}
+	given_word = store_given_word_to_add_new_words(current_word);
+	next_word = current_word->next;
+	while (1)
+	{
+		dp = readdir(dirp);
+		if (!dp)
+			break ;
+		if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
+			continue;
+		if (pattern_match(given_word, dp->d_name))
+			add_new_word(current_word, dp->d_name);
+	}
+	closedir(dirp);
+	retrieve_next_word(current_word, given_word, next_word);
+}
