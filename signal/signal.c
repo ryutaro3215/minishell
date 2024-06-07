@@ -25,5 +25,5 @@ int	sigint_is_traped(int last_command_exit_status)
 		g_interrupt_state = 0;
 		return (128 + SIGINT);
 	}
-	return last_command_exit_status;
+	return (last_command_exit_status);
 }

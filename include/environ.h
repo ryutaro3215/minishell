@@ -1,14 +1,14 @@
-#ifndef ENV_H
-#define ENV_H
+#ifndef ENVIRON_H
+# define ENVIRON_H
 
-#include "free.h"
+# include "free.h"
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
+# include <stdlib.h>
+# include <string.h>
+# include <stdbool.h>
 
-#define EXPORT 1
-#define UNSET 2
+# define EXPORT 1
+# define UNSET 2
 
 // environ.c
 void	unset_environ_var(char *ignored_var);

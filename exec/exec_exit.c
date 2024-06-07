@@ -7,17 +7,18 @@ int	execute_exit_builtin(t_simple *simple, int last_command_exit_status)
 
 	// update underscore environ.
 	underscore = strdup("_=");
-	environ_var = strjoin_but_freed_only_first_arg(underscore, simple->word_list->name);
+	environ_var = strjoin_but_freed_only_first_arg(underscore,
+			simple->word_list->name);
 	replace_environ_var(environ_var);
 	free(environ_var);
-
 	if (do_redirect(simple->redirect_list) == EXECUTION_FAILURE)
 		return (EXECUTION_FAILURE);
 	builtin_exit(last_command_exit_status);
 	return (EXECUTION_SUCCESS);
 }
 
-int	execute_exit_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int last_command_exit_status)
+int	execute_exit_in_subshell(t_simple *simple, int pipe_in, int pipe_out,
+	int last_command_exit_status)
 {
 	pid_t	pid;
 
@@ -38,4 +39,3 @@ int	execute_exit_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int la
 		close(pipe_out);
 	return (pid);
 }
-

@@ -22,20 +22,40 @@ char	*get_env_value(char *env_name)
 		free(current_name);
 		i++;
 	}
-	return NULL;
+	return (NULL);
 }
 
 char	*get_env_name(char *word)
 {
-	char	*env_name = NULL;
+	char	*env_name;
 
+	env_name = NULL;
 	word++; // skip dollar.
-	while (*word && *word != '\'' && *word != '\"' && *word != '$' && *word != ' ' && *word != '\t')
+	while (*word && *word != '\'' && *word != '\"'
+		&& *word != '$' && *word != ' ' && *word != '\t')
 	{
 		env_name = append_char(env_name, *word);
 		word++;
 	}
-	return env_name;
+	return (env_name);
+}
+
+static char	*do_each_expand(char *env_name, char *new_word,
+	char **old_word, int last_command_exit_status)
+{
+	if (!env_name)
+		new_word = handle_dollar_only(new_word, old_word);
+	else if (strcmp(env_name, "?") == 0)
+	{
+		new_word = handle_question(new_word, old_word,
+				last_command_exit_status);
+	}
+	else
+	{
+		new_word = handle_environment_variable(new_word,
+				old_word, env_name);
+	}
+	return (new_word);
 }
 
 void	expand_dollar(t_token *current_word, int last_command_exit_status)
@@ -53,12 +73,8 @@ void	expand_dollar(t_token *current_word, int last_command_exit_status)
 		else if (*old_word == '$')
 		{
 			env_name = get_env_name(old_word);
-			if (!env_name)
-				new_word = handle_dollar_only(new_word, &old_word);
-			else if (strcmp(env_name, "?") == 0)
-				new_word = handle_question(new_word, &old_word, last_command_exit_status);
-			else
-				new_word = handle_environment_variable(new_word, &old_word, env_name);
+			new_word = do_each_expand(env_name, new_word, &old_word,
+					last_command_exit_status);
 			free(env_name);
 		}
 		else

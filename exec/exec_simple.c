@@ -10,10 +10,10 @@ int	execute_builtin(t_simple *simple, int (*builtin)(t_token *))
 
 	// update underscore environ.
 	underscore = strdup("_=");
-	environ_var = strjoin_but_freed_only_first_arg(underscore, simple->word_list->name);
+	environ_var
+		= strjoin_but_freed_only_first_arg(underscore, simple->word_list->name);
 	replace_environ_var(environ_var);
 	free(environ_var);
-
 	fdin_tmp = dup(STDIN_FILENO);
 	fdout_tmp = dup(STDOUT_FILENO);
 	if (do_redirect(simple->redirect_list) == EXECUTION_FAILURE)
@@ -42,7 +42,8 @@ int	execute_disk_command(char *path, char **argv)
 	return (COMMAND_NOT_FOUND);
 }
 
-int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*builtin)(t_token *))
+int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out,
+	int (*builtin)(t_token *))
 {
 	pid_t	pid;
 	char	*path;
@@ -71,9 +72,10 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out, int (*built
 	return (pid);
 }
 
-int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out, int last_command_exit_status)
+int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out,
+	int last_command_exit_status)
 {
-	int (*builtin)(t_token *);
+	int	(*builtin)(t_token *);
 
 	expand_words(simple, last_command_exit_status);
 	// if word_list is null, or $foo command does not exist.
@@ -87,7 +89,7 @@ int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out, int last
 		return (execute_builtin(simple, builtin));
 	}
 	if (strcmp(simple->word_list->name, "exit") == 0)
-		return (execute_exit_in_subshell(simple, pipe_in, pipe_out, last_command_exit_status));
+		return (execute_exit_in_subshell(simple, pipe_in, pipe_out,
+				last_command_exit_status));
 	return (execute_in_subshell(simple, pipe_in, pipe_out, builtin));
 }
-

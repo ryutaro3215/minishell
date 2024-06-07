@@ -1,4 +1,10 @@
 #include "include/minishell.h"
+#include "include/init.h"
+#include "include/signal.h"
+#include "include/environ.h"
+#include "include/eval.h"
+#include "include/free.h"
+
 
 int	reader_loop(int *EOF_reached, int last_command_exit_status)
 {
@@ -14,7 +20,7 @@ int	reader_loop(int *EOF_reached, int last_command_exit_status)
 	{
 		*EOF_reached = EOF;
 		free_2d_array(tmp);
-		return last_command_exit_status;
+		return (last_command_exit_status);
 	}
 	signal(SIGINT, sigint_handler_for_exec);
 	last_command_exit_status = sigint_is_traped(last_command_exit_status);
@@ -26,14 +32,15 @@ int	reader_loop(int *EOF_reached, int last_command_exit_status)
 
 int	main(void)
 {
-	int			EOF_reached;
+	int	eof_reached;
 	int	last_command_exit_status;
 
-	EOF_reached = 0;
+	eof_reached = 0;
 	last_command_exit_status = 0;
 	shell_initialize();
-	while (EOF_reached == 0)
-		last_command_exit_status = reader_loop(&EOF_reached, last_command_exit_status);
+	while (eof_reached == 0)
+		last_command_exit_status
+			= reader_loop(&eof_reached, last_command_exit_status);
 	printf("exit\n");
 	return (last_command_exit_status);
 }

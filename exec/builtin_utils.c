@@ -17,5 +17,5 @@ void	*find_shell_builtin(char *command)
 	else if (strcmp(command, "exit") == 0)
 		return (&builtin_env);
 	else
-		return NULL;
+		return (NULL);
 }

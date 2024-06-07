@@ -31,19 +31,19 @@ t_token	*delete_current_word(t_simple *simple, t_token *current_word)
 		free(current_word->name);
 		free(current_word);
 		simple->word_list = tmp;
-		return tmp;
+		return (tmp);
 	}
 	word_list = simple->word_list;
 	while (word_list->next != current_word)
 	{
 		word_list = word_list->next;
-		continue;
+		continue ;
 	}
 	tmp = word_list->next->next;
 	free(current_word->name);
 	free(current_word);
 	word_list->next = tmp;
-	return word_list->next;
+	return (word_list->next);
 }
 
 char	*append_char(char *word, char c)
@@ -56,7 +56,7 @@ char	*append_char(char *word, char c)
 		new_word = malloc(sizeof(char) * 2);
 		new_word[0] = c;
 		new_word[1] = '\0';
-		return new_word;
+		return (new_word);
 	}
 	new_word = malloc(sizeof(char) * strlen(word) + 2);
 	i = 0;
@@ -68,5 +68,5 @@ char	*append_char(char *word, char c)
 	new_word[i++] = c;
 	new_word[i] = '\0';
 	free(word);
-	return new_word;
+	return (new_word);
 }

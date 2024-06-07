@@ -8,10 +8,11 @@ static t_token	*add_word_to_tail(t_token *word_list, t_token *new_word)
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new_word;
-	return word_list;
+	return (word_list);
 }
 
-static t_redirect	*add_redirect_to_tail(t_redirect *redirect_list, t_redirect *new_redirect)
+static t_redirect	*add_redirect_to_tail(t_redirect *redirect_list,
+	t_redirect *new_redirect)
 {
 	t_redirect	*tmp;
 
@@ -19,7 +20,7 @@ static t_redirect	*add_redirect_to_tail(t_redirect *redirect_list, t_redirect *n
 	while (tmp->next)
 		tmp = tmp->next;
 	tmp->next = new_redirect;
-	return redirect_list;
+	return (redirect_list);
 }
 
 static t_redirect	*create_redirect_type_struct(t_redirect *redirect_list)
@@ -32,7 +33,7 @@ static t_redirect	*create_redirect_type_struct(t_redirect *redirect_list)
 		if (!new_redirect)
 		{
 			free_redirect_list(redirect_list);
-			return NULL;
+			return (NULL);
 		}
 	}
 	else // first redirect_list, but already initialized previous function.
@@ -48,7 +49,7 @@ t_token	*copy_token(t_token *word_list, t_token *current_token)
 	if (!new_word)
 	{
 		free_token_list(word_list);
-		return NULL;
+		return (NULL);
 	}
 	new_word->attribute = current_token->attribute;
 	new_word->name = strdup(current_token->name);
@@ -56,11 +57,11 @@ t_token	*copy_token(t_token *word_list, t_token *current_token)
 	{
 		free(new_word);
 		free_token_list(word_list);
-		return NULL;
+		return (NULL);
 	}
 	new_word->next = NULL;
 	if (!word_list)
-		return new_word;
+		return (new_word);
 	else
 		return (add_word_to_tail(word_list, new_word));
 }
@@ -71,9 +72,10 @@ t_redirect	*copy_redirect(t_redirect *redirect_list, t_token *current_token)
 
 	if (strchr(current_token->next->name, '*'))
 	{
-		printf("minishell: %s: ambiguous redirect\n", current_token->next->name);
+		printf("minishell: %s: ambiguous redirect\n",
+			current_token->next->name);
 		free_redirect_list(redirect_list);
-		return NULL;
+		return (NULL);
 	}
 	new_redirect = create_redirect_type_struct(redirect_list);
 	new_redirect->attribute = get_redirect_attribute(current_token->name);
@@ -82,12 +84,11 @@ t_redirect	*copy_redirect(t_redirect *redirect_list, t_token *current_token)
 	{
 		free(new_redirect);
 		free_redirect_list(redirect_list);
-		return NULL;
+		return (NULL);
 	}
-	new_redirect->next = NULL;
+	new_redirect->next = (NULL);
 	if (redirect_list == new_redirect)
-		return new_redirect;
+		return (new_redirect);
 	else
 		return (add_redirect_to_tail(redirect_list, new_redirect));
 }
-

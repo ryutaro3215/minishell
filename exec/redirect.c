@@ -19,7 +19,8 @@ int	do_r_output(char *filename)
 {
 	int		fd;
 
-	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd < 0)
 	{
 		printf("minishell: %s: No such file or directory\n", filename);
@@ -34,7 +35,8 @@ int	do_r_append_output(char *filename)
 {
 	int		fd;
 
-	fd = open(filename, O_RDWR | O_CREAT | O_APPEND, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+	fd = open(filename, O_RDWR | O_CREAT | O_APPEND,
+			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd < 0)
 	{
 		printf("minishell: %s: No such file or directory\n", filename);
@@ -60,11 +62,12 @@ int	do_r_here_document(char *filename)
 int	do_redirect(t_redirect *redirect_list)
 {
 	t_redirect	*current_redirect;
-	int			result = EXECUTION_SUCCESS;
+	int			result;
 
+	result = EXECUTION_SUCCESS;
 	current_redirect = redirect_list;
 	if (!current_redirect->filename)
-		return EXECUTION_SUCCESS; // redirect doesn't exist.
+		return (EXECUTION_SUCCESS); // redirect doesn't exist.
 	while (current_redirect)
 	{
 		if (current_redirect->attribute == r_input)
@@ -76,9 +79,8 @@ int	do_redirect(t_redirect *redirect_list)
 		else // (current_redirect->attribute == r_heredoc)
 			result = do_r_here_document(current_redirect->filename);
 		if (result == EXECUTION_FAILURE)
-			return EXECUTION_FAILURE;
+			return (EXECUTION_FAILURE);
 		current_redirect = current_redirect->next;
 	}
-	return EXECUTION_SUCCESS;
+	return (EXECUTION_SUCCESS);
 }
-

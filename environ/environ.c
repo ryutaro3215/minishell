@@ -4,26 +4,24 @@ void	unset_environ_var(char *ignored_var)
 {
 	char		**new_environ;
 	extern char	**environ;
-	char		**tmp;
 	char		*environ_name;
 	size_t		i;
 	size_t		j;
 
 	new_environ = malloc(sizeof(char *) * ((count_environ_var() - 1) + 1)); // delete one element
-	tmp = environ;
 	i = 0;
 	j = 0;
-	while (tmp[j])
+	while (environ[j])
 	{
-		environ_name = get_environ_name(tmp[j]);
+		environ_name = get_environ_name(environ[j]);
 		if (strcmp(environ_name, ignored_var) == 0)
 		{
 			j++;
 			free(environ_name);
-			continue;
+			continue ;
 		}
 		free(environ_name);
-		new_environ[i++] = strdup(tmp[j++]);
+		new_environ[i++] = strdup(environ[j++]);
 	}
 	new_environ[i] = NULL;
 	free_2d_array(environ);
@@ -50,7 +48,7 @@ void	replace_environ_var(char *new_environ_var)
 			tmp[i] = strdup(new_environ_var);
 			free(new_environ_name);
 			free(old_environ_name);
-			return;
+			return ;
 		}
 		free(old_environ_name);
 		i++;

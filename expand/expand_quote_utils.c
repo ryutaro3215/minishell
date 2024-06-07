@@ -11,4 +11,3 @@ char	*get_last_single_quote(char *word)
 	word++; // skip first single quote.
 	return (strchr(word, '\''));
 }
-

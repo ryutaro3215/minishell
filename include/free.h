@@ -1,9 +1,9 @@
 #ifndef FREE_H
-#define FREE_H
+# define FREE_H
 
-#include "parse.h"
+# include "minishell.h"
 
-#include <stdlib.h>
+# include <stdlib.h>
 
 void	free_token_list(t_token *token_list);
 void	free_redirect_list(t_redirect *redirect_list);

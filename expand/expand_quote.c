@@ -7,7 +7,8 @@ static char	*remove_single_quote(char *new_word, char **old_word)
 
 	last_single_quote = get_last_single_quote(*old_word);
 	(*old_word)++;
-	inside_single_quote = ft_substr(*old_word, 0, last_single_quote - *old_word);
+	inside_single_quote = ft_substr(*old_word, 0,
+			last_single_quote - *old_word);
 	(*old_word) += strlen(inside_single_quote) + 1;
 	new_word = ft_strjoin(new_word, inside_single_quote);
 	return (new_word);
@@ -20,7 +21,8 @@ static char	*remove_double_quote(char *new_word, char **old_word)
 
 	last_double_quote = get_last_double_quote(*old_word);
 	(*old_word)++;
-	inside_double_quote = ft_substr(*old_word, 0, last_double_quote - *old_word);
+	inside_double_quote = ft_substr(*old_word, 0,
+			last_double_quote - *old_word);
 	*old_word += strlen(inside_double_quote) + 1;
 	new_word = ft_strjoin(new_word, inside_double_quote);
 	return (new_word);

@@ -6,7 +6,8 @@ char	*skip_single_quote(char *new_word, char **old_word)
 	char	*inside_single_quote;
 
 	last_single_quote = get_last_single_quote(*old_word);
-	inside_single_quote = ft_substr(*old_word, 0, last_single_quote - *old_word + 1);
+	inside_single_quote = ft_substr(*old_word, 0,
+			last_single_quote - *old_word + 1);
 	(*old_word) += strlen(inside_single_quote);
 	return (ft_strjoin(new_word, inside_single_quote));
 }
@@ -18,7 +19,8 @@ char	*handle_dollar_only(char *new_word, char **old_word)
 	return (new_word);
 }
 
-char	*handle_question(char *new_word, char **old_word, int last_command_exit_status)
+char	*handle_question(char *new_word, char **old_word,
+	int last_command_exit_status)
 {
 	char	*exit_status;
 
@@ -28,7 +30,8 @@ char	*handle_question(char *new_word, char **old_word, int last_command_exit_sta
 	return (new_word);
 }
 
-char	*handle_environment_variable(char *new_word, char **old_word, char *env_name)
+char	*handle_environment_variable(char *new_word, char **old_word,
+	char *env_name)
 {
 	char	*env_value;
 
@@ -43,10 +46,9 @@ char	*handle_environment_variable(char *new_word, char **old_word, char *env_nam
 	return (new_word);
 }
 
-char	*skip_char(char *new_word, char ** old_word)
+char	*skip_char(char *new_word, char **old_word)
 {
 	new_word = append_char(new_word, **old_word);
 	(*old_word)++;
 	return (new_word);
 }
-

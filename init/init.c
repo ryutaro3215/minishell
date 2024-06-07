@@ -7,18 +7,16 @@ char	**initialize_environ(void)
 	size_t		i;
 
 	if (!environ) // ?
-		return NULL;
+		return (NULL);
 	my_environ = malloc(sizeof(char *) * (count_strs(environ) + 1));
 	i = 0;
 	while (environ[i])
 	{
 		my_environ[i] = strdup(environ[i]);
-		//printf("current environ: %p\n", my_environ[i]);
-		//printf("%s\n", my_environ[i]);
 		i++;
 	}
 	my_environ[i] = NULL;
-	return my_environ;
+	return (my_environ);
 }
 
 void	shell_initialize(void)
@@ -29,6 +27,6 @@ void	shell_initialize(void)
 	environ = initialize_environ();
 	init_shell_level();
 	init_shell_underscore();
-	init_shell_pwd(NO_UPDATE); // not update flag
-	init_shell_oldpwd(NO_UPDATE); // not update flag
+	init_shell_pwd(NO_UPDATE);
+	init_shell_oldpwd(NO_UPDATE);
 }

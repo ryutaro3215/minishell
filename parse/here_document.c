@@ -5,38 +5,39 @@ bool	need_here_document(t_token *token_list)
 	while (token_list)
 	{
 		if (strcmp(token_list->name, "<<") == 0)
-			return true;
+			return (true);
 		token_list = token_list->next;
 	}
-	return false;
+	return (false);
 }
 
 static char	*here_document_loop(char *delimiter)
 {
-	int		EOF_reached;
+	int		eof_reached;
 	char	*line;
-	char	*document = NULL;
+	char	*document;
 
-	EOF_reached = 0;
-	while (EOF_reached == 0)
+	eof_reached = 0;
+	document = NULL;
+	while (eof_reached == 0)
 	{
 		line = readline("heredoc> ");
 		if (!line)
 		{
 			printf("minishell: warning: reached EOF (need '%s')\n", delimiter);
-			EOF_reached = EOF;
-			continue;
+			eof_reached = EOF;
+			continue ;
 		}
 		if (strcmp(line, delimiter) == 0)
 		{
-			EOF_reached = EOF;
+			eof_reached = EOF;
 			free(line);
-			continue;
+			continue ;
 		}
 		document = ft_strjoin(document, line);
 		document = strjoin_but_freed_only_first_arg(document, "\n");
 	}
-	return document;
+	return (document);
 }
 
 static void	replace_with_document(t_redirect *current_redirect, char *document)
@@ -52,7 +53,7 @@ void	gather_here_document(t_command *command_list)
 
 	if (command_list->attribute == cm_simple)
 	{
-		current_redirect = command_list->value.simple->redirect_list;
+		current_redirect = command_list->u_value.simple->redirect_list;
 		if (!current_redirect->filename)
 			return ;
 		while (current_redirect)
@@ -67,7 +68,7 @@ void	gather_here_document(t_command *command_list)
 	}
 	else // command_list->attribute == cm_connection
 	{
-		gather_here_document(command_list->value.connection->first);
-		gather_here_document(command_list->value.connection->second);
+		gather_here_document(command_list->u_value.connection->first);
+		gather_here_document(command_list->u_value.connection->second);
 	}
 }

@@ -1,7 +1,12 @@
 #ifndef EXPAND_H
-#define EXPAND_H
+# define EXPAND_H
 
-#include "../include/parse.h"
+# include "minishell.h"
+# include "environ.h"
+# include "libft.h"
+
+# include <stdbool.h>
+# include <dirent.h>
 
 // expand.c
 void	expand_words(t_simple *simple, int last_command_exit_status);
@@ -20,9 +25,11 @@ void	expand_wildcard(t_token *current_word);
 // expand_dollar_utils.c
 char	*skip_single_quote(char *new_word, char **old_word);
 char	*handle_dollar_only(char *new_word, char **old_word);
-char	*handle_question(char *new_word, char **old_word, int last_command_exit_status);
-char	*handle_environment_variable(char *new_word, char **old_word, char *env_name);
-char	*skip_char(char *new_word, char ** old_word);
+char	*handle_question(char *new_word, char **old_word,
+			int last_command_exit_status);
+char	*handle_environment_variable(char *new_word,
+			char **old_word, char *env_name);
+char	*skip_char(char *new_word, char **old_word);
 
 // expand_quote_utils.c
 char	*get_last_single_quote(char *word);

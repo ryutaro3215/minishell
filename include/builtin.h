@@ -1,11 +1,12 @@
 #ifndef BUILTIN_H
-#define BUILTIN_H
+# define BUILTIN_H
 
-#include "parse.h"
+# include "minishell.h"
+# include "exec.h"
 
-#include <string.h>
-#include <stdio.h>
-#include <unistd.h>
+# include <string.h>
+# include <stdio.h>
+# include <unistd.h>
 
 // each builtin files
 int		builtin_echo(t_token *word_list);

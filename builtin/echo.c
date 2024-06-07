@@ -9,7 +9,7 @@ int	builtin_echo(t_token *word_list)
 	if (!current_word)
 	{
 		printf("\n");
-		return EXECUTION_SUCCESS;
+		return (EXECUTION_SUCCESS);
 	}
 	n_option_flag = 0;
 	if (strcmp(current_word->name, "-n") == 0)
@@ -26,6 +26,5 @@ int	builtin_echo(t_token *word_list)
 	}
 	if (!n_option_flag)
 		printf("\n");
-	return EXECUTION_SUCCESS;
+	return (EXECUTION_SUCCESS);
 }
-

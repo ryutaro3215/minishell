@@ -6,6 +6,5 @@ int	builtin_pwd(t_token *word_list)
 
 	(void)word_list;
 	printf("%s\n", getcwd(buf, PATH_MAX));
-	return EXECUTION_SUCCESS;
+	return (EXECUTION_SUCCESS);
 }
-

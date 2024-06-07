@@ -3,9 +3,9 @@
 int	builtin_env(t_token *word_list)
 {
 	extern char	**environ;
-	char	**tmp;
-	(void)word_list;
+	char		**tmp;
 
+	(void)word_list;
 	tmp = environ;
 	if (tmp)
 	{
@@ -15,5 +15,5 @@ int	builtin_env(t_token *word_list)
 			tmp++;
 		}
 	}
-	return EXECUTION_SUCCESS;
+	return (EXECUTION_SUCCESS);
 }

@@ -18,5 +18,5 @@ int	builtin_export(t_token *word_list)
 		}
 		current_token = current_token->next;
 	}
-	return EXECUTION_SUCCESS;
+	return (EXECUTION_SUCCESS);
 }

@@ -5,7 +5,7 @@ t_command	*create_new_command(void)
 	t_command	*new_command;
 
 	new_command = malloc(sizeof(t_command));
-	return new_command;
+	return (new_command);
 }
 
 t_simple	*create_new_simple(void)
@@ -13,7 +13,7 @@ t_simple	*create_new_simple(void)
 	t_simple	*simple;
 
 	simple = malloc(sizeof(t_simple));
-	return simple;
+	return (simple);
 }
 
 t_connection	*create_new_connection(void)
@@ -21,42 +21,41 @@ t_connection	*create_new_connection(void)
 	t_connection	*connection;
 
 	connection = malloc(sizeof(t_connection));
-	return connection;
+	return (connection);
 }
 
 t_redirect	*create_redirect_list(t_token *token_list)
 {
-	t_token	*current_token;
 	t_redirect	*redirect_list;
 
-	current_token = token_list;
 	redirect_list = malloc(sizeof(t_redirect));
 	redirect_list->filename = NULL;
 	redirect_list->next = NULL;
-	while (current_token && current_token->attribute != OPERATOR)
+	while (token_list && token_list->attribute != OPERATOR)
 	{
-		if (current_token->attribute == REDIRECT)
+		if (token_list->attribute == REDIRECT)
 		{
-			if (!current_token->next || current_token->next->attribute != WORD)
+			if (!token_list->next || token_list->next->attribute != WORD)
 			{
-				printf("minishell: parse error near '%s'\n", current_token->name);
+				printf("minishell: parse error near '%s'\n",
+					token_list->name);
 				free_redirect_list(redirect_list);
-				return NULL;
+				return (NULL);
 			}
-			redirect_list = copy_redirect(redirect_list, current_token);
+			redirect_list = copy_redirect(redirect_list, token_list);
 			if (!redirect_list && errno == ENOMEM)
-				printf("minishell: malloc error: %s\n", current_token->name);
+				printf("minishell: malloc error: %s\n", token_list->name);
 			if (!redirect_list)
-				return NULL;
+				return (NULL);
 		}
-		current_token = current_token->next;
+		token_list = token_list->next;
 	}
-	return redirect_list;
+	return (redirect_list);
 }
 
 t_token	*create_word_list(t_token *token_list)
 {
-	t_token	*current_token = token_list;
+	t_token	*current_token;
 	t_token	*word_list;
 
 	current_token = token_list;
@@ -70,9 +69,9 @@ t_token	*create_word_list(t_token *token_list)
 			// create null terminated word list.
 			word_list = copy_token(word_list, current_token);
 			if (!word_list)
-				return NULL;
+				return (NULL);
 			current_token = current_token->next;
 		}
 	}
-	return word_list;
+	return (word_list);
 }

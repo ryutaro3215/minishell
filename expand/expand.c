@@ -13,19 +13,13 @@ void	expand_words(t_simple *simple, int last_command_exit_status)
 		{
 			expand_dollar(current_word, last_command_exit_status);
 			if (!current_word->name)
-				current_word = delete_current_word(simple, current_word);
-			else
 			{
-				expand_wildcard(current_word);
-				remove_quote(current_word);
-				current_word = current_word->next;
+				current_word = delete_current_word(simple, current_word);
+				continue ;
 			}
 		}
-		else
-		{
-			expand_wildcard(current_word);
-			remove_quote(current_word);
-			current_word = current_word->next;
-		}
+		expand_wildcard(current_word);
+		remove_quote(current_word);
+		current_word = current_word->next;
 	}
 }

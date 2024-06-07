@@ -14,19 +14,14 @@ bool	pattern_match(char *given_word, char *filename)
 			i++;
 			while (filename[j] && (given_word[i] != filename[j]))
 				j++;
-			continue;
+			continue ;
 		}
-		else if (given_word[i] == filename[j])
-		{
-			i++;
-			j++;
-			continue;
-		}
+		else if (given_word[i++] == filename[j++])
+			continue ;
 		else
-			break;
+			break ;
 	}
 	if (given_word[i] == '\0' && filename[j] == '\0')
-		return true;
-	return false;
+		return (true);
+	return (false);
 }
-

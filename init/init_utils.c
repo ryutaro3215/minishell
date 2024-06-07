@@ -45,8 +45,6 @@ void	init_shell_level(void)
 			new_shell_level = ft_itoa(++current_shell_level);
 			shlvl_var = ft_strjoin(shlvl_name, new_shell_level);
 			replace_environ_var(shlvl_var);
-			//free(shlvl_name);
-			//free(new_shell_level);
 			free(shlvl_var);
 		}
 	}
@@ -110,4 +108,3 @@ void	init_shell_oldpwd(int update_flag)
 			add_environ_var(oldpwd);
 	}
 }
-

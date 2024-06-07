@@ -28,9 +28,9 @@ void	free_redirect_list(t_redirect *redirect_list)
 
 void	free_simple(t_command *command)
 {
-	free_token_list(command->value.simple->word_list);
-	free_redirect_list(command->value.simple->redirect_list);
-	free(command->value.simple);
+	free_token_list(command->u_value.simple->word_list);
+	free_redirect_list(command->u_value.simple->redirect_list);
+	free(command->u_value.simple);
 	free(command);
 }
 
@@ -40,9 +40,9 @@ void	free_command_list(t_command *command_list)
 		free_simple(command_list);
 	else // command_list->attribute == cm_connection
 	{
-		free_command_list(command_list->value.connection->first);
-		free_command_list(command_list->value.connection->second);
-		free(command_list->value.connection);
+		free_command_list(command_list->u_value.connection->first);
+		free_command_list(command_list->u_value.connection->second);
+		free(command_list->u_value.connection);
 		free(command_list);
 	}
 }
