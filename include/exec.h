@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <limits.h>
 #include <fcntl.h>
+#include <dirent.h>
 #include <sys/wait.h>
 
 #define EXECUTION_SUCCESS 0
@@ -60,6 +61,8 @@ int		builtin_env(t_token *word_list);
 int		builtin_exit(int last_command_exit_status);
 
 // expand.c
+bool	pattern_match(char *given_word, char *filename);
+void	add_new_word(t_token *current_word, char *filename);
 t_token	*delete_current_word(t_simple *simple, t_token *current_word);
 char	*get_env_value(char *env_name);
 char	*get_env_name(char *word);

@@ -1,5 +1,55 @@
 #include "../include/exec.h"
 
+bool	pattern_match(char *given_word, char *filename)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (given_word[i] && filename[j])
+	{
+		if (given_word[i] == '*')
+		{
+			i++;
+			while (filename[j] && (given_word[i] != filename[j]))
+				j++;
+			continue;
+		}
+		else if (given_word[i] == filename[j])
+		{
+			i++;
+			j++;
+			continue;
+		}
+		else
+			break;
+	}
+	if (given_word[i] == '\0' && filename[j] == '\0')
+		return true;
+	return false;
+}
+
+void	add_new_word(t_token *current_word, char *filename)
+{
+	t_token	*new_word;
+
+	if (!current_word->name) // first word
+	{
+		current_word->name = strdup(filename);
+		current_word->attribute = WORD;
+		current_word->next = NULL;
+		return ;
+	}
+	while (current_word->next)
+		current_word = current_word->next;
+	new_word = malloc(sizeof(t_token));
+	new_word->name = strdup(filename);
+	new_word->attribute = WORD;
+	new_word->next = NULL;
+	current_word->next = new_word;
+}
+
 t_token	*delete_current_word(t_simple *simple, t_token *current_word)
 {
 	t_token	*word_list;
@@ -29,10 +79,10 @@ t_token	*delete_current_word(t_simple *simple, t_token *current_word)
 char	*get_env_value(char *env_name)
 {
 	extern char	**environ;
-	char	**tmp;
-	size_t	i;
-	char	*current_name;
-	char	*env_value;
+	char		**tmp;
+	size_t		i;
+	char		*current_name;
+	char		*env_value;
 
 	tmp = environ;
 	i = 0;

@@ -37,6 +37,12 @@ t_redirect	*copy_redirect(t_redirect *redirect_list, t_token *current_token)
 	t_redirect	*new_redirect;
 	t_redirect	*tmp;
 
+	if (strchr(current_token->next->name, '*'))
+	{
+		printf("minishell: %s: ambiguous redirect\n", current_token->next->name);
+		free_redirect_list(redirect_list);
+		return NULL;
+	}
 	if (redirect_list->filename) // redirect_list has been created.
 	{
 		new_redirect = malloc(sizeof(t_redirect));

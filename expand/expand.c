@@ -1,6 +1,6 @@
 #include "../include/exec.h"
 
-void	expand_word(t_token *current_word, int last_command_exit_status)
+void	expand_dollar(t_token *current_word, int last_command_exit_status)
 {
 	char	*new_word;
 	char	*old_word;
@@ -42,7 +42,7 @@ void	expand_word(t_token *current_word, int last_command_exit_status)
 					old_word += strlen(env_name) + 1; // 1 is num of "$".
 				else
 				{
-					old_word += strlen(env_value) + 1;
+					old_word += strlen(env_name) + 1;
 					new_word = ft_strjoin(new_word, env_value);
 				}
 			}
@@ -99,6 +99,52 @@ void	remove_quote(t_token *current_word)
 	current_word->name = new_word;
 }
 
+void	expand_wildcard(t_token *current_word)
+{
+	char	*given_word;
+	DIR		*dirp;
+	int		end_of_dirent;
+	struct dirent	*dp;
+	t_token	*next_word;
+
+	if (!strchr(current_word->name, '*'))
+		return ;
+	dirp = opendir(".");
+	if (!dirp)
+	{
+		printf("minishell: open failed\n");
+		return ;
+	}
+	given_word = strdup(current_word->name);
+	free(current_word->name);
+	current_word->name = NULL;
+	next_word = current_word->next;
+	end_of_dirent = 0;
+	while (end_of_dirent == 0)
+	{
+		dp = readdir(dirp);
+		if (!dp)
+		{
+			end_of_dirent = 1;
+			continue;
+		}
+		if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
+			continue;
+		if (pattern_match(given_word, dp->d_name))
+			add_new_word(current_word, dp->d_name);
+	}
+	closedir(dirp);
+	if (!current_word->name)
+		current_word->name = given_word;
+	else
+	{
+		while (current_word->next)
+			current_word = current_word->next;
+		current_word->next = next_word;
+		free(given_word);
+	}
+}
+
 void	expand_words(t_simple *simple, int last_command_exit_status)
 {
 	t_token	*current_word;
@@ -110,17 +156,19 @@ void	expand_words(t_simple *simple, int last_command_exit_status)
 		dollar = strchr(current_word->name, '$');
 		if (dollar)
 		{
-			expand_word(current_word, last_command_exit_status);
+			expand_dollar(current_word, last_command_exit_status);
 			if (!current_word->name)
 				current_word = delete_current_word(simple, current_word);
 			else
 			{
+				expand_wildcard(current_word);
 				remove_quote(current_word);
 				current_word = current_word->next;
 			}
 		}
 		else
 		{
+			expand_wildcard(current_word);
 			remove_quote(current_word);
 			current_word = current_word->next;
 		}

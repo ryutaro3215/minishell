@@ -1,6 +1,6 @@
 #include "../include/parse.h"
 
-t_command	*create_new_command()
+t_command	*create_new_command(void)
 {
 	t_command	*new_command;
 
@@ -8,7 +8,7 @@ t_command	*create_new_command()
 	return new_command;
 }
 
-t_simple	*create_new_simple()
+t_simple	*create_new_simple(void)
 {
 	t_simple	*simple;
 
@@ -16,7 +16,7 @@ t_simple	*create_new_simple()
 	return simple;
 }
 
-t_connection	*create_new_connection()
+t_connection	*create_new_connection(void)
 {
 	t_connection	*connection;
 
@@ -44,7 +44,8 @@ t_redirect	*create_redirect_list(t_token *token_list)
 			redirect_list = copy_redirect(redirect_list, current_token);
 			if (!redirect_list)
 			{
-				printf("malloc error: %s\n", current_token->name);
+				if (errno == ENOMEM)
+					printf("malloc error: %s\n", current_token->name);
 				return NULL;
 			}
 			current_token = current_token->next->next;
