@@ -3,7 +3,7 @@
 
 #include "init.h"
 #include "signal.h"
-#include "env.h"
+#include "environ.h"
 #include "eval.h"
 #include "parse.h"
 #include "exec.h"

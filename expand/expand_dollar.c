@@ -1,5 +1,43 @@
 #include "../include/expand.h"
 
+char	*get_env_value(char *env_name)
+{
+	extern char	**environ;
+	char		**tmp;
+	size_t		i;
+	char		*current_name;
+	char		*env_value;
+
+	tmp = environ;
+	i = 0;
+	while (tmp[i])
+	{
+		current_name = get_environ_name(tmp[i]);
+		if (strcmp(current_name, env_name) == 0)
+		{
+			env_value = get_environ_value(tmp[i]);
+			free(current_name);
+			return (env_value);
+		}
+		free(current_name);
+		i++;
+	}
+	return NULL;
+}
+
+char	*get_env_name(char *word)
+{
+	char	*env_name = NULL;
+
+	word++; // skip dollar.
+	while (*word && *word != '\'' && *word != '\"' && *word != '$' && *word != ' ' && *word != '\t')
+	{
+		env_name = append_char(env_name, *word);
+		word++;
+	}
+	return env_name;
+}
+
 void	expand_dollar(t_token *current_word, int last_command_exit_status)
 {
 	char	*new_word;

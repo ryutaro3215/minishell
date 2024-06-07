@@ -1,35 +1,5 @@
 #include "../include/exec.h"
 
-bool	pattern_match(char *given_word, char *filename)
-{
-	size_t	i;
-	size_t	j;
-
-	i = 0;
-	j = 0;
-	while (given_word[i] && filename[j])
-	{
-		if (given_word[i] == '*')
-		{
-			i++;
-			while (filename[j] && (given_word[i] != filename[j]))
-				j++;
-			continue;
-		}
-		else if (given_word[i] == filename[j])
-		{
-			i++;
-			j++;
-			continue;
-		}
-		else
-			break;
-	}
-	if (given_word[i] == '\0' && filename[j] == '\0')
-		return true;
-	return false;
-}
-
 void	add_new_word(t_token *current_word, char *filename)
 {
 	t_token	*new_word;
@@ -74,56 +44,6 @@ t_token	*delete_current_word(t_simple *simple, t_token *current_word)
 	free(current_word);
 	word_list->next = tmp;
 	return word_list->next;
-}
-
-char	*get_env_value(char *env_name)
-{
-	extern char	**environ;
-	char		**tmp;
-	size_t		i;
-	char		*current_name;
-	char		*env_value;
-
-	tmp = environ;
-	i = 0;
-	while (tmp[i])
-	{
-		current_name = get_environ_name(tmp[i]);
-		if (strcmp(current_name, env_name) == 0)
-		{
-			env_value = get_environ_value(tmp[i]);
-			free(current_name);
-			return (env_value);
-		}
-		free(current_name);
-		i++;
-	}
-	return NULL;
-}
-
-char	*get_env_name(char *word)
-{
-	char	*env_name = NULL;
-
-	word++; // skip dollar.
-	while (*word && *word != '\'' && *word != '\"' && *word != '$' && *word != ' ' && *word != '\t')
-	{
-		env_name = append_char(env_name, *word);
-		word++;
-	}
-	return env_name;
-}
-
-char	*get_last_double_quote(char *word)
-{
-	word++; // skip first double quote.
-	return (strchr(word, '\"'));
-}
-
-char	*get_last_single_quote(char *word)
-{
-	word++; // skip first single quote.
-	return (strchr(word, '\''));
 }
 
 char	*append_char(char *word, char c)
