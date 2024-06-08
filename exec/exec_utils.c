@@ -56,11 +56,7 @@ char	*get_path(char *line)
 	char	*end;
 
 	if (ft_strchr(line, '/'))
-	{
-		if (access(line, X_OK) >= 0)
-			return (line);
-		return (NULL);
-	}
+		return (line);
 	path_vars = getenv("PATH");
 	while (1)
 	{

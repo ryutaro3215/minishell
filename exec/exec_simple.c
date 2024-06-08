@@ -40,7 +40,7 @@ int	execute_disk_command(char *path, char **argv)
 	replace_environ_var(environ_var);
 	free(environ_var);
 	execve(path, argv, environ);
-	ft_err_printf("minishell: command not found: %s\n", argv[0]);
+	perror("minishell");
 	return (COMMAND_NOT_FOUND);
 }
 
@@ -59,8 +59,6 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out,
 		if (do_pipe(pipe_in, pipe_out) < 0)
 			exit(EXECUTION_FAILURE);
 		path = get_path(simple->word_list->name);
-		if (!path)
-			exit(NO_PERMISSION);
 		argv = get_argv(simple->word_list);
 		if (do_redirect(simple->redirect_list) == EXECUTION_FAILURE)
 			exit(EXECUTION_FAILURE);
