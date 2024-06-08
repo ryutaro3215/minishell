@@ -4,6 +4,7 @@
 # include "xmalloc.h"
 
 # include <stdlib.h>
+# include <stdbool.h>
 # include <stdio.h>
 # include <string.h>
 # include <unistd.h>
@@ -11,6 +12,7 @@
 
 // libft
 size_t	ft_strlen(const char *s);
+bool	ft_isalpha(int c);
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 char	*ft_strchr(const char *s, int c);
 int		ft_atoi(const char *str);

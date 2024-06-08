@@ -13,8 +13,8 @@ int	execute_exit_builtin(t_simple *simple, int last_command_exit_status)
 	free(environ_var);
 	if (do_redirect(simple->redirect_list) == EXECUTION_FAILURE)
 		return (EXECUTION_FAILURE);
-	builtin_exit(last_command_exit_status);
-	return (EXECUTION_SUCCESS);
+	builtin_exit(simple->word_list, last_command_exit_status);
+	return (EXECUTION_FAILURE);
 }
 
 int	execute_exit_in_subshell(t_simple *simple, int pipe_in, int pipe_out,
@@ -31,7 +31,8 @@ int	execute_exit_in_subshell(t_simple *simple, int pipe_in, int pipe_out,
 			exit(EXECUTION_FAILURE);
 		if (do_redirect(simple->redirect_list) == EXECUTION_FAILURE)
 			exit(EXECUTION_FAILURE);
-		builtin_exit(last_command_exit_status);
+		builtin_exit(simple->word_list, last_command_exit_status);
+		return (EXECUTION_FAILURE);
 	}
 	if (pipe_in != NO_PIPE)
 		close(pipe_in);

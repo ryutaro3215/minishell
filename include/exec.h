@@ -23,6 +23,7 @@
 
 # define EXECUTION_FAILURE 1
 
+# define NO_PERMISSION 126
 # define COMMAND_NOT_FOUND 127
 
 # define NO_PIPE -1

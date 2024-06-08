@@ -1,5 +1,15 @@
 #include "../include/builtin.h"
 
+int	retrieve_fdin_fdout(int fdin, int fdout)
+{
+	if (dup2(fdin, 0) < 0 || dup2(fdout, 1) < 0)
+	{
+		ft_err_printf("dup error\n");
+		return (-1);
+	}
+	return (0);
+}
+
 void	*find_shell_builtin(char *command)
 {
 	if (ft_strcmp(command, "echo") == 0)

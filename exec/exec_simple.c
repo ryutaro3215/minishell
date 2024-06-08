@@ -16,13 +16,13 @@ int	execute_builtin(t_simple *simple, int (*builtin)(t_token *))
 	fdin_tmp = dup(STDIN_FILENO);
 	fdout_tmp = dup(STDOUT_FILENO);
 	if (do_redirect(simple->redirect_list) == EXECUTION_FAILURE)
-		return (EXECUTION_FAILURE);
-	exit_status = builtin(simple->word_list);
-	if ((dup2(fdin_tmp, 0) == -1 || dup2(fdout_tmp, 1) == -1) && errno != 0)
 	{
-		ft_err_printf("dup error\n");
+		retrieve_fdin_fdout(fdin_tmp, fdout_tmp);
 		return (EXECUTION_FAILURE);
 	}
+	exit_status = builtin(simple->word_list);
+	if (retrieve_fdin_fdout(fdin_tmp, fdout_tmp) < 0)
+		return (EXECUTION_FAILURE);
 	close(fdin_tmp);
 	close(fdout_tmp);
 	return (exit_status);
@@ -59,6 +59,8 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out,
 		if (do_pipe(pipe_in, pipe_out) < 0)
 			exit(EXECUTION_FAILURE);
 		path = get_path(simple->word_list->name);
+		if (!path)
+			exit(NO_PERMISSION);
 		argv = get_argv(simple->word_list);
 		if (do_redirect(simple->redirect_list) == EXECUTION_FAILURE)
 			exit(EXECUTION_FAILURE);

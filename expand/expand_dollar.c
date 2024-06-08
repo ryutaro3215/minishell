@@ -45,7 +45,7 @@ static char	*do_each_expand(char *env_name, char *new_word,
 {
 	if (!env_name)
 		new_word = handle_dollar_only(new_word, old_word);
-	else if (ft_strcmp(env_name, "?") == 0)
+	else if (ft_strncmp(env_name, "?", 1) == 0)
 	{
 		new_word = handle_question(new_word, old_word,
 				last_command_exit_status);
