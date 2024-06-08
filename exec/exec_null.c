@@ -4,7 +4,7 @@ int	execute_null_command(t_redirect *redirect_list, int pipe_in, int pipe_out)
 {
 	pid_t	pid;
 
-	pid = fork();
+	pid = do_fork();
 	if (pid < 0)
 		return (EXECUTION_FAILURE);
 	if (pid == 0)

@@ -13,11 +13,11 @@ int	get_shell_level(void)
 	while (tmp[i])
 	{
 		environ_name = get_environ_name(tmp[i]);
-		if (strcmp(environ_name, "SHLVL") == 0)
+		if (ft_strcmp(environ_name, "SHLVL") == 0)
 		{
-			environ_value = strchr(tmp[i], '=') + 1; // when environ_value = NULL ?
+			environ_value = ft_strchr(tmp[i], '=') + 1;
 			free(environ_name);
-			return (atoi(environ_value));
+			return (ft_atoi(environ_value));
 		}
 		free(environ_name);
 		i++;
@@ -41,7 +41,7 @@ void	init_shell_level(void)
 			replace_environ_var("SHLVL=1");
 		else
 		{
-			shlvl_name = strdup("SHLVL=");
+			shlvl_name = ft_strdup("SHLVL=");
 			new_shell_level = ft_itoa(++current_shell_level);
 			shlvl_var = ft_strjoin(shlvl_name, new_shell_level);
 			replace_environ_var(shlvl_var);
@@ -57,11 +57,11 @@ void	init_shell_underscore(void)
 
 	if (!environ_already_exist("_", UNSET))
 	{
-		strlcat(getcwd(buf, PATH_MAX), "/./minishell", PATH_MAX + 1);
+		ft_strlcat(getcwd(buf, PATH_MAX), "/./minishell", PATH_MAX + 1);
 		underscore[0] = '_';
 		underscore[1] = '=';
 		underscore[2] = '\0';
-		strlcat(underscore, buf, PATH_MAX + 3); // "_=\0" is three character.
+		ft_strlcat(underscore, buf, PATH_MAX + 3); // "_=\0" is three character.
 		add_environ_var(underscore);
 	}
 }
@@ -78,7 +78,7 @@ void	init_shell_pwd(int update_flag)
 		pwd[2] = 'D';
 		pwd[3] = '=';
 		pwd[4] = '\0';
-		strlcat(pwd, getcwd(buf, PATH_MAX), PATH_MAX + 5);
+		ft_strlcat(pwd, getcwd(buf, PATH_MAX), PATH_MAX + 5);
 		if (update_flag)
 			replace_environ_var(pwd);
 		else
@@ -101,7 +101,7 @@ void	init_shell_oldpwd(int update_flag)
 		oldpwd[5] = 'D';
 		oldpwd[6] = '=';
 		oldpwd[7] = '\0';
-		strlcat(oldpwd, getcwd(buf, PATH_MAX), PATH_MAX + 8);
+		ft_strlcat(oldpwd, getcwd(buf, PATH_MAX), PATH_MAX + 8);
 		if (update_flag)
 			replace_environ_var(oldpwd);
 		else

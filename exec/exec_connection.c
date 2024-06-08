@@ -7,7 +7,7 @@ int	execute_pipeline(t_command *command, int pipe_in, int pipe_out,
 
 	if (pipe(fildes) < 0)
 	{
-		printf("minishell: pipe error\n");
+		ft_err_printf("minishell: pipe error\n");
 		return (EXECUTION_FAILURE);
 	}
 	execute_command_internal(command->u_value.connection->first,

@@ -13,7 +13,7 @@ char	*get_env_value(char *env_name)
 	while (tmp[i])
 	{
 		current_name = get_environ_name(tmp[i]);
-		if (strcmp(current_name, env_name) == 0)
+		if (ft_strcmp(current_name, env_name) == 0)
 		{
 			env_value = get_environ_value(tmp[i]);
 			free(current_name);
@@ -45,7 +45,7 @@ static char	*do_each_expand(char *env_name, char *new_word,
 {
 	if (!env_name)
 		new_word = handle_dollar_only(new_word, old_word);
-	else if (strcmp(env_name, "?") == 0)
+	else if (ft_strcmp(env_name, "?") == 0)
 	{
 		new_word = handle_question(new_word, old_word,
 				last_command_exit_status);

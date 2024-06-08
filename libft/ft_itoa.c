@@ -21,7 +21,7 @@ static char	*when_minus(int *n_digit, int *c, long *__n)
 	*__n *= -1;
 	*n_digit = num_of_digit(*__n);
 	i = *n_digit;
-	str = (char *)malloc((*n_digit + 1) * sizeof(char) + 1);
+	str = (char *)xmalloc((*n_digit + 1) * sizeof(char) + 1);
 	if (str == NULL)
 		return (NULL);
 	while (1 <= i)
@@ -43,7 +43,7 @@ static char	*when_plus(int *n_digit, int *c, long *__n)
 
 	*n_digit = num_of_digit(*__n);
 	i = *n_digit - 1;
-	str = (char *)malloc((*n_digit * sizeof(char) + 1));
+	str = (char *)xmalloc((*n_digit * sizeof(char) + 1));
 	if (str == NULL)
 		return (NULL);
 	while (0 <= i)

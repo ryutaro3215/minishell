@@ -6,13 +6,13 @@ char	**initialize_environ(void)
 	char		**my_environ;
 	size_t		i;
 
-	if (!environ) // ?
+	if (!environ)
 		return (NULL);
-	my_environ = malloc(sizeof(char *) * (count_strs(environ) + 1));
+	my_environ = xmalloc(sizeof(char *) * (count_strs(environ) + 1));
 	i = 0;
 	while (environ[i])
 	{
-		my_environ[i] = strdup(environ[i]);
+		my_environ[i] = ft_strdup(environ[i]);
 		i++;
 	}
 	my_environ[i] = NULL;

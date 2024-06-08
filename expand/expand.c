@@ -8,7 +8,7 @@ void	expand_words(t_simple *simple, int last_command_exit_status)
 	current_word = simple->word_list;
 	while (current_word)
 	{
-		dollar = strchr(current_word->name, '$');
+		dollar = ft_strchr(current_word->name, '$');
 		if (dollar)
 		{
 			expand_dollar(current_word, last_command_exit_status);

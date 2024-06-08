@@ -6,7 +6,7 @@ int	execute_exit_builtin(t_simple *simple, int last_command_exit_status)
 	char	*environ_var;
 
 	// update underscore environ.
-	underscore = strdup("_=");
+	underscore = ft_strdup("_=");
 	environ_var = strjoin_but_freed_only_first_arg(underscore,
 			simple->word_list->name);
 	replace_environ_var(environ_var);
@@ -22,7 +22,7 @@ int	execute_exit_in_subshell(t_simple *simple, int pipe_in, int pipe_out,
 {
 	pid_t	pid;
 
-	pid = fork();
+	pid = do_fork();
 	if (pid < 0)
 		return (EXECUTION_FAILURE);
 	if (pid == 0)

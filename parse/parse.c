@@ -35,13 +35,12 @@ t_command	*add_connection(t_token *token_list)
 	second_token_list = get_second_token_list(token_list);
 	if (!first_token_list || !second_token_list) // parse error
 	{
-		printf("minishell: parse error near '|'\n");
+		ft_err_printf("minishell: parse error near '|'\n");
 		free_token_list(first_token_list);
 		free_token_list(second_token_list);
 		return (NULL);
 	}
-	new_command = add_connection_type_command(first_token_list,
-			second_token_list);
+	new_command = add_connection_type_command();
 	if (!new_command)
 		return (NULL);
 	new_command->u_value.connection->connector = get_connector(token_list);
@@ -60,7 +59,7 @@ t_command	*add_command(t_token *token_list)
 		return (add_connection(token_list));
 	else
 	{
-		printf("syntax error: %s\n", token_list->name);
+		ft_err_printf("minishell: syntax error: %s\n", token_list->name);
 		return (NULL);
 	}
 }

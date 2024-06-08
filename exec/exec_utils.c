@@ -1,5 +1,15 @@
 #include "../include/exec.h"
 
+pid_t	do_fork(void)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid < 0)
+		ft_err_printf("fork error\n");
+	return (pid);
+}
+
 int	do_pipe(int pipe_in, int pipe_out)
 {
 	int	fd;
@@ -9,14 +19,20 @@ int	do_pipe(int pipe_in, int pipe_out)
 	{
 		fd = dup2(pipe_in, 0);
 		if (fd < 0)
+		{
+			ft_err_printf("dup error\n");
 			return (fd);
-		close(pipe_in); // need error check
+		}
+		close(pipe_in);
 	}
 	if (pipe_out != NO_PIPE)
 	{
 		fd = dup2(pipe_out, 1);
 		if (fd < 0)
+		{
+			ft_err_printf("dup error\n");
 			return (fd);
+		}
 		close(pipe_out);
 	}
 	return (fd);
@@ -26,7 +42,7 @@ char	*create_path(char *path_vars, size_t path_var_len, char *line)
 {
 	char	*path_var;
 
-	path_var = strndup(path_vars, path_var_len);
+	path_var = ft_strndup(path_vars, path_var_len);
 	path_var = strjoin_but_freed_only_first_arg(path_var, "/\0");
 	path_var = strjoin_but_freed_only_first_arg(path_var, line);
 	return (path_var);
@@ -39,16 +55,16 @@ char	*get_path(char *line)
 	char	*path_vars;
 	char	*end;
 
-	if (strchr(line, '/'))
+	if (ft_strchr(line, '/'))
 		return (line);
 	path_vars = getenv("PATH");
 	while (1)
 	{
 		if (*path_vars == ':')
 			path_vars++;
-		end = strchr(path_vars, ':');
+		end = ft_strchr(path_vars, ':');
 		if (!end)
-			path_var_len = strlen(path_vars);
+			path_var_len = ft_strlen(path_vars);
 		else
 			path_var_len = end - path_vars;
 		path = create_path(path_vars, path_var_len, line);
@@ -76,7 +92,7 @@ char	**get_argv(t_token *token_list)
 		tmp = tmp->next;
 		count++;
 	}
-	argv = malloc(sizeof(char *) * (count + 1));
+	argv = xmalloc(sizeof(char *) * (count + 1));
 	while (i < count)
 	{
 		argv[i] = token_list->name;

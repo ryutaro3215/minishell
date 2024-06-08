@@ -2,6 +2,6 @@
 
 int	builtin_exit(int last_command_exit_status)
 {
-	printf("exit\n");
+	ft_err_printf("exit\n");
 	exit(last_command_exit_status);
 }

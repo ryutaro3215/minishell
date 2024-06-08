@@ -6,15 +6,15 @@ void	add_new_word(t_token *current_word, char *filename)
 
 	if (!current_word->name) // first word
 	{
-		current_word->name = strdup(filename);
+		current_word->name = ft_strdup(filename);
 		current_word->attribute = WORD;
 		current_word->next = NULL;
 		return ;
 	}
 	while (current_word->next)
 		current_word = current_word->next;
-	new_word = malloc(sizeof(t_token));
-	new_word->name = strdup(filename);
+	new_word = xmalloc(sizeof(t_token));
+	new_word->name = ft_strdup(filename);
 	new_word->attribute = WORD;
 	new_word->next = NULL;
 	current_word->next = new_word;
@@ -53,12 +53,12 @@ char	*append_char(char *word, char c)
 
 	if (!word)
 	{
-		new_word = malloc(sizeof(char) * 2);
+		new_word = xmalloc(sizeof(char) * 2);
 		new_word[0] = c;
 		new_word[1] = '\0';
 		return (new_word);
 	}
-	new_word = malloc(sizeof(char) * strlen(word) + 2);
+	new_word = xmalloc(sizeof(char) * ft_strlen(word) + 2);
 	i = 0;
 	while (word[i])
 	{

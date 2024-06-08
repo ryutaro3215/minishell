@@ -6,7 +6,7 @@ int	get_cm_attribute(t_token *token_list)
 	{
 		if (token_list->attribute == OPERATOR)
 		{
-			if (strcmp(token_list->name, "|") == 0)
+			if (ft_strcmp(token_list->name, "|") == 0)
 				return (cm_connection);
 			// you can add other operations('||' '&&' '&').
 		}
@@ -17,11 +17,11 @@ int	get_cm_attribute(t_token *token_list)
 
 int	get_redirect_attribute(char *redirect_name)
 {
-	if (strcmp(redirect_name, "<") == 0)
+	if (ft_strcmp(redirect_name, "<") == 0)
 		return (r_input);
-	else if (strcmp(redirect_name, ">") == 0)
+	else if (ft_strcmp(redirect_name, ">") == 0)
 		return (r_output);
-	else if (strcmp(redirect_name, "<<") == 0)
+	else if (ft_strcmp(redirect_name, "<<") == 0)
 		return (r_heredoc);
 	else // (strcmp(redirect_name, ">>") == 0)
 		return (r_append_output);
@@ -33,9 +33,9 @@ int	get_connector(t_token *token_list)
 		token_list = token_list->next;
 	//if (!token_list) already checked in get_second_token_list()
 	//	return NULL; 
-	if (strcmp(token_list->name, "|") == 0)
+	if (ft_strcmp(token_list->name, "|") == 0)
 		return (pipeline);
-	printf("Invalid connector added\n");
+	ft_err_printf("minishell: Invalid connector added\n");
 	return (-1);
 }
 

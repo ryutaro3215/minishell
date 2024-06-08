@@ -11,7 +11,7 @@ int	builtin_env(t_token *word_list)
 	{
 		while (*tmp)
 		{
-			printf("%s\n", *tmp);
+			ft_printf("%s\n", *tmp);
 			tmp++;
 		}
 	}

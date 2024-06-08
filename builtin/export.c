@@ -9,8 +9,13 @@ int	builtin_export(t_token *word_list)
 		builtin_env(NULL);
 	while (current_token)
 	{
-		if (strchr(current_token->name, '=')) // when "export =" ... ?
+		if (ft_strchr(current_token->name, '='))
 		{
+			if (ft_strcmp(current_token->name, "=") == 0)
+			{
+				ft_err_printf("minishell: export: Invalid identifier\n");
+				return (EXECUTION_FAILURE);
+			}
 			if (environ_already_exist(current_token->name, EXPORT))
 				replace_environ_var(current_token->name);
 			else

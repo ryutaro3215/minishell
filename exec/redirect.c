@@ -7,11 +7,15 @@ int	do_r_input(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		printf("minishell: %s: No such file or directory\n", filename);
+		ft_err_printf("minishell: %s: No such file or directory\n", filename);
 		return (EXECUTION_FAILURE);
 	}
-	dup2(fd, 0); // need error check
-	close(fd); // need error check
+	if (dup2(fd, 0) == -1)
+	{
+		ft_err_printf("dup error\n");
+		return (EXECUTION_FAILURE);
+	}
+	close(fd);
 	return (EXECUTION_SUCCESS);
 }
 
@@ -23,11 +27,15 @@ int	do_r_output(char *filename)
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd < 0)
 	{
-		printf("minishell: %s: No such file or directory\n", filename);
+		ft_err_printf("minishell: %s: No such file or directory\n", filename);
 		return (EXECUTION_FAILURE);
 	}
-	dup2(fd, 1); // need error check
-	close(fd); // need error check
+	if (dup2(fd, 1) == -1)
+	{
+		ft_err_printf("dup error\n");
+		return (EXECUTION_FAILURE);
+	}
+	close(fd);
 	return (EXECUTION_SUCCESS);
 }
 
@@ -39,10 +47,14 @@ int	do_r_append_output(char *filename)
 			S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
 	if (fd < 0)
 	{
-		printf("minishell: %s: No such file or directory\n", filename);
+		ft_err_printf("minishell: %s: No such file or directory\n", filename);
 		return (EXECUTION_FAILURE);
 	}
-	dup2(fd, 1);
+	if (dup2(fd, 1) == -1)
+	{
+		ft_err_printf("dup error\n");
+		return (EXECUTION_FAILURE);
+	}
 	close(fd);
 	return (EXECUTION_SUCCESS);
 }
@@ -51,9 +63,17 @@ int	do_r_here_document(char *filename)
 {
 	int	fildes[2];
 
-	pipe(fildes); // need error check
-	write(fildes[1], filename, strlen(filename));
-	dup2(fildes[0], 0);
+	if (pipe(fildes) == -1)
+	{
+		ft_err_printf("pipe error\n");
+		return (EXECUTION_FAILURE);
+	}
+	write(fildes[1], filename, ft_strlen(filename));
+	if (dup2(fildes[0], 0) == -1)
+	{
+		ft_err_printf("dup error\n");
+		return (EXECUTION_FAILURE);
+	}
 	close(fildes[0]);
 	close(fildes[1]);
 	return (EXECUTION_SUCCESS);

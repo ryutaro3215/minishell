@@ -1,10 +1,10 @@
 #include "include/minishell.h"
+#include "include/libft.h"
 #include "include/init.h"
 #include "include/signal.h"
 #include "include/environ.h"
 #include "include/eval.h"
 #include "include/free.h"
-
 
 int	reader_loop(int *EOF_reached, int last_command_exit_status)
 {
@@ -41,6 +41,6 @@ int	main(void)
 	while (eof_reached == 0)
 		last_command_exit_status
 			= reader_loop(&eof_reached, last_command_exit_status);
-	printf("exit\n");
+	ft_err_printf("exit\n");
 	return (last_command_exit_status);
 }

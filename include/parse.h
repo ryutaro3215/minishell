@@ -3,6 +3,8 @@
 
 # include "exec.h"
 # include "free.h"
+# include "libft.h"
+# include "xmalloc.h"
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -49,8 +51,7 @@ t_token			*get_second_token_list(t_token *token_list);
 t_command		*add_simple_type_command(void);
 t_command		*add_connection_elem(t_command *new_command,
 					t_token *first_token_list, t_token *second_token_list);
-t_command		*add_connection_type_command(t_token *first_token_list,
-					t_token *second_token_list);
+t_command		*add_connection_type_command(void);
 
 // parse.c
 t_command		*parse(t_token *token_list);

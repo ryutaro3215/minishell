@@ -4,7 +4,7 @@ bool	need_here_document(t_token *token_list)
 {
 	while (token_list)
 	{
-		if (strcmp(token_list->name, "<<") == 0)
+		if (ft_strcmp(token_list->name, "<<") == 0)
 			return (true);
 		token_list = token_list->next;
 	}
@@ -24,11 +24,11 @@ static char	*here_document_loop(char *delimiter)
 		line = readline("heredoc> ");
 		if (!line)
 		{
-			printf("minishell: warning: reached EOF (need '%s')\n", delimiter);
+			ft_err_printf("minishell: reached EOF (need '%s')\n", delimiter);
 			eof_reached = EOF;
 			continue ;
 		}
-		if (strcmp(line, delimiter) == 0)
+		if (ft_strcmp(line, delimiter) == 0)
 		{
 			eof_reached = EOF;
 			free(line);

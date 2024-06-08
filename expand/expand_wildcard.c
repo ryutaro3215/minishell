@@ -18,7 +18,7 @@ static char	*store_given_word_to_add_new_words(t_token *current_word)
 {
 	char	*given_word;
 
-	given_word = strdup(current_word->name);
+	given_word = ft_strdup(current_word->name);
 	free(current_word->name);
 	current_word->name = NULL;
 	return (given_word);
@@ -34,7 +34,7 @@ static void	read_directory_loop(DIR *dirp, char *given_word,
 		dp = readdir(dirp);
 		if (!dp)
 			break ;
-		if (strcmp(dp->d_name, ".") == 0 || strcmp(dp->d_name, "..") == 0)
+		if (ft_strcmp(dp->d_name, ".") == 0 || ft_strcmp(dp->d_name, "..") == 0)
 			continue ;
 		if (pattern_match(given_word, dp->d_name))
 			add_new_word(current_word, dp->d_name);
@@ -47,12 +47,12 @@ void	expand_wildcard(t_token *current_word)
 	DIR				*dirp;
 	t_token			*next_word;
 
-	if (!strchr(current_word->name, '*'))
+	if (!ft_strchr(current_word->name, '*'))
 		return ;
 	dirp = opendir(".");
 	if (!dirp)
 	{
-		printf("minishell: open failed\n");
+		ft_err_printf("minishell: open failed\n");
 		return ;
 	}
 	given_word = store_given_word_to_add_new_words(current_word);

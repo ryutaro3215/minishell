@@ -3,6 +3,8 @@
 
 # include "minishell.h"
 # include "exec.h"
+# include "libft.h"
+# include "error.h"
 
 # include <string.h>
 # include <stdio.h>

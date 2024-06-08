@@ -6,12 +6,12 @@ static char	*ft_input_str(size_t len, unsigned int start, char const *s)
 	size_t	i;
 	char	*s_copy;
 
-	s_len = strlen(s);
+	s_len = ft_strlen(s);
 	if (s_len < len)
 		len = s_len;
 	if (s_len < start)
 		len = 0;
-	s_copy = malloc((len + 1) * sizeof(char));
+	s_copy = xmalloc((len + 1) * sizeof(char));
 	if (s_copy == NULL)
 		return (NULL);
 	i = 0;
@@ -32,7 +32,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		return (NULL);
 	if (len == 0)
 	{
-		s_copy = malloc(1);
+		s_copy = xmalloc(1);
 		if (s_copy == NULL)
 			return (NULL);
 		s_copy[0] = '\0';

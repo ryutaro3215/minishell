@@ -3,11 +3,11 @@
 char	*get_last_double_quote(char *word)
 {
 	word++; // skip first double quote.
-	return (strchr(word, '\"'));
+	return (ft_strchr(word, '\"'));
 }
 
 char	*get_last_single_quote(char *word)
 {
 	word++; // skip first single quote.
-	return (strchr(word, '\''));
+	return (ft_strchr(word, '\''));
 }

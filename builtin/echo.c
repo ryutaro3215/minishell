@@ -8,23 +8,23 @@ int	builtin_echo(t_token *word_list)
 	current_word = word_list->next;
 	if (!current_word)
 	{
-		printf("\n");
+		ft_printf("\n");
 		return (EXECUTION_SUCCESS);
 	}
 	n_option_flag = 0;
-	if (strcmp(current_word->name, "-n") == 0)
+	if (ft_strcmp(current_word->name, "-n") == 0)
 	{
 		n_option_flag = 1;
 		current_word = current_word->next;
 	}
 	while (current_word)
 	{
-		printf("%s", current_word->name);
+		ft_printf("%s", current_word->name);
 		current_word = current_word->next;
 		if (current_word)
-			printf(" ");
+			ft_printf(" ");
 	}
 	if (!n_option_flag)
-		printf("\n");
+		ft_printf("\n");
 	return (EXECUTION_SUCCESS);
 }

@@ -27,18 +27,18 @@ char	*get_environ_value(char *environ_var)
 {
 	char	*environ_value;
 
-	environ_value = strchr(environ_var, '=') + 1;
+	environ_value = ft_strchr(environ_var, '=') + 1;
 	if (*environ_value == '\0')
 		return (NULL);
-	return (strdup(environ_value));
+	return (ft_strdup(environ_value));
 }
 
 char	*get_environ_name(char *environ_var)
 {
 	char	*end;
 
-	end = strchr(environ_var, '=');
-	return (strndup(environ_var, end - environ_var));
+	end = ft_strchr(environ_var, '=');
+	return (ft_strndup(environ_var, end - environ_var));
 }
 
 bool	environ_already_exist(char *new_environ_var, int flag)
@@ -51,19 +51,18 @@ bool	environ_already_exist(char *new_environ_var, int flag)
 	if (flag == EXPORT)
 		new_environ_name = get_environ_name(new_environ_var);
 	else // flag == UNSET
-		new_environ_name = strdup(new_environ_var);
+		new_environ_name = ft_strdup(new_environ_var);
 	i = 0;
 	while (environ[i])
 	{
-		old_environ_name = get_environ_name(environ[i]);
-		if (strcmp(new_environ_name, old_environ_name) == 0)
+		old_environ_name = get_environ_name(environ[i++]);
+		if (ft_strcmp(new_environ_name, old_environ_name) == 0)
 		{
 			free(new_environ_name);
 			free(old_environ_name);
 			return (true);
 		}
 		free(old_environ_name);
-		i++;
 	}
 	free(new_environ_name);
 	return (false);

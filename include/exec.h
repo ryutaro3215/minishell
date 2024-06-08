@@ -9,6 +9,7 @@
 # include "builtin.h"
 # include "expand.h"
 # include "libft.h"
+# include "error.h"
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -55,6 +56,7 @@ int		execute_null_command(t_redirect *redirect_list,
 			int pipe_in, int pipe_out);
 
 // exec_utils.c
+pid_t	do_fork(void);
 int		do_pipe(int pipe_in, int pipe_out);
 char	*create_path(char *path_vars, size_t path_var_len, char *line);
 char	*get_path(char *line);

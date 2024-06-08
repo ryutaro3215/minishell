@@ -10,6 +10,7 @@
 
 # include "environ.h"
 # include "free.h"
+# include "error.h"
 # include "libft.h"
 
 # define UPDATE 1 // when change PWD or OLDPWD environment variable.

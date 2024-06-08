@@ -4,7 +4,7 @@ t_command	*create_new_command(void)
 {
 	t_command	*new_command;
 
-	new_command = malloc(sizeof(t_command));
+	new_command = xmalloc(sizeof(t_command));
 	return (new_command);
 }
 
@@ -12,7 +12,7 @@ t_simple	*create_new_simple(void)
 {
 	t_simple	*simple;
 
-	simple = malloc(sizeof(t_simple));
+	simple = xmalloc(sizeof(t_simple));
 	return (simple);
 }
 
@@ -20,7 +20,7 @@ t_connection	*create_new_connection(void)
 {
 	t_connection	*connection;
 
-	connection = malloc(sizeof(t_connection));
+	connection = xmalloc(sizeof(t_connection));
 	return (connection);
 }
 
@@ -28,7 +28,7 @@ t_redirect	*create_redirect_list(t_token *token_list)
 {
 	t_redirect	*redirect_list;
 
-	redirect_list = malloc(sizeof(t_redirect));
+	redirect_list = xmalloc(sizeof(t_redirect));
 	redirect_list->filename = NULL;
 	redirect_list->next = NULL;
 	while (token_list && token_list->attribute != OPERATOR)
@@ -37,14 +37,12 @@ t_redirect	*create_redirect_list(t_token *token_list)
 		{
 			if (!token_list->next || token_list->next->attribute != WORD)
 			{
-				printf("minishell: parse error near '%s'\n",
+				ft_err_printf("minishell: parse error near '%s'\n",
 					token_list->name);
 				free_redirect_list(redirect_list);
 				return (NULL);
 			}
 			redirect_list = copy_redirect(redirect_list, token_list);
-			if (!redirect_list && errno == ENOMEM)
-				printf("minishell: malloc error: %s\n", token_list->name);
 			if (!redirect_list)
 				return (NULL);
 		}

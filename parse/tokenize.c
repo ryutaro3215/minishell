@@ -37,13 +37,13 @@ bool	is_operator(char *line)
 
 bool	is_redirect(char *line)
 {
-	if (strncmp(line, "<<", 2) == 0)
+	if (ft_strncmp(line, "<<", 2) == 0)
 		return true;
-	else if (strncmp(line, ">>", 2) == 0)
+	else if (ft_strncmp(line, ">>", 2) == 0)
 		return true;
-	else if (strncmp(line, ">", 1) == 0)
+	else if (ft_strncmp(line, ">", 1) == 0)
 		return true;
-	else if (strncmp(line, "<", 1) == 0)
+	else if (ft_strncmp(line, "<", 1) == 0)
 		return true;
 	return false;
 }
@@ -55,7 +55,7 @@ char	*get_word(char *line)
 
 	while (line[i] && is_word_component(line[i]))
 		i++;
-	token = malloc(sizeof(char) * (i + 1));
+	token = xmalloc(sizeof(char) * (i + 1));
 	i = 0;
 	while (line[i] && is_word_component(line[i]))
 	{
@@ -71,7 +71,7 @@ char	*get_operator(char *line)
 	char	*token;
 	(void)	line;
 
-	token = malloc(sizeof(char) * 2);
+	token = xmalloc(sizeof(char) * 2);
 	token[0] = '|';
 	token[1] = '\0';
 	return token;
@@ -82,16 +82,16 @@ char	*get_redirect(char *line)
 	char	*token;
 	(void)	line;
 
-	if ((strncmp(line, "<<", 2) == 0) || (strncmp(line, ">>", 2) == 0))
+	if ((ft_strncmp(line, "<<", 2) == 0) || (ft_strncmp(line, ">>", 2) == 0))
 	{
-		token = malloc(sizeof(char) * 3);
+		token = xmalloc(sizeof(char) * 3);
 		token[0] = line[0];
 		token[1] = line[1];
 		token[2] = '\0';
 	}
 	else //  '<' or '>'
 	{
-		token = malloc(sizeof(char) * 2);
+		token = xmalloc(sizeof(char) * 2);
 		token[0] = line[0];
 		token[1] = '\0';
 	}
@@ -103,7 +103,7 @@ t_token	*add_token(t_token *token_list, char **line, int token_kind)
 	t_token	*new_token;
 	t_token	*tmp;
 
-	new_token = malloc(sizeof(t_token));
+	new_token = xmalloc(sizeof(t_token));
 	new_token->attribute = token_kind;
 	if (token_kind == WORD)
 		new_token->name = get_word(*line);
@@ -111,7 +111,7 @@ t_token	*add_token(t_token *token_list, char **line, int token_kind)
 		new_token->name = get_operator(*line);
 	else if (token_kind == REDIRECT)
 		new_token->name = get_redirect(*line);
-	*line += strlen(new_token->name); // increment line address.
+	*line += ft_strlen(new_token->name); // increment line address.
 	new_token->next = NULL;
 	if (!token_list)
 		return new_token;
@@ -146,7 +146,7 @@ t_token	*tokenize(char *line)
 		{
 			if (token_list)
 				free_token_list(token_list);
-			printf("syntax error: %s\n", line);
+			ft_err_printf("syntax error: %s\n", line);
 			return NULL;
 		}
 	}

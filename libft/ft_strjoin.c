@@ -7,8 +7,8 @@ char	*strjoin_but_freed_only_first_arg(char *s1, char *s2)
 	int		j;
 
 	if (!s1)
-		return (strdup(s2));
-	s3 = malloc((strlen(s1) + strlen(s2) + 1) * sizeof(char));
+		return (ft_strdup(s2));
+	s3 = xmalloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (s3 == NULL)
 		return (NULL);
 	i = 0;
@@ -32,11 +32,11 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	if (!s1)
 	{
-		tmp = strdup(s2);
+		tmp = ft_strdup(s2);
 		free(s2);
 		return (tmp); // valid in every use ?
 	}
-	s3 = malloc((strlen(s1) + strlen(s2) + 1) * sizeof(char));
+	s3 = xmalloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (s3 == NULL)
 		return (NULL);
 	i = 0;
