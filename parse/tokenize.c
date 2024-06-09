@@ -1,18 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   token.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/27 19:06:10 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/09 17:06:44 by rmatsuba         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "../include/parse.h"
 
-#include "token.h"
-
-bool	check_space(char c)
+static bool	check_space(char c)
 {
 	if ((c == ' ' || c == '\t')
 		&& (c != '\n' || c != '\0'))
@@ -21,7 +9,7 @@ bool	check_space(char c)
 		return (false);
 }
 
-bool	check_conope(char c)
+static bool	check_conope(char c)
 {
 	if (c == '|' || c == '&')
 		return (true);
@@ -29,7 +17,7 @@ bool	check_conope(char c)
 		return (false);
 }
 
-bool	check_redope(char c)
+static bool	check_redope(char c)
 {
 	if (c == '<' || c == '>')
 		return (true);
@@ -37,13 +25,13 @@ bool	check_redope(char c)
 		return (false);
 }
 
-void	skip_space(char **str)
+static void	skip_space(char **str)
 {
 	while (check_space(**str))
 		(*str)++;
 }
 
-int	check_quote(char str)
+static int	check_quote(char str)
 {
 	if (str == '\"')
 		return (2);
@@ -53,7 +41,7 @@ int	check_quote(char str)
 		return (0);
 }
 
-int	skip_next_quote(char *str)
+static int	skip_next_quote(char *str)
 {
 	int	quote_type;
 	int	i;
@@ -72,11 +60,11 @@ int	skip_next_quote(char *str)
 			i++;
 	}
 	if (str[i] == '\0')
-		return (0);
-	return (i + 1);
+		return (-1);
+	return (i);
 }
 
-int	get_word_len(char *str)
+static int	get_word_len(char *str)
 {
 	int	len;
 	int	quote_len;
@@ -101,7 +89,7 @@ int	get_word_len(char *str)
 	return (len);
 }
 
-t_token	*new_word_token(char **str)
+static t_token	*new_word_token(char **str)
 {
 	t_token	*token;
 	int		word_len;
@@ -119,7 +107,7 @@ t_token	*new_word_token(char **str)
 	return (token);
 }
 
-int	get_redope_len(t_token *token, char *str)
+static int	get_redope_len(t_token *token, char *str)
 {
 	int	ope_len;
 
@@ -133,14 +121,14 @@ int	get_redope_len(t_token *token, char *str)
 	return (ope_len);
 }
 
-int	get_conope_len(t_token *token, char *str)
+atic int	get_conope_len(t_token *token, char *str)
 {
 	int	ope_len;
 
 	ope_len = 0;
 	if (str[ope_len] == '|')
 	{
-		token->attribute = CONNECTION;
+		token->attribute = OPERATOR;
 		while (str[ope_len] && str[ope_len] == '|')
 			ope_len++;
 	}
@@ -148,7 +136,7 @@ int	get_conope_len(t_token *token, char *str)
 	{
 		if (*str == '&' && *(str + 1) == '&')
 		{
-			token->attribute = CONNECTION;
+			token->attribute = OPERATOR;
 			ope_len = 2;
 		}
 		else
@@ -160,7 +148,7 @@ int	get_conope_len(t_token *token, char *str)
 	return (ope_len);
 }
 
-int	get_ope_len(t_token *token, char *str)
+static int	get_ope_len(t_token *token, char *str)
 {
 	int	ope_len;
 
@@ -172,13 +160,13 @@ int	get_ope_len(t_token *token, char *str)
 	return (ope_len);
 }
 
-t_token	*new_ope_token(char **str)
+static t_token	*new_ope_token(char **str)
 {
 	t_token	*token;
 	int		ope_len;
 
 	ope_len = 0;
-	token = (t_token *)malloc(sizeof(t_token));
+	token = (t_token *)xmalloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
 	ope_len = get_ope_len(token, *str);
@@ -188,44 +176,23 @@ t_token	*new_ope_token(char **str)
 	return (token);
 }
 
-t_token	*init_token(char *str)
+t_token	*tokenize(char *line)
 {
 	t_token	*token;
 	t_token	head;
 
 	head.next = NULL;
 	token = &head;
-	while (*str)
+	while (*line)
 	{
-		skip_space(&str);
-		if (check_conope(*str) || check_redope(*str))
-			token->next = new_ope_token(&str);
+		skip_space(&line);
+		if (check_conope(*line) || check_redope(*line))
+			token->next = new_ope_token(&line);
 		else
-			token->next = new_word_token(&str);
+			token->next = new_word_token(&line);
 		if (!token->next)
 			return (NULL);
 		token = token->next;
 	}
 	return (head.next);
-}
-
-int main (void)
-{
-	t_token	*token;
-	char	*str;
-
-	while (true)
-	{
-		str = readline("minishell$ ");
-		if (!str)
-			break ;
-		token = init_token(str);
-		while (token != NULL)
-		{
-			printf("token: %s\n", token->name);
-			printf("type: %d\n", token->attribute);
-			token = token->next;
-		}
-		add_history(str);
-	}
 }

@@ -6,7 +6,7 @@ SRCS = $(shell find $(SRCDIR) -name "*.c" -type f | xargs)
 OBJS = $(SRCS:.c=.o)
 LIBDIR = .
 LIBNAME = readline
-INCLUDE = -I ./includes
+INCLUDE = -I .
 LIBRARY = -L $(LIBDIR) -l $(LIBNAME)
 
 all: $(NAME)
