@@ -6,7 +6,7 @@
 /*   By: rmatsuba <rmatsuba@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 18:59:23 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/06 13:35:44 by rmatsuba         ###   ########.fr       */
+/*   Updated: 2024/06/09 16:06:20 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,15 +26,15 @@ typedef struct s_token t_token;
 
 enum token_attr
 {
-	WORD = 1,
-	CON_OPE,
-	RED_OPE
+	WORD,
+	CONNECTION,
+	REDIRECT
 };
 
 typedef struct s_token
 {
-	char			*word;
-	int				attr;
+	char			*name;
+	int				attribute;
 	struct s_token	*next;
 }	t_token;
 
