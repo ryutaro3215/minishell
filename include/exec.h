@@ -18,6 +18,7 @@
 # include <limits.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <sys/stat.h>
 
 # define EXECUTION_SUCCESS 0
 
@@ -57,9 +58,8 @@ int		execute_null_command(t_redirect *redirect_list,
 			int pipe_in, int pipe_out);
 
 // exec_utils.c
-pid_t	do_fork(void);
-int		do_pipe(int pipe_in, int pipe_out);
 char	*create_path(char *path_vars, size_t path_var_len, char *line);
+bool	have_right_permission(char *path);
 char	*get_path(char *line);
 char	**get_argv(t_token *token_list);
 
@@ -68,5 +68,9 @@ int		do_r_input(char *filename);
 int		do_r_output(char *filename);
 int		do_r_append_output(char *filename);
 int		do_redirect(t_redirect *redirect_list);
+
+// do_pipe_fork.c
+pid_t	do_fork(void);
+int		do_pipe(int pipe_in, int pipe_out);
 
 #endif

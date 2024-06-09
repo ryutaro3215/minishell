@@ -52,13 +52,6 @@ t_redirect	*copy_redirect(t_redirect *redirect_list, t_token *current_token)
 {
 	t_redirect	*new_redirect;
 
-	if (ft_strchr(current_token->next->name, '*'))
-	{
-		ft_err_printf("minishell: %s: ambiguous redirect\n",
-			current_token->next->name);
-		free_redirect_list(redirect_list);
-		return (NULL);
-	}
 	new_redirect = create_redirect_type_struct(redirect_list);
 	new_redirect->attribute = get_redirect_attribute(current_token->name);
 	new_redirect->filename = ft_strdup(current_token->next->name);

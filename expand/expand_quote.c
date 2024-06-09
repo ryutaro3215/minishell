@@ -52,3 +52,28 @@ void	remove_quote(t_token *current_word)
 	free(current_word->name);
 	current_word->name = new_word;
 }
+
+void	remove_redirect_quote(t_redirect *current_redirect)
+{
+	char	*old_redirect;
+	char	*new_redirect;
+
+	old_redirect = current_redirect->filename;
+	if (!ft_strchr(old_redirect, '\'') && !ft_strchr(old_redirect, '\"'))
+		return ;
+	new_redirect = NULL;
+	while (*old_redirect)
+	{
+		if (*old_redirect == '\'')
+			new_redirect = remove_single_quote(new_redirect, &old_redirect);
+		else if (*old_redirect == '\"')
+			new_redirect = remove_double_quote(new_redirect, &old_redirect);
+		else
+		{
+			new_redirect = append_char(new_redirect, *old_redirect);
+			old_redirect++;
+		}
+	}
+	free(current_redirect->filename);
+	current_redirect->filename = new_redirect;
+}

@@ -83,3 +83,30 @@ void	expand_dollar(t_token *current_word, int last_command_exit_status)
 	free(current_word->name);
 	current_word->name = new_word;
 }
+
+void	expand_redirect_dollar(t_redirect *current_redirect,
+	int last_command_exit_status)
+{
+	char	*new_redirect;
+	char	*old_redirect;
+	char	*env_name;
+
+	new_redirect = NULL;
+	old_redirect = current_redirect->filename;
+	while (*old_redirect)
+	{
+		if (*old_redirect == '\'')
+			new_redirect = skip_single_quote(new_redirect, &old_redirect);
+		else if (*old_redirect == '$')
+		{
+			env_name = get_env_name(old_redirect);
+			new_redirect = do_each_expand(env_name, new_redirect, &old_redirect,
+					last_command_exit_status);
+			free(env_name);
+		}
+		else
+			new_redirect = skip_char(new_redirect, &old_redirect);
+	}
+	free(current_redirect->filename);
+	current_redirect->filename = new_redirect;
+}

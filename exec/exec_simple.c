@@ -40,7 +40,7 @@ int	execute_disk_command(char *path, char **argv)
 	replace_environ_var(environ_var);
 	free(environ_var);
 	execve(path, argv, environ);
-	perror("minishell");
+	ft_err_printf("minishell: %s: Command not found\n", argv[0]);
 	return (COMMAND_NOT_FOUND);
 }
 
@@ -78,7 +78,8 @@ int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out,
 {
 	int	(*builtin)(t_token *);
 
-	expand_words(simple, last_command_exit_status);
+	if (expand(simple, last_command_exit_status) == EXECUTION_FAILURE)
+		return (EXECUTION_FAILURE);
 	// if word_list is null, or $foo command does not exist.
 	if (!simple->word_list)
 		return (execute_null_command(simple->redirect_list, pipe_in, pipe_out));

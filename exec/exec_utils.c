@@ -1,43 +1,5 @@
 #include "../include/exec.h"
 
-pid_t	do_fork(void)
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid < 0)
-		ft_err_printf("fork error\n");
-	return (pid);
-}
-
-int	do_pipe(int pipe_in, int pipe_out)
-{
-	int	fd;
-
-	fd = 0;
-	if (pipe_in != NO_PIPE)
-	{
-		fd = dup2(pipe_in, 0);
-		if (fd < 0)
-		{
-			ft_err_printf("dup error\n");
-			return (fd);
-		}
-		close(pipe_in);
-	}
-	if (pipe_out != NO_PIPE)
-	{
-		fd = dup2(pipe_out, 1);
-		if (fd < 0)
-		{
-			ft_err_printf("dup error\n");
-			return (fd);
-		}
-		close(pipe_out);
-	}
-	return (fd);
-}
-
 char	*create_path(char *path_vars, size_t path_var_len, char *line)
 {
 	char	*path_var;
@@ -48,6 +10,28 @@ char	*create_path(char *path_vars, size_t path_var_len, char *line)
 	return (path_var);
 }
 
+bool	have_right_permission(char *path)
+{
+	struct stat	buf;
+
+	if (stat(path, &buf) < 0)
+	{
+		ft_err_printf("minishell: %s: No such file or directory\n", path);
+		exit(COMMAND_NOT_FOUND);
+	}
+	if (S_ISDIR(buf.st_mode))
+	{
+		ft_err_printf("minishell: %s: Is a directory\n", path);
+		exit(NO_PERMISSION);
+	}
+	if (access(path, X_OK) < 0)
+	{
+		ft_err_printf("minishell: %s: Permission denied\n", path);
+		exit(NO_PERMISSION);
+	}
+	return (true);
+}
+
 char	*get_path(char *line)
 {
 	size_t	path_var_len;
@@ -55,7 +39,7 @@ char	*get_path(char *line)
 	char	*path_vars;
 	char	*end;
 
-	if (ft_strchr(line, '/'))
+	if (ft_strchr(line, '/') && have_right_permission(line))
 		return (line);
 	path_vars = getenv("PATH");
 	while (1)
