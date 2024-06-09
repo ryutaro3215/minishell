@@ -6,7 +6,7 @@
 /*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/27 19:06:10 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/09 16:09:29 by rmatsuba         ###   ########.fr       */
+/*   Updated: 2024/06/09 17:06:44 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,32 +65,37 @@ int	skip_next_quote(char *str)
 	{
 		while (str[i] && check_quote(str[i]) != 2)
 			i++;
-		if (str[i] && check_quote(str[i]) == 2 && check_quote(str[i + 1]) == 2)
-			i += skip_next_quote(str + i + 1) + 1;
 	}
 	else
 	{
 		while (str[i] && check_quote(str[i]) != 1)
 			i++;
-		if (str[i] && check_quote(str[i]) == 1 && check_quote(str[i + 1]) == 1)
-			i += skip_next_quote(str + i + 1) + 1;
 	}
 	if (str[i] == '\0')
-		return (-1);
-	return (i);
+		return (0);
+	return (i + 1);
 }
 
 int	get_word_len(char *str)
 {
 	int	len;
+	int	quote_len;
 
 	len = 0;
-	if (check_quote(str[len]) != 0)
-		len = skip_next_quote(str) + 1;
-	else
+	quote_len = 0;
+	while (*str && !check_space(*str) && !check_conope(*str)
+		&& !check_redope(*str))
 	{
-		while (str[len] && !check_space(str[len]) && !check_conope(str[len])
-			&& !check_redope(str[len]))
+		if (check_quote(*str))
+		{
+			quote_len = skip_next_quote(str);
+			if (quote_len == 0)
+				return (0);
+			str += quote_len;
+			len += quote_len;
+		}
+		else
+			str++;
 			len++;
 	}
 	return (len);
@@ -107,12 +112,6 @@ t_token	*new_word_token(char **str)
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->name = (char *)malloc(sizeof(char) * (word_len + 1));
-	if (!token->name)
-	{
-		free(token);
-		return (NULL);
-	}
 	token->name = strndup(*str, word_len);
 	token->attribute = WORD;
 	token->next = NULL;
