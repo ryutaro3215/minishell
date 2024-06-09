@@ -60,8 +60,8 @@ static int	skip_next_quote(char *str)
 			i++;
 	}
 	if (str[i] == '\0')
-		return (-1);
-	return (i);
+		return (0);
+	return (++i);
 }
 
 static int	get_word_len(char *str)
@@ -83,8 +83,10 @@ static int	get_word_len(char *str)
 			len += quote_len;
 		}
 		else
+		{
 			str++;
 			len++;
+		}
 	}
 	return (len);
 }
@@ -97,10 +99,10 @@ static t_token	*new_word_token(char **str)
 	word_len = get_word_len(*str);
 	if (word_len == 0)
 		return (NULL);
-	token = (t_token *)malloc(sizeof(t_token));
+	token = (t_token *)xmalloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->name = strndup(*str, word_len);
+	token->name = ft_strndup(*str, word_len);
 	token->attribute = WORD;
 	token->next = NULL;
 	*str += word_len;
@@ -170,7 +172,7 @@ static t_token	*new_ope_token(char **str)
 	if (!token)
 		return (NULL);
 	ope_len = get_ope_len(token, *str);
-	token->name = strndup(*str, ope_len);
+	token->name = ft_strndup(*str, ope_len);
 	token->next = NULL;
 	*str += ope_len;
 	return (token);
