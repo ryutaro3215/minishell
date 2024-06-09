@@ -15,15 +15,18 @@ int	execute_command(t_command *command, int last_command_exit_status)
 {
 	pid_t	last_made_pid;
 	int		status;
+	int		waitpid_result;
 
 	last_made_pid = execute_command_internal(command, NO_PIPE, NO_PIPE,
 			last_command_exit_status);
 	if (last_made_pid == EXECUTION_FAILURE
 		|| last_made_pid == EXECUTION_SUCCESS)
 		return (last_made_pid);
-	handle_error(waitpid(last_made_pid, &status, 0) == -1);
+	waitpid_result = waitpid(last_made_pid, &status, 0);
 	while (wait(NULL) != -1)
 		continue ;
+	if (waitpid_result == -1) // when waitpid failed (waitpid return -1), already done waitpid (in andlist or orlist function)
+		return (last_made_pid);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status)); // forbidden function ??
 	else // (WIFSIGNALED(status))
