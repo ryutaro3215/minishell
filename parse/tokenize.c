@@ -1,154 +1,199 @@
 #include "../include/parse.h"
 
-bool	is_blank(char c)
+static bool	check_space(char c)
 {
-	if (c == ' ' || c == '\t')
-		return true;
-	return false;
+	if ((c == ' ' || c == '\t')
+		&& (c != '\n' || c != '\0'))
+		return (true);
+	else
+		return (false);
 }
 
-bool	is_word_component(char c)
+static bool	check_conope(char c)
 {
-	if (!isalnum(c) && c != '_' && c != '-' && c != '.' && c != '/' && c != '=' && c != '~' && c != '$' && c != '\'' && c != '\"' && c != '?' && c != '\\' && c != ';' && c != '*')
-		return false;
-	return true;
+	if (c == '|' || c == '&')
+		return (true);
+	else
+		return (false);
 }
 
-bool	is_word_beggining_component(char c)
+static bool	check_redope(char c)
 {
-	if (!isalnum(c) && c != '_' && c != '-' && c != '.' && c != '/' && c!= '=' && c != '~' && c != '$' && c != '\'' && c != '\"' && c != '?' && c != '\\' && c != ';' && c != '*')
-		return false;
-	return true;
+	if (c == '<' || c == '>')
+		return (true);
+	else
+		return (false);
 }
 
-bool	is_word(char *line)
+static void	skip_space(char **str)
 {
-	if (is_word_beggining_component(line[0]))
-		return true;
-	return false;
+	while (check_space(**str))
+		(*str)++;
 }
 
-bool	is_operator(char *line)
+static int	check_quote(char str)
 {
-	if (line[0] == '|')
-		return true;
-	return false;
+	if (str == '\"')
+		return (2);
+	else if (str == '\'')
+		return (1);
+	else
+		return (0);
 }
 
-bool	is_redirect(char *line)
+static int	skip_next_quote(char *str)
 {
-	if (ft_strncmp(line, "<<", 2) == 0)
-		return true;
-	else if (ft_strncmp(line, ">>", 2) == 0)
-		return true;
-	else if (ft_strncmp(line, ">", 1) == 0)
-		return true;
-	else if (ft_strncmp(line, "<", 1) == 0)
-		return true;
-	return false;
-}
+	int	quote_type;
+	int	i;
 
-char	*get_word(char *line)
-{
-	int	i = 0;
-	char	*token;
-
-	while (line[i] && is_word_component(line[i]))
-		i++;
-	token = xmalloc(sizeof(char) * (i + 1));
 	i = 0;
-	while (line[i] && is_word_component(line[i]))
+	quote_type = check_quote(str[i]);
+	i++;
+	if (quote_type == 2)
 	{
-		token[i] = line[i];
-		i++;
+		while (str[i] && check_quote(str[i]) != 2)
+			i++;
+		if (str[i] && check_quote(str[i]) == 2 && check_quote(str[i + 1]) == 2)
+			i += skip_next_quote(str + i + 1) + 1;
 	}
-	token[i] = '\0';
-	return token;
-}
-
-char	*get_operator(char *line)
-{
-	char	*token;
-	(void)	line;
-
-	token = xmalloc(sizeof(char) * 2);
-	token[0] = '|';
-	token[1] = '\0';
-	return token;
-}
-
-char	*get_redirect(char *line)
-{
-	char	*token;
-	(void)	line;
-
-	if ((ft_strncmp(line, "<<", 2) == 0) || (ft_strncmp(line, ">>", 2) == 0))
-	{
-		token = xmalloc(sizeof(char) * 3);
-		token[0] = line[0];
-		token[1] = line[1];
-		token[2] = '\0';
-	}
-	else //  '<' or '>'
-	{
-		token = xmalloc(sizeof(char) * 2);
-		token[0] = line[0];
-		token[1] = '\0';
-	}
-	return token;
-}
-
-t_token	*add_token(t_token *token_list, char **line, int token_kind)
-{
-	t_token	*new_token;
-	t_token	*tmp;
-
-	new_token = xmalloc(sizeof(t_token));
-	new_token->attribute = token_kind;
-	if (token_kind == WORD)
-		new_token->name = get_word(*line);
-	else if (token_kind == OPERATOR)
-		new_token->name = get_operator(*line);
-	else if (token_kind == REDIRECT)
-		new_token->name = get_redirect(*line);
-	*line += ft_strlen(new_token->name); // increment line address.
-	new_token->next = NULL;
-	if (!token_list)
-		return new_token;
 	else
 	{
-		tmp = token_list;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->next = new_token;
-		return token_list;
+		while (str[i] && check_quote(str[i]) != 1)
+			i++;
+		if (str[i] && check_quote(str[i]) == 1 && check_quote(str[i + 1]) == 1)
+			i += skip_next_quote(str + i + 1) + 1;
 	}
+	if (str[i] == '\0')
+		return (-1);
+	return (i);
+}
+
+static int	get_word_len(char *str)
+{
+	int	len;
+
+	len = 0;
+	if (check_quote(str[len]) != 0)
+		len = skip_next_quote(str) + 1;
+	else
+	{
+		while (str[len] && !check_space(str[len]) && !check_conope(str[len])
+			&& !check_redope(str[len]))
+			len++;
+	}
+	return (len);
+}
+
+static t_token	*new_word_token(char **str)
+{
+	t_token	*token;
+	int		word_len;
+
+	word_len = get_word_len(*str);
+	if (word_len == 0)
+		return (NULL);
+	token = (t_token *)malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->name = (char *)malloc(sizeof(char) * (word_len + 1));
+	if (!token->name)
+	{
+		free(token);
+		return (NULL);
+	}
+	token->name = strndup(*str, word_len);
+	token->attribute = WORD;
+	token->next = NULL;
+	*str += word_len;
+	return (token);
+}
+
+static int	get_redope_len(t_token *token, char *str)
+{
+	int	ope_len;
+
+	ope_len = 0;
+	while (*str && check_redope(*str) && !check_conope(*str))
+	{
+		ope_len++;
+		str++;
+	}
+	token->attribute = REDIRECT;
+	return (ope_len);
+}
+
+static int	get_conope_len(t_token *token, char *str)
+{
+	int	ope_len;
+
+	ope_len = 0;
+	if (str[ope_len] == '|')
+	{
+		token->attribute = OPERATOR;
+		while (str[ope_len] && str[ope_len] == '|')
+			ope_len++;
+	}
+	else
+	{
+		if (*str == '&' && *(str + 1) == '&')
+		{
+			token->attribute = OPERATOR;
+			ope_len = 2;
+		}
+		else
+		{
+			token->attribute = WORD;
+			ope_len = get_word_len(str + 1) + 1;
+		}
+	}
+	return (ope_len);
+}
+
+static int	get_ope_len(t_token *token, char *str)
+{
+	int	ope_len;
+
+	ope_len = 0;
+	if (check_conope(*str))
+		ope_len = get_conope_len(token, str);
+	else
+		ope_len = get_redope_len(token, str);
+	return (ope_len);
+}
+
+static t_token	*new_ope_token(char **str)
+{
+	t_token	*token;
+	int		ope_len;
+
+	ope_len = 0;
+	token = (t_token *)xmalloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	ope_len = get_ope_len(token, *str);
+	token->name = strndup(*str, ope_len);
+	token->next = NULL;
+	*str += ope_len;
+	return (token);
 }
 
 t_token	*tokenize(char *line)
 {
-	t_token	*token_list = NULL;
+	t_token	*token;
+	t_token	head;
 
+	head.next = NULL;
+	token = &head;
 	while (*line)
 	{
-		if (is_blank(*line))
-		{
-			line++;
-			continue;
-		}
-		else if (is_operator(line))
-			token_list = add_token(token_list, &line, OPERATOR);
-		else if (is_word(line))
-			token_list = add_token(token_list, &line, WORD);
-		else if (is_redirect(line))
-			token_list = add_token(token_list, &line, REDIRECT);
+		skip_space(&line);
+		if (check_conope(*line) || check_redope(*line))
+			token->next = new_ope_token(&line);
 		else
-		{
-			if (token_list)
-				free_token_list(token_list);
-			ft_err_printf("syntax error: %s\n", line);
-			return NULL;
-		}
+			token->next = new_word_token(&line);
+		if (!token->next)
+			return (NULL);
+		token = token->next;
 	}
-	return token_list;
+	return (head.next);
 }

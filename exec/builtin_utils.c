@@ -4,6 +4,8 @@ int	retrieve_fdin_fdout(int fdin, int fdout)
 {
 	if (dup2(fdin, 0) < 0 || dup2(fdout, 1) < 0)
 	{
+		close(fdin);
+		close(fdout);
 		ft_err_printf("dup error\n");
 		return (-1);
 	}
