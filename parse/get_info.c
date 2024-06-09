@@ -6,7 +6,7 @@ int	get_cm_attribute(t_token *token_list)
 	{
 		if (token_list->attribute == OPERATOR)
 		{
-			if (ft_strcmp(token_list->name, "|") == 0)
+			if (ft_strcmp(token_list->name, "|") == 0 || ft_strcmp(token_list->name, "&&") == 0 || ft_strcmp(token_list->name, "||") == 0)
 				return (cm_connection);
 			// you can add other operations('||' '&&' '&').
 		}
@@ -35,6 +35,10 @@ int	get_connector(t_token *token_list)
 	//	return NULL; 
 	if (ft_strcmp(token_list->name, "|") == 0)
 		return (pipeline);
+	if (ft_strcmp(token_list->name, "&&") == 0)
+		return (andlist);
+	if (ft_strcmp(token_list->name, "||") == 0)
+		return (orlist);
 	ft_err_printf("minishell: Invalid connector added\n");
 	return (-1);
 }

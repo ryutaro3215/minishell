@@ -37,7 +37,9 @@ enum e_redirect_attribute
 
 enum e_connector
 {
-	pipeline
+	pipeline,
+	andlist,
+	orlist
 };
 
 typedef struct s_redirect

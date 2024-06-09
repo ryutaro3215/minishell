@@ -121,7 +121,7 @@ static int	get_redope_len(t_token *token, char *str)
 	return (ope_len);
 }
 
-atic int	get_conope_len(t_token *token, char *str)
+static int	get_conope_len(t_token *token, char *str)
 {
 	int	ope_len;
 
