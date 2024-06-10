@@ -37,4 +37,3 @@ int	do_pipe(int pipe_in, int pipe_out)
 	}
 	return (fd);
 }
-

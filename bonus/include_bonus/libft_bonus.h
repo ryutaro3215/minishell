@@ -26,18 +26,18 @@ char	*ft_itoa(int n);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 // ft_printf.c
-int	ft_printf(const char *str, ...);
-int	if_char(va_list ap);
-int	if_char_p(va_list ap);
-int	if_void_p(va_list ap);
-int	if_decimal(va_list ap);
-int	if_unsigned_decimal(va_list ap);
-int	if_hexadec_low(va_list ap);
-int	if_hexadec_up(va_list ap);
-int	ft_put_int(int n, int *p);
-int	ft_put_unsigned_int(unsigned int n, int *p);
-int	ft_put_address(uintptr_t n, int *p);
-int	ft_put_hexadec_low(unsigned int n, int *p);
-int	ft_put_hexadec_up(unsigned int n, int *p);
+int		ft_printf(const char *str, ...);
+int		if_char(va_list ap);
+int		if_char_p(va_list ap);
+int		if_void_p(va_list ap);
+int		if_decimal(va_list ap);
+int		if_unsigned_decimal(va_list ap);
+int		if_hexadec_low(va_list ap);
+int		if_hexadec_up(va_list ap);
+int		ft_put_int(int n, int *p);
+int		ft_put_unsigned_int(unsigned int n, int *p);
+int		ft_put_address(uintptr_t n, int *p);
+int		ft_put_hexadec_low(unsigned int n, int *p);
+int		ft_put_hexadec_up(unsigned int n, int *p);
 
 #endif
