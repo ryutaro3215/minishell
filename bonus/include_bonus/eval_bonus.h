@@ -1,8 +1,8 @@
-#ifndef EVAL_H
-# define EVAL_H
+#ifndef EVAL_BONUS_H
+# define EVAL_BONUS_H
 
-# include "parse.h"
-# include "exec.h"
+# include "parse_bonus.h"
+# include "exec_bonus.h"
 
 # include <readline/history.h>
 
