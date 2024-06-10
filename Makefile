@@ -30,7 +30,8 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -I $(shell brew --prefix readline)/include
 RLFLAGS = -lreadline -L $(shell brew --prefix readline)/lib
 
-vpath % init signal environ eval parse expand exec builtin free error xmalloc include object libft
+vpath % init signal environ eval parse expand\
+		exec builtin free error xmalloc include object libft
 
 $(OBJS_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -88,7 +89,13 @@ BONUS_OBJS = $(BONUS_SRCS:%.c=$(BONUS_OBJS_DIR)/%.o)
 BONUS_DIR = bonus
 BONUS_OBJS_DIR = $(BONUS_DIR)/object_bonus
 
-vpath % bonus bonus/init_bonus bonus/signal_bonus bonus/environ_bonus bonus/eval_bonus bonus/parse_bonus bonus/expand_bonus bonus/exec_bonus bonus/builtin_bonus bonus/free_bonus bonus/error_bonus bonus/xmalloc_bonus bonus/include_bonus bonus/object_bonus bonus/libft_bonus
+vpath % bonus bonus/init_bonus bonus/signal_bonus\
+		bonus/environ_bonus bonus/eval_bonus\
+		bonus/parse_bonus bonus/expand_bonus\
+		bonus/exec_bonus bonus/builtin_bonus\
+		bonus/free_bonus bonus/error_bonus\
+		bonus/xmalloc_bonus bonus/include_bonus\
+		bonus/object_bonus bonus/libft_bonus
 
 $(BONUS_OBJS_DIR)/%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
