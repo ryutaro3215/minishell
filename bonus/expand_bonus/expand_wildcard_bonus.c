@@ -36,6 +36,8 @@ static void	read_directory_loop(DIR *dirp, char *given_word,
 			break ;
 		if (ft_strcmp(dp->d_name, ".") == 0 || ft_strcmp(dp->d_name, "..") == 0)
 			continue ;
+		if (ft_strcmp(given_word, "*") == 0 && ft_strncmp(dp->d_name, ".", 1) == 0)
+			continue;
 		if (pattern_match(given_word, dp->d_name))
 			add_new_word(current_word, dp->d_name);
 	}

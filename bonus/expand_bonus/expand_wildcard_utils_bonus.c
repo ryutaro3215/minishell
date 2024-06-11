@@ -33,6 +33,11 @@ bool	pattern_match(char *given_word, char *filename)
 {
 	size_t	matched_count;
 
+	if (given_word[0] != '*' && filename[0] != '*')
+	{
+		if (given_word[0] != filename[0])
+			return (false);
+	}
 	matched_count = 0;
 	pattern_match_loop(&given_word, &filename, matched_count);
 	if (*given_word == '*')
