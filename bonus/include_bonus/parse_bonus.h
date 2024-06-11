@@ -4,6 +4,7 @@
 # include "exec_bonus.h"
 # include "free_bonus.h"
 # include "libft_bonus.h"
+# include "signal_bonus.h"
 # include "xmalloc_bonus.h"
 
 # include <stdio.h>
@@ -13,6 +14,9 @@
 # include <ctype.h>
 # include <errno.h>
 # include <readline/readline.h>
+
+# define HEREDOC_SUCCESS 1
+# define HEREDOC_FAILURE 2
 
 // tokenize.c
 bool			is_blank(char c);
@@ -61,7 +65,7 @@ t_command		*add_command(t_token *token_list);
 
 // here_document.c
 bool			need_here_document(t_token *token_list);
-void			gather_here_document(t_command *command_list);
+int				gather_here_document(t_command *command_list);
 
 // parse_cmd.c
 t_command		*parse_command(char *line);

@@ -1,5 +1,5 @@
 #ifndef XMALLOC_H
-#define XMALLOC_H
+# define XMALLOC_H
 
 # include "error.h"
 

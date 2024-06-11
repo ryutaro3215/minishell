@@ -6,7 +6,7 @@
 #include "include_bonus/eval_bonus.h"
 #include "include_bonus/free_bonus.h"
 
-int	reader_loop(int *EOF_reached, int last_command_exit_status)
+int	reader_loop(int *eof_reached, int last_command_exit_status)
 {
 	extern char	**environ;
 	char		**tmp;
@@ -14,11 +14,13 @@ int	reader_loop(int *EOF_reached, int last_command_exit_status)
 
 	signal(SIGINT, sigint_handler_for_readline);
 	tmp = environ;
+	rl_event_hook = event_hook_for_readline;
 	line = readline("minishell $ ");
+	rl_event_hook = 0;
 	environ = tmp;
 	if (!line)
 	{
-		*EOF_reached = EOF;
+		*eof_reached = EOF;
 		free_2d_array(tmp);
 		return (last_command_exit_status);
 	}

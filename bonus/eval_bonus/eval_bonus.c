@@ -1,5 +1,7 @@
 #include "../include_bonus/eval_bonus.h"
 
+extern sig_atomic_t	g_interrupt_state;
+
 int	eval(char *line, int last_command_exit_status)
 {
 	t_command	*command_list;
@@ -13,7 +15,12 @@ int	eval(char *line, int last_command_exit_status)
 				last_command_exit_status);
 		free_command_list(command_list);
 	}
-	else // parse error
-		last_command_exit_status = EXECUTION_FAILURE;
+	else if (g_interrupt_state)
+	{
+		last_command_exit_status = 128 + SIGINT;
+		g_interrupt_state = 0;
+	}
+	else
+		last_command_exit_status = PARSE_ERROR;
 	return (last_command_exit_status);
 }
