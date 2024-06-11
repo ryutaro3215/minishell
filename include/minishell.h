@@ -1,7 +1,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -37,7 +36,9 @@ enum e_redirect_attribute
 
 enum e_connector
 {
-	pipeline
+	pipeline,
+	andlist,
+	orlist
 };
 
 typedef struct s_redirect

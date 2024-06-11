@@ -8,6 +8,7 @@
 
 # include <string.h>
 # include <stdio.h>
+# include <stdbool.h>
 # include <unistd.h>
 
 // builtin_utils.c

@@ -10,7 +10,14 @@ t_command	*parse_command(char *line)
 	if (!command_list)
 		return (NULL);
 	if (need_here_document(token_list))
-		gather_here_document(command_list);
+	{
+		if (gather_here_document(command_list) == HEREDOC_FAILURE)
+		{
+			free_token_list(token_list);
+			free_command_list(command_list);
+			return (NULL);
+		}
+	}
 	free_token_list(token_list);
 	return (command_list);
 }
