@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_bonus.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:53:11 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 14:15:42 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef EXPAND_BONUS_H
 # define EXPAND_BONUS_H
 
@@ -16,7 +28,8 @@ int		expand_redirects(t_simple *simple, int last_command_exit_status);
 
 // expand_dollar.c
 void	expand_dollar(t_token *current_word, int last_command_exit_status);
-void	expand_redirect_dollar(t_redirect *current_redirect, int last_command_exit_status);
+void	expand_redirect_dollar(t_redirect *current_redirect,
+			int last_command_exit_status);
 char	*get_env_value(char *env_name);
 char	*get_env_name(char *word);
 
@@ -28,7 +41,7 @@ void	remove_redirect_quote(t_redirect *current_redirect);
 void	expand_wildcard(t_token *current_word);
 
 // expand_redirect_wildcard.c
-int	expand_redirect_wildcard(t_redirect *current_redirect);
+int		expand_redirect_wildcard(t_redirect *current_redirect);
 
 // expand_dollar_utils.c
 char	*skip_single_quote(char *new_word, char **old_word);

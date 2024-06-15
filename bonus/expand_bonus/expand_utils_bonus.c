@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_utils_bonus.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:52:43 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 13:59:07 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/exec_bonus.h"
 
 void	add_new_word(t_token *current_word, char *filename)
 {
 	t_token	*new_word;
 
-	if (!current_word->name) // first word
+	if (!current_word->name)
 	{
 		current_word->name = ft_strdup(filename);
 		current_word->attribute = WORD;
