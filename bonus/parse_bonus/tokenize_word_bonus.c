@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_word.c                                    :+:      :+:    :+:   */
+/*   tokenize_word_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:44:13 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/15 14:09:30 by ryutaro3205      ###   ########.fr       */
+/*   Updated: 2024/06/15 14:24:22 by ryutaro3205      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/parse_bonus.h"
 
-static int	skip_next_quote(char *str)
+int	skip_next_quote(char *str)
 {
 	int	quote_type;
 	int	i;
@@ -35,7 +35,7 @@ static int	skip_next_quote(char *str)
 	return (++i);
 }
 
-static int	get_word_len(char *str)
+int	get_word_len(char *str)
 {
 	int	len;
 	int	quote_len;
@@ -62,7 +62,7 @@ static int	get_word_len(char *str)
 	return (len);
 }
 
-static t_token	*new_word_token(char **str)
+t_token	*new_word_token(char **str)
 {
 	t_token	*token;
 	int		word_len;

@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_utils.c                                   :+:      :+:    :+:   */
+/*   tokenize_utils_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:43:54 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/15 14:09:27 by ryutaro3205      ###   ########.fr       */
+/*   Updated: 2024/06/15 14:24:09 by ryutaro3205      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/parse_bonus.h"
 
-static bool	check_space(char c)
+bool	check_space(char c)
 {
 	if (c == ' ' || c == '\t')
 		return (true);
@@ -20,7 +20,7 @@ static bool	check_space(char c)
 		return (false);
 }
 
-static bool	check_conope(char c)
+bool	check_conope(char c)
 {
 	if (c == '|' || c == '&')
 		return (true);
@@ -28,7 +28,7 @@ static bool	check_conope(char c)
 		return (false);
 }
 
-static bool	check_redope(char c)
+bool	check_redope(char c)
 {
 	if (c == '<' || c == '>')
 		return (true);
@@ -36,13 +36,13 @@ static bool	check_redope(char c)
 		return (false);
 }
 
-static void	skip_space(char **str)
+void	skip_space(char **str)
 {
 	while (check_space(**str))
 		(*str)++;
 }
 
-static int	check_quote(char str)
+int	check_quote(char str)
 {
 	if (str == '\"')
 		return (2);

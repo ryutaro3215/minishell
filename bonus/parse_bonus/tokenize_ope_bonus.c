@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize_ope.c                                     :+:      :+:    :+:   */
+/*   tokenize_ope_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:43:31 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/15 14:09:23 by ryutaro3205      ###   ########.fr       */
+/*   Updated: 2024/06/15 14:23:47 by ryutaro3205      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include_bonus/parse_bonus.h"
 
-static int	get_redope_len(t_token *token, char *str)
+int	get_redope_len(t_token *token, char *str)
 {
 	int	ope_len;
 
@@ -26,7 +26,7 @@ static int	get_redope_len(t_token *token, char *str)
 	return (ope_len);
 }
 
-static int	get_conope_len(t_token *token, char *str)
+int	get_conope_len(t_token *token, char *str)
 {
 	int	ope_len;
 
@@ -53,7 +53,7 @@ static int	get_conope_len(t_token *token, char *str)
 	return (ope_len);
 }
 
-static int	get_ope_len(t_token *token, char *str)
+int	get_ope_len(t_token *token, char *str)
 {
 	int	ope_len;
 
@@ -65,7 +65,7 @@ static int	get_ope_len(t_token *token, char *str)
 	return (ope_len);
 }
 
-static t_token	*new_ope_token(char **str)
+t_token	*new_ope_token(char **str)
 {
 	t_token	*token;
 	int		ope_len;
