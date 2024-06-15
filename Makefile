@@ -56,7 +56,9 @@ BONUS_SRCS = init_bonus.c init_utils_bonus.c\
 	signal_bonus.c\
 	environ_bonus.c environ_utils_bonus.c\
 	eval_bonus.c\
-	parse_cmd_bonus.c tokenize_bonus.c parse_bonus.c\
+	tokenize_bonus.c tokenize_utils_bonus.c\
+	tokenize_word_bonus.c tokenize_ope_bonus.c\
+	parse_cmd_bonus.c parse_bonus.c\
 	parse_utils_bonus.c create_new_struct_bonus.c\
 	copy_struct_bonus.c get_info_bonus.c\
 	here_document_bonus.c expand_bonus.c\
@@ -110,6 +112,6 @@ clean_bonus:
 fclean_bonus: clean_bonus
 	rm -rf $(BONUS_NAME)
 
-re_bonus: fclean bonus
+re_bonus: fclean_bonus bonus
 
 .PHONY: all clean fclean re bonus clean_bonus fclean_bonus re_bonus

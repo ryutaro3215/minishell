@@ -41,7 +41,7 @@ static int	read_directory(DIR *dirp, char *given_filename,
 			if (already_matched == 1)
 				return (-1);
 			already_matched = 1;
-			current_redirect->filename = strdup(dp->d_name);
+			current_redirect->filename = ft_strdup(dp->d_name);
 		}
 	}
 }
