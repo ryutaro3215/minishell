@@ -19,17 +19,14 @@
 # define HEREDOC_FAILURE 2
 
 // tokenize.c
-bool			is_blank(char c);
-bool			is_word_component(char c);
-bool			is_word_beggining_component(char c);
-bool			is_word(char *line);
-bool			is_operator(char *line);
-bool			is_redirect(char *line);
-char			*get_word(char *line);
-char			*get_operator(char *line);
-char			*get_redirect(char *line);
-
-t_token			*add_token(t_token *token_list, char **line, int token_kind);
+t_token			*new_word_token(char **str);
+t_token			*new_ope_token(char **str);
+bool			check_space(char c);
+bool			check_redope(char c);
+bool			check_conope(char c);
+int				check_quote(char str);
+void			skip_space(char **str);
+int				get_word_len(char *str);
 t_token			*tokenize(char *line);
 
 // create_new_struct.c
