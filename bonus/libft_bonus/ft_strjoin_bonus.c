@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_strjoin_bonus.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:54:09 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 14:02:57 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/libft_bonus.h"
 
 char	*strjoin_but_freed_only_first_arg(char *s1, char *s2)
@@ -34,7 +46,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	{
 		tmp = ft_strdup(s2);
 		free(s2);
-		return (tmp); // valid in every use ?
+		return (tmp);
 	}
 	s3 = xmalloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (s3 == NULL)

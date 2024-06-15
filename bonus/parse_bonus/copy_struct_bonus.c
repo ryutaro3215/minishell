@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   copy_struct_bonus.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:54:34 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 14:05:23 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/parse_bonus.h"
 
 static t_token	*add_word_to_tail(t_token *word_list, t_token *new_word)
@@ -27,9 +39,9 @@ static t_redirect	*create_redirect_type_struct(t_redirect *redirect_list)
 {
 	t_redirect	*new_redirect;
 
-	if (redirect_list->filename) // redirect_list has been created.
+	if (redirect_list->filename)
 		new_redirect = xmalloc(sizeof(t_redirect));
-	else // first redirect_list, but already initialized previous function.
+	else
 		new_redirect = redirect_list;
 	return (new_redirect);
 }

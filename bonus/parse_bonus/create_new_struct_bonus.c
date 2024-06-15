@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   create_new_struct_bonus.c                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:54:37 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 14:15:01 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/parse_bonus.h"
 
 t_command	*create_new_command(void)
@@ -64,7 +76,6 @@ t_token	*create_word_list(t_token *token_list)
 			current_token = current_token->next->next;
 		else
 		{
-			// create null terminated word list.
 			word_list = copy_token(word_list, current_token);
 			if (!word_list)
 				return (NULL);

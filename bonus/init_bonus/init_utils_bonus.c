@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_utils_bonus.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:53:38 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 14:02:41 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/init_bonus.h"
 
 int	get_shell_level(void)
@@ -32,12 +44,12 @@ void	init_shell_level(void)
 	char		*shlvl_name;
 	char		*shlvl_var;
 
-	if (!environ_already_exist("SHLVL", UNSET)) // UNSET means directly compare the word and each environ elements.
+	if (!environ_already_exist("SHLVL", UNSET))
 		add_environ_var("SHLVL=1");
 	else
 	{
 		current_shell_level = get_shell_level();
-		if (current_shell_level == 0) // when "SHLVL=" or some invalid number
+		if (current_shell_level == 0)
 			replace_environ_var("SHLVL=1");
 		else
 		{
@@ -61,7 +73,7 @@ void	init_shell_underscore(void)
 		underscore[0] = '_';
 		underscore[1] = '=';
 		underscore[2] = '\0';
-		ft_strlcat(underscore, buf, PATH_MAX + 3); // "_=\0" is three character.
+		ft_strlcat(underscore, buf, PATH_MAX + 3);
 		add_environ_var(underscore);
 	}
 }
