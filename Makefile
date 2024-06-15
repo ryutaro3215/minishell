@@ -9,6 +9,7 @@ SRCS = init.c init_utils.c\
 	expand.c expand_dollar.c expand_quote.c expand_wildcard.c\
 	expand_redirect_wildcard.c expand_dollar_utils.c\
 	expand_quote_utils.c expand_wildcard_utils.c expand_utils.c\
+	expand_dollar_inside_quote.c\
 	exec.c exec_simple.c exec_connection.c exec_exit.c\
 	exec_null.c exec_utils.c\
 	redirect.c do_fork_pipe.c\
@@ -28,7 +29,7 @@ SRCS = init.c init_utils.c\
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 OBJS_DIR = object
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(shell brew --prefix readline)/include
+CFLAGS = -Wall -Wextra -Werror -I $(shell brew --prefix readline)/include -fsanitize=address
 RLFLAGS = -lreadline -L $(shell brew --prefix readline)/lib
 
 vpath % init signal environ eval parse expand\
@@ -109,8 +110,10 @@ $(BONUS_OBJS_DIR)/%.o: %.c
 	fi
 	$(CC) $(CFLAGS) -c $< -o $@
 
-bonus: $(BONUS_OBJS)
+$(BONUS_NAME): $(BONUS_OBJS)
 	$(CC) $(CFLAGS) $(RLFLAGS) $(BONUS_OBJS) -o $(BONUS_NAME)
+
+bonus: $(BONUS_NAME)
 
 clean_bonus:
 	rm -rf $(BONUS_OBJS)

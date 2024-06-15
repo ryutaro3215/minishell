@@ -44,7 +44,7 @@ char	*get_env_name(char *word)
 	env_name = NULL;
 	word++;
 	while (*word && *word != '\'' && *word != '\"'
-		&& *word != '$' && *word != ' ' && *word != '\t')
+		&& *word != '$' && *word != ' ' && *word != '\t' && *word != ':')
 	{
 		env_name = append_char(env_name, *word);
 		word++;
@@ -52,7 +52,7 @@ char	*get_env_name(char *word)
 	return (env_name);
 }
 
-static char	*do_each_expand(char *env_name, char *new_word,
+char	*do_each_expand(char *env_name, char *new_word,
 	char **old_word, int last_command_exit_status)
 {
 	if (!env_name)
@@ -82,6 +82,9 @@ void	expand_dollar(t_token *current_word, int last_command_exit_status)
 	{
 		if (*old_word == '\'')
 			new_word = skip_single_quote(new_word, &old_word);
+		else if (*old_word == '\"')
+			new_word = handle_inside_double_quote(new_word, &old_word,
+					last_command_exit_status);
 		else if (*old_word == '$')
 		{
 			env_name = get_env_name(old_word);

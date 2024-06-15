@@ -47,9 +47,13 @@ int	execute_disk_command(char *path, char **argv)
 	char		*environ_var;
 
 	underscore = ft_strdup("_=");
-	environ_var = strjoin_but_freed_only_first_arg(underscore, path);
-	replace_environ_var(environ_var);
-	free(environ_var);
+	if (path != NULL)
+	{
+		environ_var = strjoin_but_freed_only_first_arg(underscore, path);
+		replace_environ_var(environ_var);
+		free(environ_var);
+	}
+	signal(SIGQUIT, SIG_DFL);
 	execve(path, argv, environ);
 	ft_err_printf("minishell: %s: Command not found\n", argv[0]);
 	return (COMMAND_NOT_FOUND);

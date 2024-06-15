@@ -54,10 +54,10 @@ char	*get_path(char *line)
 	if (ft_strchr(line, '/') && have_right_permission(line))
 		return (line);
 	path_vars = getenv("PATH");
+	if (!path_vars)
+		return (NULL);
 	while (1)
 	{
-		if (*path_vars == ':')
-			path_vars++;
 		end = ft_strchr(path_vars, ':');
 		if (!end)
 			path_var_len = ft_strlen(path_vars);
@@ -69,7 +69,7 @@ char	*get_path(char *line)
 		free(path);
 		if (!end)
 			return (line);
-		path_vars += path_var_len;
+		path_vars += path_var_len + 1;
 	}
 }
 
