@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_exit_bonus.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:52:07 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 13:57:46 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/exec_bonus.h"
 
 int	execute_exit_builtin(t_simple *simple, int last_command_exit_status)
@@ -5,7 +17,6 @@ int	execute_exit_builtin(t_simple *simple, int last_command_exit_status)
 	char	*underscore;
 	char	*environ_var;
 
-	// update underscore environ.
 	underscore = ft_strdup("_=");
 	environ_var = strjoin_but_freed_only_first_arg(underscore,
 			simple->word_list->name);

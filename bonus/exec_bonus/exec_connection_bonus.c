@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_connection_bonus.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:52:05 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 13:57:39 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/exec_bonus.h"
 
 int	execute_pipeline(t_command *command, int pipe_in, int pipe_out,
@@ -39,8 +51,8 @@ int	execute_andlist(t_command *command, int pipe_in, int pipe_out,
 		return (execute_command_internal(command->u_value.connection->second,
 				NO_PIPE, pipe_out, last_command_exit_status));
 	}
-	else // (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status)); // forbidden function ??
+	else
+		return (128 + WTERMSIG(status));
 }
 
 int	execute_orlist(t_command *command, int pipe_in, int pipe_out,
@@ -66,8 +78,8 @@ int	execute_orlist(t_command *command, int pipe_in, int pipe_out,
 		return (execute_command_internal(command->u_value.connection->second,
 				NO_PIPE, pipe_out, last_command_exit_status));
 	}
-	else // (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status)); // forbidden function ??
+	else
+		return (128 + WTERMSIG(status));
 }
 
 int	execute_connection(t_command *command, int pipe_in, int pipe_out,
@@ -82,7 +94,7 @@ int	execute_connection(t_command *command, int pipe_in, int pipe_out,
 	else if (connector == andlist)
 		return (execute_andlist(command, pipe_in, pipe_out,
 				last_command_exit_status));
-	else // (connector == orlist)
+	else
 		return (execute_orlist(command, pipe_in, pipe_out,
 				last_command_exit_status));
 }

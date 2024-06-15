@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_dollar_utils_bonus.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:52:29 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 13:58:33 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/expand_bonus.h"
 
 char	*skip_single_quote(char *new_word, char **old_word)
@@ -26,7 +38,7 @@ char	*handle_question(char *new_word, char **old_word,
 
 	exit_status = ft_itoa(last_command_exit_status);
 	new_word = ft_strjoin(new_word, exit_status);
-	(*old_word) += 2; // skip $?
+	(*old_word) += 2;
 	return (new_word);
 }
 
@@ -37,7 +49,7 @@ char	*handle_environment_variable(char *new_word, char **old_word,
 
 	env_value = get_env_value(env_name);
 	if (!env_value)
-		(*old_word) += ft_strlen(env_name) + 1; // 1 is num of "$".
+		(*old_word) += ft_strlen(env_name) + 1;
 	else
 	{
 		(*old_word) += ft_strlen(env_name) + 1;

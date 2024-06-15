@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_wildcard_bonus.c                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:52:45 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 13:59:56 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/expand_bonus.h"
 
 static void	retrieve_next_word(t_token *current_word, char *given_word,
@@ -36,8 +48,9 @@ static void	read_directory_loop(DIR *dirp, char *given_word,
 			break ;
 		if (ft_strcmp(dp->d_name, ".") == 0 || ft_strcmp(dp->d_name, "..") == 0)
 			continue ;
-		if (ft_strcmp(given_word, "*") == 0 && ft_strncmp(dp->d_name, ".", 1) == 0)
-			continue;
+		if (ft_strcmp(given_word, "*") == 0
+			&& ft_strncmp(dp->d_name, ".", 1) == 0)
+			continue ;
 		if (pattern_match(given_word, dp->d_name))
 			add_new_word(current_word, dp->d_name);
 	}

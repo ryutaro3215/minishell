@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:53:24 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 14:19:42 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PARSE_BONUS_H
 # define PARSE_BONUS_H
 
@@ -19,18 +31,7 @@
 # define HEREDOC_FAILURE 2
 
 // tokenize.c
-bool			is_blank(char c);
-bool			is_word_component(char c);
-bool			is_word_beggining_component(char c);
-bool			is_word(char *line);
-bool			is_operator(char *line);
-bool			is_redirect(char *line);
-char			*get_word(char *line);
-char			*get_operator(char *line);
-char			*get_redirect(char *line);
 
-t_token			*add_token(t_token *token_list, char **line, int token_kind);
-t_token			*tokenize(char *line);
 
 // create_new_struct.c
 t_command		*create_new_command(void);

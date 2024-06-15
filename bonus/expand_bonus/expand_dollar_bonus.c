@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_dollar_bonus.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:52:27 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 13:58:23 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/expand_bonus.h"
 
 char	*get_env_value(char *env_name)
@@ -30,7 +42,7 @@ char	*get_env_name(char *word)
 	char	*env_name;
 
 	env_name = NULL;
-	word++; // skip dollar.
+	word++;
 	while (*word && *word != '\'' && *word != '\"'
 		&& *word != '$' && *word != ' ' && *word != '\t')
 	{

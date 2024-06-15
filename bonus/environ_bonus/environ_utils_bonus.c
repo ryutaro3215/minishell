@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   environ_utils_bonus.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:51:24 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 13:56:12 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/environ_bonus.h"
 
 size_t	count_strs(char **strs)
@@ -50,7 +62,7 @@ bool	environ_already_exist(char *new_environ_var, int flag)
 
 	if (flag == EXPORT)
 		new_environ_name = get_environ_name(new_environ_var);
-	else // flag == UNSET
+	else
 		new_environ_name = ft_strdup(new_environ_var);
 	i = 0;
 	while (environ[i])

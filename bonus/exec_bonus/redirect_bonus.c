@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect_bonus.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:52:20 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 13:58:14 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/exec_bonus.h"
 
 int	do_r_input(char *filename)
@@ -87,7 +99,7 @@ int	do_redirect(t_redirect *redirect_list)
 	result = EXECUTION_SUCCESS;
 	current_redirect = redirect_list;
 	if (!current_redirect->filename)
-		return (EXECUTION_SUCCESS); // redirect doesn't exist.
+		return (EXECUTION_SUCCESS);
 	while (current_redirect)
 	{
 		if (current_redirect->attribute == r_input)
@@ -96,7 +108,7 @@ int	do_redirect(t_redirect *redirect_list)
 			result = do_r_output(current_redirect->filename);
 		else if (current_redirect->attribute == r_append_output)
 			result = do_r_append_output(current_redirect->filename);
-		else // (current_redirect->attribute == r_heredoc)
+		else
 			result = do_r_here_document(current_redirect->filename);
 		if (result == EXECUTION_FAILURE)
 			return (EXECUTION_FAILURE);

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   signal_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:55:02 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 14:03:28 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/signal_bonus.h"
 
-volatile sig_atomic_t	g_interrupt_state = 0; // non-zero after SIGINT
+volatile sig_atomic_t	g_interrupt_state = 0;
 
 void	sigint_handler_for_readline(int sig)
 {

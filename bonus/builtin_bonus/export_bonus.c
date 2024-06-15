@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export_bonus.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:51:09 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 13:55:49 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include_bonus/builtin_bonus.h"
 
 static bool	isvalid(char *token_name)
@@ -9,7 +21,7 @@ static bool	isvalid(char *token_name)
 		env_name = ft_strdup(token_name);
 	else
 		env_name = get_environ_name(token_name);
-	if (env_name[0] == '\0') // env_name is nothing (ex. export =foo).
+	if (env_name[0] == '\0')
 	{
 		free(env_name);
 		return (false);
