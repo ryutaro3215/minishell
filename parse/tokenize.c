@@ -6,7 +6,7 @@
 /*   By: rmatsuba <rmatsuba@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:43:20 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/15 15:08:03 by rmatsuba         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:27:00 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_token	*tokenize(char *line)
 			break ;
 		if (check_conope(*line) || check_redope(*line))
 			token->next = new_ope_token(&line);
-		else if (*line != '\0')
+		else
 			token->next = new_word_token(&line);
 		if (!token->next)
 			return (NULL);

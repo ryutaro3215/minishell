@@ -6,7 +6,7 @@
 /*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 13:53:22 by ryutaro3205       #+#    #+#             */
-/*   Updated: 2024/06/15 15:10:11 by rmatsuba         ###   ########.fr       */
+/*   Updated: 2024/06/15 15:23:19 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-// tokenize
 enum e_token_attribute
 {
 	WORD,
@@ -27,12 +26,11 @@ enum e_token_attribute
 
 typedef struct s_token
 {
-	int				attribute; // reference "enum token_attribute"
+	int				attribute;
 	char			*name;
 	struct s_token	*next;
 }	t_token;
 
-// parse
 enum e_command_attribute
 {
 	cm_simple,
@@ -56,7 +54,7 @@ enum e_connector
 
 typedef struct s_redirect
 {
-	int					attribute; // reference "enum redirect_attribute"
+	int					attribute;
 	char				*filename;
 	struct s_redirect	*next;
 }	t_redirect;
@@ -69,15 +67,15 @@ typedef struct s_simple
 
 typedef struct s_connection
 {
-	int					connector; // reference "enum connector"
+	int					connector;
 	struct s_command	*first;
 	struct s_command	*second;
 }	t_connection;
 
 typedef struct s_command
 {
-	int	attribute; // reference "enum command_attribute"
-	int	test; // unused ?
+	int	attribute;
+	int	test;
 	union
 	{
 		struct s_simple		*simple;

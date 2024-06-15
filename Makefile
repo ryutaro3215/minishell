@@ -35,6 +35,9 @@ vpath % init signal environ eval parse expand\
 		exec builtin free error xmalloc include object libft
 
 $(OBJS_DIR)/%.o: %.c
+	@if [ ! -d $(OBJS_DIR) ]; then\
+		mkdir $(OBJS_DIR);\
+	fi
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
@@ -101,6 +104,9 @@ vpath % bonus bonus/init_bonus bonus/signal_bonus\
 		bonus/object_bonus bonus/libft_bonus
 
 $(BONUS_OBJS_DIR)/%.o: %.c
+	@if [ ! -d $(BONUS_OBJS_DIR) ]; then\
+		mkdir $(BONUS_OBJS_DIR);\
+	fi
 	$(CC) $(CFLAGS) -c $< -o $@
 
 bonus: $(BONUS_OBJS)
