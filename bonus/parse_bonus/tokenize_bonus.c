@@ -6,7 +6,7 @@
 /*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:43:20 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/15 14:09:02 by ryutaro3205      ###   ########.fr       */
+/*   Updated: 2024/06/15 15:08:46 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ t_token	*tokenize(char *line)
 	while (*line)
 	{
 		skip_space(&line);
+		if (!*line)
+			break ;
 		if (check_conope(*line) || check_redope(*line))
 			token->next = new_ope_token(&line);
 		else

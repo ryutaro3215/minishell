@@ -6,13 +6,14 @@
 /*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 13:39:30 by ryutaro3205       #+#    #+#             */
-/*   Updated: 2024/06/15 13:39:31 by ryutaro3205      ###   ########.fr       */
+/*   Updated: 2024/06/15 14:41:14 by ryutaro3205      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+# include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 
