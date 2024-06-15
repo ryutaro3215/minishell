@@ -6,7 +6,7 @@
 /*   By: rmatsuba <rmatsuba@student.42tokyo.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:43:54 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/11 20:44:51 by rmatsuba         ###   ########.fr       */
+/*   Updated: 2024/06/12 10:21:18 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 static bool	check_space(char c)
 {
-	if ((c == ' ' || c == '\t')
-		&& (c != '\n' || c != '\0'))
+	if (c == ' ' || c == '\t')
 		return (true);
 	else
 		return (false);

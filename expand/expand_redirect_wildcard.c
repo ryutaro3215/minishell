@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_redirect_wildcard.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:38:39 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 13:38:40 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/expand.h"
 
 static char	*store_given_word_to_add_new_words(t_redirect *current_redirect)

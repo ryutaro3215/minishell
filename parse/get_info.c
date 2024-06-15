@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_info.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/15 13:40:33 by ryutaro3205       #+#    #+#             */
+/*   Updated: 2024/06/15 13:40:34 by ryutaro3205      ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/parse.h"
 
 int	get_cm_attribute(t_token *token_list)
@@ -32,7 +44,7 @@ int	get_connector(t_token *token_list)
 	while (token_list && token_list->attribute != OPERATOR)
 		token_list = token_list->next;
 	//if (!token_list) already checked in get_second_token_list()
-	//	return NULL; 
+	//	return NULL;
 	if (ft_strcmp(token_list->name, "|") == 0)
 		return (pipeline);
 	if (ft_strcmp(token_list->name, "&&") == 0)
