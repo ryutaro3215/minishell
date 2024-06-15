@@ -65,7 +65,7 @@ static int	get_ope_len(t_token *token, char *str)
 	return (ope_len);
 }
 
-static t_token	*new_ope_token(char **str)
+t_token	*new_ope_token(char **str)
 {
 	t_token	*token;
 	int		ope_len;

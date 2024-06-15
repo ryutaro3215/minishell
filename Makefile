@@ -3,7 +3,8 @@ SRCS = init.c init_utils.c\
 	signal.c\
 	environ.c environ_utils.c\
 	eval.c\
-	parse_cmd.c tokenize.c parse.c parse_utils.c\
+	tokenize.c tokenize_utils.c tokenize_word.c tokenize_ope.c\
+	parse_cmd.c parse.c parse_utils.c\
 	create_new_struct.c copy_struct.c get_info.c here_document.c\
 	expand.c expand_dollar.c expand_quote.c expand_wildcard.c\
 	expand_redirect_wildcard.c expand_dollar_utils.c\

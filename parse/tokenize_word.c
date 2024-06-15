@@ -35,7 +35,7 @@ static int	skip_next_quote(char *str)
 	return (++i);
 }
 
-static int	get_word_len(char *str)
+int	get_word_len(char *str)
 {
 	int	len;
 	int	quote_len;
@@ -62,7 +62,7 @@ static int	get_word_len(char *str)
 	return (len);
 }
 
-static t_token	*new_word_token(char **str)
+t_token	*new_word_token(char **str)
 {
 	t_token	*token;
 	int		word_len;

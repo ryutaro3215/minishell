@@ -12,7 +12,7 @@
 
 #include "../include/parse.h"
 
-static bool	check_space(char c)
+bool	check_space(char c)
 {
 	if (c == ' ' || c == '\t')
 		return (true);
@@ -20,7 +20,7 @@ static bool	check_space(char c)
 		return (false);
 }
 
-static bool	check_conope(char c)
+bool	check_conope(char c)
 {
 	if (c == '|' || c == '&')
 		return (true);
@@ -28,7 +28,7 @@ static bool	check_conope(char c)
 		return (false);
 }
 
-static bool	check_redope(char c)
+bool	check_redope(char c)
 {
 	if (c == '<' || c == '>')
 		return (true);
@@ -36,13 +36,13 @@ static bool	check_redope(char c)
 		return (false);
 }
 
-static void	skip_space(char **str)
+void	skip_space(char **str)
 {
 	while (check_space(**str))
 		(*str)++;
 }
 
-static int	check_quote(char str)
+int	check_quote(char str)
 {
 	if (str == '\"')
 		return (2);
