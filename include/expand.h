@@ -32,7 +32,8 @@ void	expand_redirect_dollar(t_redirect *current_redirect,
 			int last_command_exit_status);
 char	*get_env_value(char *env_name);
 char	*get_env_name(char *word);
-char	*do_each_expand(char *env_name, char *new_word, char **old_word, int last_command_exit_status);
+char	*do_each_expand(char *env_name, char *new_word, char **old_word,
+			int last_command_exit_status);
 
 // expand_quote.c
 void	remove_quote(t_token *current_word);
@@ -66,6 +67,7 @@ t_token	*delete_current_word(t_simple *simple, t_token *current_word);
 char	*append_char(char *word, char c);
 
 // expand_dollar_inside_quote.c
-char	*handle_inside_double_quote(char *new_word, char **old_word, int last_command_exit_status);
+char	*handle_inside_double_quote(char *new_word, char **old_word,
+			int last_command_exit_status);
 
 #endif
