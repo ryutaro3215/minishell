@@ -50,7 +50,7 @@ bool	environ_already_exist(char *new_environ_var, int flag)
 
 	if (flag == EXPORT)
 		new_environ_name = get_environ_name(new_environ_var);
-	else // flag == UNSET
+	else
 		new_environ_name = ft_strdup(new_environ_var);
 	i = 0;
 	while (environ[i])

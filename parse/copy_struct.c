@@ -39,9 +39,9 @@ static t_redirect	*create_redirect_type_struct(t_redirect *redirect_list)
 {
 	t_redirect	*new_redirect;
 
-	if (redirect_list->filename) // redirect_list has been created.
+	if (redirect_list->filename)
 		new_redirect = xmalloc(sizeof(t_redirect));
-	else // first redirect_list, but already initialized previous function.
+	else
 		new_redirect = redirect_list;
 	return (new_redirect);
 }

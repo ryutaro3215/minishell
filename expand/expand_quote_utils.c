@@ -14,12 +14,12 @@
 
 char	*get_last_double_quote(char *word)
 {
-	word++; // skip first double quote.
+	word++;
 	return (ft_strchr(word, '\"'));
 }
 
 char	*get_last_single_quote(char *word)
 {
-	word++; // skip first single quote.
+	word++;
 	return (ft_strchr(word, '\''));
 }

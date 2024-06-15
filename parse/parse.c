@@ -17,16 +17,15 @@ t_command	*add_simple_command(t_token *token_list)
 	t_command	*new_command;
 
 	new_command = add_simple_type_command();
-	new_command->u_value.simple->redirect_list = create_redirect_list(token_list);
-	// if redirect doesn't exist (but not error), redirect_list->filename == NULL
-	if (!new_command->u_value.simple->redirect_list) // malloc or syntax error
+	new_command->u_value.simple->redirect_list
+		= create_redirect_list(token_list);
+	if (!new_command->u_value.simple->redirect_list)
 	{
 		free(new_command->u_value.simple);
 		free(new_command);
 		return (NULL);
 	}
 	new_command->u_value.simple->word_list = create_word_list(token_list);
-	// it skip redirect.
 	if (!new_command->u_value.simple->word_list && errno == ENOMEM)
 	{
 		free_redirect_list(new_command->u_value.simple->redirect_list);
@@ -45,7 +44,7 @@ t_command	*add_connection(t_token *token_list)
 
 	first_token_list = get_first_token_list(token_list);
 	second_token_list = get_second_token_list(token_list);
-	if (!first_token_list || !second_token_list) // parse error
+	if (!first_token_list || !second_token_list)
 	{
 		ft_err_printf("minishell: parse error near '|'\n");
 		free_token_list(first_token_list);

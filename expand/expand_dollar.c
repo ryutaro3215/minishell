@@ -42,7 +42,7 @@ char	*get_env_name(char *word)
 	char	*env_name;
 
 	env_name = NULL;
-	word++; // skip dollar.
+	word++;
 	while (*word && *word != '\'' && *word != '\"'
 		&& *word != '$' && *word != ' ' && *word != '\t')
 	{

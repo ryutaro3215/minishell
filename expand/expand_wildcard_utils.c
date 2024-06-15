@@ -12,7 +12,8 @@
 
 #include "../include/expand.h"
 
-static void	pattern_match_loop(char **given_word, char **filename, size_t matched_count)
+static void	pattern_match_loop(char **given_word, char **filename,
+	size_t matched_count)
 {
 	while (**filename)
 	{
@@ -22,21 +23,21 @@ static void	pattern_match_loop(char **given_word, char **filename, size_t matche
 			matched_count = 0;
 			while (**filename && (**given_word != **filename))
 				(*filename)++;
-			continue ; // goto next "else if" or "out of while".
+			continue ;
 		}
 		else if (**given_word == **filename)
 		{
 			(*given_word)++;
 			(*filename)++;
 			matched_count++;
-			continue ; // goto next "if (matched_count..)" or first "if (given...)" or "out of while".
+			continue ;
 		}
-		if (matched_count != 0) // different after some word matched.
+		if (matched_count != 0)
 		{
 			*given_word -= matched_count;
 			matched_count = 0;
 		}
-		else // initial different.
+		else
 			(*filename)++;
 	}
 }

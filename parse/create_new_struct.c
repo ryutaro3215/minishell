@@ -76,7 +76,6 @@ t_token	*create_word_list(t_token *token_list)
 			current_token = current_token->next->next;
 		else
 		{
-			// create null terminated word list.
 			word_list = copy_token(word_list, current_token);
 			if (!word_list)
 				return (NULL);

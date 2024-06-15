@@ -50,7 +50,7 @@ void	free_command_list(t_command *command_list)
 {
 	if (command_list->attribute == cm_simple)
 		free_simple(command_list);
-	else // command_list->attribute == cm_connection
+	else
 	{
 		free_command_list(command_list->u_value.connection->first);
 		free_command_list(command_list->u_value.connection->second);

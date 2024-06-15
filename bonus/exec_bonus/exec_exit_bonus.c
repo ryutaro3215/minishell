@@ -5,7 +5,6 @@ int	execute_exit_builtin(t_simple *simple, int last_command_exit_status)
 	char	*underscore;
 	char	*environ_var;
 
-	// update underscore environ.
 	underscore = ft_strdup("_=");
 	environ_var = strjoin_but_freed_only_first_arg(underscore,
 			simple->word_list->name);

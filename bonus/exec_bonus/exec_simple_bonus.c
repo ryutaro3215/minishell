@@ -34,7 +34,6 @@ int	execute_disk_command(char *path, char **argv)
 	char		*underscore;
 	char		*environ_var;
 
-	// update underscore environ.
 	underscore = ft_strdup("_=");
 	environ_var = strjoin_but_freed_only_first_arg(underscore, path);
 	replace_environ_var(environ_var);
@@ -80,7 +79,6 @@ int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out,
 
 	if (expand(simple, last_command_exit_status) == EXECUTION_FAILURE)
 		return (EXECUTION_FAILURE);
-	// if word_list is null, or $foo command does not exist.
 	if (!simple->word_list)
 		return (execute_null_command(simple->redirect_list, pipe_in, pipe_out));
 	builtin = find_shell_builtin(simple->word_list->name);

@@ -9,7 +9,7 @@ static bool	isvalid(char *token_name)
 		env_name = ft_strdup(token_name);
 	else
 		env_name = get_environ_name(token_name);
-	if (env_name[0] == '\0') // env_name is nothing (ex. export =foo).
+	if (env_name[0] == '\0')
 	{
 		free(env_name);
 		return (false);

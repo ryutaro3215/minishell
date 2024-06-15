@@ -34,7 +34,7 @@ static bool	is_end_of_heredoc(char **line, char **document, char *delimiter)
 			*document = ft_strdup("");
 		return (true);
 	}
-	else if (**line == '\0' && g_interrupt_state) // sigint catched
+	else if (**line == '\0' && g_interrupt_state)
 	{
 		free(*line);
 		free(*document);
@@ -66,7 +66,7 @@ static char	*here_document_loop(char *delimiter)
 		if (is_end_of_heredoc(&line, &document, delimiter))
 		{
 			eof_reached = 1;
-			continue;
+			continue ;
 		}
 		document = ft_strjoin(document, line);
 		document = strjoin_but_freed_only_first_arg(document, "\n");
@@ -93,7 +93,7 @@ int	gather_here_document(t_command *command_list)
 		{
 			if (current_redirect->attribute == r_heredoc)
 			{
-				document = here_document_loop(current_redirect->filename); // delimiter
+				document = here_document_loop(current_redirect->filename);
 				if (!document && g_interrupt_state)
 					return (HEREDOC_FAILURE);
 				replace_with_document(current_redirect, document);
@@ -101,7 +101,7 @@ int	gather_here_document(t_command *command_list)
 			current_redirect = current_redirect->next;
 		}
 	}
-	else // command_list->attribute == cm_connection
+	else
 	{
 		gather_here_document(command_list->u_value.connection->first);
 		gather_here_document(command_list->u_value.connection->second);

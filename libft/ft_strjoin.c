@@ -46,7 +46,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	{
 		tmp = ft_strdup(s2);
 		free(s2);
-		return (tmp); // valid in every use ?
+		return (tmp);
 	}
 	s3 = xmalloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
 	if (s3 == NULL)

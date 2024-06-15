@@ -51,8 +51,8 @@ int	execute_andlist(t_command *command, int pipe_in, int pipe_out,
 		return (execute_command_internal(command->u_value.connection->second,
 				NO_PIPE, pipe_out, last_command_exit_status));
 	}
-	else // (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status)); // forbidden function ??
+	else
+		return (128 + WTERMSIG(status));
 }
 
 int	execute_orlist(t_command *command, int pipe_in, int pipe_out,
@@ -78,8 +78,8 @@ int	execute_orlist(t_command *command, int pipe_in, int pipe_out,
 		return (execute_command_internal(command->u_value.connection->second,
 				NO_PIPE, pipe_out, last_command_exit_status));
 	}
-	else // (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status)); // forbidden function ??
+	else
+		return (128 + WTERMSIG(status));
 }
 
 int	execute_connection(t_command *command, int pipe_in, int pipe_out,
@@ -94,7 +94,7 @@ int	execute_connection(t_command *command, int pipe_in, int pipe_out,
 	else if (connector == andlist)
 		return (execute_andlist(command, pipe_in, pipe_out,
 				last_command_exit_status));
-	else // (connector == orlist)
+	else
 		return (execute_orlist(command, pipe_in, pipe_out,
 				last_command_exit_status));
 }

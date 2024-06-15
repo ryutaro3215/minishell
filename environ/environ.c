@@ -20,7 +20,7 @@ void	unset_environ_var(char *ignored_var)
 	size_t		i;
 	size_t		j;
 
-	new_environ = xmalloc(sizeof(char *) * ((count_environ_var() - 1) + 1)); // delete one element
+	new_environ = xmalloc(sizeof(char *) * ((count_environ_var() - 1) + 1));
 	i = 0;
 	j = 0;
 	while (environ[j])
@@ -75,7 +75,6 @@ void	add_environ_var(char *new_environ_var)
 	extern char	**environ;
 	size_t		i;
 
-	// new_environ_var + nullptr = 2
 	new_environ = xmalloc(sizeof(char *) * (count_environ_var() + 2));
 	old_environ = environ;
 	i = 0;

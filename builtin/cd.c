@@ -37,12 +37,12 @@ int	builtin_cd(t_token *word_list)
 	}
 	if (!word_list->next)
 		return (EXECUTION_SUCCESS);
-	init_shell_oldpwd(UPDATE); // update
+	init_shell_oldpwd(UPDATE);
 	if (chdir(word_list->next->name) < 0)
 	{
 		perror("minishell: cd");
 		return (EXECUTION_FAILURE);
 	}
-	init_shell_pwd(UPDATE); // update
+	init_shell_pwd(UPDATE);
 	return (EXECUTION_SUCCESS);
 }

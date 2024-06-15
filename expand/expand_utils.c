@@ -16,7 +16,7 @@ void	add_new_word(t_token *current_word, char *filename)
 {
 	t_token	*new_word;
 
-	if (!current_word->name) // first word
+	if (!current_word->name)
 	{
 		current_word->name = ft_strdup(filename);
 		current_word->attribute = WORD;

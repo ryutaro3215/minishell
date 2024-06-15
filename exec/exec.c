@@ -15,10 +15,10 @@
 int	execute_command_internal(t_command *command, int pipe_in, int pipe_out,
 	int last_command_exit_status)
 {
-	if (command->attribute == cm_simple) // just word list
+	if (command->attribute == cm_simple)
 		return (execute_simple_command(command->u_value.simple,
 				pipe_in, pipe_out, last_command_exit_status));
-	else // (command->attribute == cm_connection) // pipe (and '&&', '||', ';')
+	else
 		return (execute_connection(command, pipe_in, pipe_out,
 				last_command_exit_status));
 }
@@ -37,10 +37,10 @@ int	execute_command(t_command *command, int last_command_exit_status)
 	waitpid_result = waitpid(last_made_pid, &status, 0);
 	while (wait(NULL) != -1)
 		continue ;
-	if (waitpid_result == -1) // when waitpid failed (waitpid return -1), already done waitpid (in andlist or orlist function)
+	if (waitpid_result == -1)
 		return (last_made_pid);
 	if (WIFEXITED(status))
-		return (WEXITSTATUS(status)); // forbidden function ??
-	else // (WIFSIGNALED(status))
-		return (128 + WTERMSIG(status)); // forbidden function ??
+		return (WEXITSTATUS(status));
+	else
+		return (128 + WTERMSIG(status));
 }
