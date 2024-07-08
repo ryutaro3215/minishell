@@ -24,7 +24,7 @@ int	do_r_input(char *filename)
 	}
 	if (dup2(fd, 0) == -1)
 	{
-		ft_err_printf("dup error\n");
+		write(2, "dup error\n", 11);
 		return (EXECUTION_FAILURE);
 	}
 	close(fd);
@@ -44,7 +44,7 @@ int	do_r_output(char *filename)
 	}
 	if (dup2(fd, 1) == -1)
 	{
-		ft_err_printf("dup error\n");
+		write(2, "dup error\n", 11);
 		return (EXECUTION_FAILURE);
 	}
 	close(fd);
@@ -64,7 +64,7 @@ int	do_r_append_output(char *filename)
 	}
 	if (dup2(fd, 1) == -1)
 	{
-		ft_err_printf("dup error\n");
+		write(2, "dup error\n", 11);
 		return (EXECUTION_FAILURE);
 	}
 	close(fd);
@@ -77,13 +77,13 @@ int	do_r_here_document(char *filename)
 
 	if (pipe(fildes) == -1)
 	{
-		ft_err_printf("pipe error\n");
+		write(2, "pipe error\n", 12);
 		return (EXECUTION_FAILURE);
 	}
 	write(fildes[1], filename, ft_strlen(filename));
 	if (dup2(fildes[0], 0) == -1)
 	{
-		ft_err_printf("dup error\n");
+		write(2, "dup error\n", 11);
 		return (EXECUTION_FAILURE);
 	}
 	close(fildes[0]);

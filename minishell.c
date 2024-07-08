@@ -55,6 +55,6 @@ int	main(void)
 	while (eof_reached == 0)
 		last_command_exit_status
 			= reader_loop(&eof_reached, last_command_exit_status);
-	ft_err_printf("exit\n");
+	write(2, "exit\n", 6);
 	return (last_command_exit_status);
 }

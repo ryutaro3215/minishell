@@ -22,9 +22,7 @@ SRCS = init.c init_utils.c\
 	ft_strndup.c ft_strjoin.c ft_itoa.c ft_substr.c\
 	ft_printf.c if_something1.c if_something2.c\
 	ft_put_something1.c ft_put_something2.c\
-	ft_err_printf.c err_if_something1.c\
-	err_if_something2.c ft_err_put_something1.c\
-	ft_err_put_something2.c
+	ft_err_printf.c
 
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 OBJS_DIR = object
@@ -89,8 +87,6 @@ BONUS_SRCS = init_bonus.c init_utils_bonus.c\
 	ft_printf_bonus.c if_something1_bonus.c\
 	if_something2_bonus.c ft_put_something1_bonus.c\
 	ft_put_something2_bonus.c ft_err_printf_bonus.c\
-	err_if_something1_bonus.c err_if_something2_bonus.c\
-	ft_err_put_something1_bonus.c ft_err_put_something2_bonus.c
 
 BONUS_OBJS = $(BONUS_SRCS:%.c=$(BONUS_OBJS_DIR)/%.o)
 BONUS_DIR = bonus

@@ -56,7 +56,7 @@ int	expand_redirect_wildcard(t_redirect *current_redirect)
 	dirp = opendir(".");
 	if (!dirp)
 	{
-		ft_err_printf("minishell: open failed\n");
+		write(2, "minishell: open failed\n", 24);
 		return (EXECUTION_FAILURE);
 	}
 	given_filename = store_given_word_to_add_new_words(current_redirect);
@@ -64,7 +64,7 @@ int	expand_redirect_wildcard(t_redirect *current_redirect)
 	{
 		closedir(dirp);
 		free(given_filename);
-		ft_err_printf("minishell: Ambiguous redirect\n");
+		write(2, "minishell: Ambiguous redirect\n", 31);
 		return (EXECUTION_FAILURE);
 	}
 	closedir(dirp);

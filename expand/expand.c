@@ -52,7 +52,7 @@ int	expand_redirects(t_simple *simple, int last_command_exit_status)
 			expand_redirect_dollar(current_redirect, last_command_exit_status);
 			if (!current_redirect->filename)
 			{
-				ft_err_printf("minishell: Ambiguous redirect\n");
+				write(2, "minishell: Ambiguous redirect\n", 31);
 				return (EXECUTION_FAILURE);
 			}
 		}

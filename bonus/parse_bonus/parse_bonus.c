@@ -46,7 +46,7 @@ t_command	*add_connection(t_token *token_list)
 	second_token_list = get_second_token_list(token_list);
 	if (!first_token_list || !second_token_list)
 	{
-		ft_err_printf("minishell: parse error near '|' or '&&' or '||'\n");
+		write(2, "minishell: parse error near '|' or '&&' or '||'\n", 49);
 		free_token_list(first_token_list);
 		free_token_list(second_token_list);
 		return (NULL);

@@ -50,7 +50,7 @@ int	get_connector(t_token *token_list)
 		return (andlist);
 	if (ft_strcmp(token_list->name, "||") == 0)
 		return (orlist);
-	ft_err_printf("minishell: Invalid connector added\n");
+	write(2, "minishell: Invalid connector added\n", 36);
 	return (-1);
 }
 

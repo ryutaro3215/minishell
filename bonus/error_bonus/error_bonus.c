@@ -21,7 +21,7 @@ void	handle_error(bool is_error)
 	}
 	else if (is_error && errno == 0)
 	{
-		ft_err_printf("minishell: Unknown error\n");
+		write(2, "minishell: Unknown error\n", 26);
 		exit(EXIT_FAILURE);
 	}
 }

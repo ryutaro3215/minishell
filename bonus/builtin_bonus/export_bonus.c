@@ -60,7 +60,7 @@ int	builtin_export(t_token *word_list)
 		{
 			if (!isvalid(current_token->name))
 			{
-				ft_err_printf("minishell: export: Invalid identifier\n");
+				write(2, "minishell: export: Invalid identifier\n", 39);
 				return (EXECUTION_FAILURE);
 			}
 		}

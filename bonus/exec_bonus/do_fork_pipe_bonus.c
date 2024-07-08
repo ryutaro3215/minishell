@@ -18,7 +18,7 @@ pid_t	do_fork(void)
 
 	pid = fork();
 	if (pid < 0)
-		ft_err_printf("fork error\n");
+		write(2, "fork error\n", 12);
 	return (pid);
 }
 
@@ -32,7 +32,7 @@ int	do_pipe(int pipe_in, int pipe_out)
 		fd = dup2(pipe_in, 0);
 		if (fd < 0)
 		{
-			ft_err_printf("dup error\n");
+			write(2, "dup error\n", 11);
 			return (fd);
 		}
 		close(pipe_in);
@@ -42,7 +42,7 @@ int	do_pipe(int pipe_in, int pipe_out)
 		fd = dup2(pipe_out, 1);
 		if (fd < 0)
 		{
-			ft_err_printf("dup error\n");
+			write(2, "dup error\n", 11);
 			return (fd);
 		}
 		close(pipe_out);

@@ -18,7 +18,7 @@ int	retrieve_fdin_fdout(int fdin, int fdout)
 	{
 		close(fdin);
 		close(fdout);
-		ft_err_printf("dup error\n");
+		write(2, "dup error\n", 11);
 		return (-1);
 	}
 	return (0);

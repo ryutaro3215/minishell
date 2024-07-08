@@ -67,7 +67,7 @@ void	expand_wildcard(t_token *current_word)
 	dirp = opendir(".");
 	if (!dirp)
 	{
-		ft_err_printf("minishell: open failed\n");
+		write(2, "minishell: open failed\n", 24);
 		return ;
 	}
 	given_word = store_given_word_to_add_new_words(current_word);

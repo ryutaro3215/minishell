@@ -43,7 +43,7 @@ static bool	is_valid_arg(char *arg)
 	{
 		if (!ft_isnumber(arg[i]))
 		{
-			ft_err_printf("minishell: exit: Need number argument\n");
+			write(2, "minishell: exit: Need number argument\n", 39);
 			return (false);
 		}
 		i++;
@@ -58,10 +58,10 @@ int	builtin_exit(t_token *word_list, int last_command_exit_status)
 	count = count_words(word_list);
 	if (count > 2)
 	{
-		ft_err_printf("minishell: exit: Too many arguments\n");
+		write(2, "minishell: exit: Too many arguments\n", 37);
 		return (EXECUTION_FAILURE);
 	}
-	ft_err_printf("exit\n");
+	write(2, "exit\n", 6);
 	if (count == 2 && !is_valid_arg(word_list->next->name))
 		exit(2);
 	if (!word_list->next)

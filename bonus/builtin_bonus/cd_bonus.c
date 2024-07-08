@@ -32,7 +32,7 @@ int	builtin_cd(t_token *word_list)
 	count = count_words(word_list);
 	if (count > 2)
 	{
-		ft_err_printf("minishell: cd: Too many arguments\n");
+		write(2, "minishell: cd: Too many arguments\n", 35);
 		return (EXECUTION_FAILURE);
 	}
 	if (!word_list->next)
