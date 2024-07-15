@@ -6,7 +6,7 @@
 /*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 13:52:45 by ryutaro3205       #+#    #+#             */
-/*   Updated: 2024/06/15 13:59:56 by ryutaro3205      ###   ########.fr       */
+/*   Updated: 2024/07/15 10:46:03 by kisobe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ static void	read_directory_loop(DIR *dirp, char *given_word,
 		dp = readdir(dirp);
 		if (!dp)
 			break ;
-		if (ft_strcmp(dp->d_name, ".") == 0 || ft_strcmp(dp->d_name, "..") == 0)
-			continue ;
 		if (ft_strcmp(given_word, "*") == 0
 			&& ft_strncmp(dp->d_name, ".", 1) == 0)
 			continue ;

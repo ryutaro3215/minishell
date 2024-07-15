@@ -6,13 +6,13 @@
 /*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 13:40:52 by ryutaro3205       #+#    #+#             */
-/*   Updated: 2024/06/15 13:40:53 by ryutaro3205      ###   ########.fr       */
+/*   Updated: 2024/07/15 10:48:25 by kisobe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/signal.h"
 
-volatile sig_atomic_t	g_interrupt_state = 0; // non-zero after SIGINT
+volatile sig_atomic_t	g_interrupt_state = 0;
 
 void	sigint_handler_for_readline(int sig)
 {
