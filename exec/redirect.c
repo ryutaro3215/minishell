@@ -98,8 +98,6 @@ int	do_redirect(t_redirect *redirect_list)
 
 	result = EXECUTION_SUCCESS;
 	current_redirect = redirect_list;
-	if (!current_redirect->filename)
-		return (EXECUTION_SUCCESS);
 	while (current_redirect)
 	{
 		if (current_redirect->attribute == r_input)
