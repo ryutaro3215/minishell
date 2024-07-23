@@ -27,7 +27,7 @@ SRCS = init.c init_utils.c\
 OBJS = $(SRCS:%.c=$(OBJS_DIR)/%.o)
 OBJS_DIR = object
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I $(shell brew --prefix readline)/include -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I $(shell brew --prefix readline)/include
 RLFLAGS = -lreadline -L $(shell brew --prefix readline)/lib
 
 vpath % init signal environ eval parse expand\
