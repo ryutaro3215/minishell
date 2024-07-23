@@ -6,7 +6,7 @@
 /*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/15 13:52:20 by ryutaro3205       #+#    #+#             */
-/*   Updated: 2024/06/15 13:58:14 by ryutaro3205      ###   ########.fr       */
+/*   Updated: 2024/07/23 19:06:13 by kisobe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ int	do_redirect(t_redirect *redirect_list)
 
 	result = EXECUTION_SUCCESS;
 	current_redirect = redirect_list;
-	if (!current_redirect->filename)
+	if (!current_redirect->filename
+		&& current_redirect->attribute != r_heredoc)
 		return (EXECUTION_SUCCESS);
 	while (current_redirect)
 	{

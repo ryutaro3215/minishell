@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
+/*   By: kisobe <kisobe@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/15 13:54:01 by ryutaro3205       #+#    #+#             */
-/*   Updated: 2024/06/15 13:54:02 by ryutaro3205      ###   ########.fr       */
+/*   Created: 2024/01/10 13:26:09 by kisobe            #+#    #+#             */
+/*   Updated: 2024/07/23 19:05:48 by kisobe           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	*ft_strchr(const char *s, int c)
 	char	*str_finded;
 	char	c_conv;
 
+	if (!s)
+		return (NULL);
 	c_conv = c;
 	i = 0;
 	str_len = ft_strlen(s);
