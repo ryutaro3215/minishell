@@ -12,14 +12,14 @@
 
 #include "../include/exec.h"
 
-int	execute_command_internal(t_command *command, int pipe_in, int pipe_out,
-	int last_command_exit_status)
+int	execute_command_internal(t_command *command, int *pipe_in_out,
+	int last_command_exit_status, int close_fd)
 {
 	if (command->attribute == cm_simple)
 		return (execute_simple_command(command->u_value.simple,
-				pipe_in, pipe_out, last_command_exit_status));
+				pipe_in_out, last_command_exit_status, close_fd));
 	else
-		return (execute_connection(command, pipe_in, pipe_out,
+		return (execute_connection(command, pipe_in_out[0], pipe_in_out[1],
 				last_command_exit_status));
 }
 
@@ -28,9 +28,12 @@ int	execute_command(t_command *command, int last_command_exit_status)
 	pid_t	last_made_pid;
 	int		status;
 	int		waitpid_result;
+	int		pipe_in_out[2];
 
-	last_made_pid = execute_command_internal(command, NO_PIPE, NO_PIPE,
-			last_command_exit_status);
+	pipe_in_out[0] = NO_PIPE;
+	pipe_in_out[1] = NO_PIPE;
+	last_made_pid = execute_command_internal(command, pipe_in_out,
+			last_command_exit_status, NO_PIPE);
 	if (last_made_pid == EXECUTION_FAILURE
 		|| last_made_pid == EXECUTION_SUCCESS)
 		return (last_made_pid);

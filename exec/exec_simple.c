@@ -59,8 +59,8 @@ int	execute_disk_command(char *path, char **argv)
 	return (COMMAND_NOT_FOUND);
 }
 
-int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out,
-	int (*builtin)(t_token *))
+int	execute_in_subshell(t_simple *simple, int *pipe_in_out,
+	int (*builtin)(t_token *), int close_fd)
 {
 	pid_t	pid;
 	char	*path;
@@ -71,7 +71,8 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out,
 		return (EXECUTION_FAILURE);
 	if (pid == 0)
 	{
-		if (do_pipe(pipe_in, pipe_out) < 0)
+		close(close_fd);
+		if (do_pipe(pipe_in_out[0], pipe_in_out[1]) < 0)
 			exit(EXECUTION_FAILURE);
 		path = get_path(simple->word_list->name);
 		argv = get_argv(simple->word_list);
@@ -81,31 +82,32 @@ int	execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out,
 			exit(execute_builtin(simple, builtin));
 		exit(execute_disk_command(path, argv));
 	}
-	if (pipe_in != NO_PIPE)
-		close(pipe_in);
-	if (pipe_out != NO_PIPE)
-		close(pipe_out);
+	if (pipe_in_out[0] != NO_PIPE)
+		close(pipe_in_out[0]);
+	if (pipe_in_out[1] != NO_PIPE)
+		close(pipe_in_out[1]);
 	return (pid);
 }
 
-int	execute_simple_command(t_simple *simple, int pipe_in, int pipe_out,
-	int last_command_exit_status)
+int	execute_simple_command(t_simple *simple, int *pipe_in_out,
+	int last_command_exit_status, int close_fd)
 {
 	int	(*builtin)(t_token *);
 
 	if (expand(simple, last_command_exit_status) == EXECUTION_FAILURE)
 		return (EXECUTION_FAILURE);
 	if (!simple->word_list)
-		return (execute_null_command(simple->redirect_list, pipe_in, pipe_out));
+		return (execute_null_command(simple->redirect_list,
+				pipe_in_out[0], pipe_in_out[1]));
 	builtin = find_shell_builtin(simple->word_list->name);
-	if (builtin && (pipe_in == NO_PIPE && pipe_out == NO_PIPE))
+	if (builtin && (pipe_in_out[0] == NO_PIPE && pipe_in_out[1] == NO_PIPE))
 	{
 		if (ft_strcmp(simple->word_list->name, "exit") == 0)
 			return (execute_exit_builtin(simple, last_command_exit_status));
 		return (execute_builtin(simple, builtin));
 	}
 	if (ft_strcmp(simple->word_list->name, "exit") == 0)
-		return (execute_exit_in_subshell(simple, pipe_in, pipe_out,
+		return (execute_exit_in_subshell(simple, pipe_in_out[0], pipe_in_out[1],
 				last_command_exit_status));
-	return (execute_in_subshell(simple, pipe_in, pipe_out, builtin));
+	return (execute_in_subshell(simple, pipe_in_out, builtin, close_fd));
 }

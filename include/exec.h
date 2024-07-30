@@ -42,17 +42,17 @@
 # define NO_PIPE -1
 
 // exec.c
-int		execute_command_internal(t_command *command, int pipe_in, int pipe_out,
-			int last_command_exit_status);
+int		execute_command_internal(t_command *command, int *pipe_in_out,
+			int last_command_exit_status, int close_fd);
 int		execute_command(t_command *command, int last_command_exit_status);
 
 // exec_simple.c
 int		execute_builtin(t_simple *simple, int (*builtin)(t_token *));
 int		execute_disk_command(char *path, char **argv);
-int		execute_in_subshell(t_simple *simple, int pipe_in, int pipe_out,
-			int (*builtin)(t_token *));
-int		execute_simple_command(t_simple *simple, int pipe_in, int pipe_out,
-			int last_command_exit_status);
+int		execute_in_subshell(t_simple *simple, int *pipe_in_out,
+			int (*builtin)(t_token *), int close_fd);
+int		execute_simple_command(t_simple *simple, int *pipe_in_out,
+			int last_command_exit_status, int close_fd);
 
 // exec_connection.c
 int		execute_pipeline(t_command *command, int pipe_in, int pipe_out,
