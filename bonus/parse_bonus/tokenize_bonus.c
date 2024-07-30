@@ -6,7 +6,7 @@
 /*   By: ryutaro320515 <ryutaro320515@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/11 20:43:20 by rmatsuba          #+#    #+#             */
-/*   Updated: 2024/06/15 15:26:42 by rmatsuba         ###   ########.fr       */
+/*   Updated: 2024/07/30 17:43:49 by rmatsuba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ t_token	*tokenize(char *line)
 		else
 			token->next = new_word_token(&line);
 		if (!token->next)
+		{
+			free_token_list(head.next);
 			return (NULL);
+		}
 		token = token->next;
 	}
 	return (head.next);
